@@ -26,7 +26,7 @@ const users = [
 const items = [
   {
     id: uuidv4(),
-    name: ‘item1,
+    name: 'item1',
     price: 19.99,
     details: 'Description for Item 1',
     img: 'https://example.com/item1.jpg',
@@ -49,7 +49,7 @@ const orders = [
   {
     order_id: uuidv4(),
     user_id: users[0].id,
-    order_date: 
+    order_date: , 
     order_status: 'open',
     order_total: 0,
     items: [],
@@ -57,7 +57,7 @@ const orders = [
   {
     order_id: uuidv4(),
     user_id: users[1].id,
-    order_date: 
+    order_date: ,
     order_status: 'open',
     order_total: 0,
     items: [],
