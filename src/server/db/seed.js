@@ -1,85 +1,72 @@
-const db = require('./client');
-const { createUser } = require('./users');
+const { v4: uuidv4 } = require('uuid');
 
 const users = [
   {
-    name: 'Emily Johnson',
-    email: 'emily@example.com',
-    password: 'securepass',
+    id: uuidv4(),
+    username: 'ross',
+    firstName: 'Ross',
+    lastName: 'Ritter',
+    address: '123 Main St',
+    email: 'rar@email.com',
+    password: 'RAR',
+    isAdmin: true,
   },
-  {
-    name: 'Liu Wei',
-    email: 'liu@example.com',
-    password: 'strongpass',
-  },
-  {
-    name: 'Isabella García',
-    email: 'bella@example.com',
-    password: 'pass1234',
-  },
-  {
-    name: 'Mohammed Ahmed',
-    email: 'mohammed@example.com',
-    password: 'mysecretpassword',
-  },
-  {
-    name: 'John Smith',
+ {
+    id: uuidv4(),
+    username: 'example',
+    firstName: 'John',
+    lastName: 'Doe',
+    address: '456 Oak St',
     email: 'john@example.com',
-    password: 'password123',
+    password: 'example',
+    isAdmin: false,
   },
-  // Add more user objects as needed
-];  
+];
 
-const dropTables = async () => {
-    try {
-        await db.query(`
-        DROP TABLE IF EXISTS users;
-        `)
-    }
-    catch(err) {
-        throw err;
-    }
-}
+const items = [
+  {
+    id: uuidv4(),
+    name: ‘item1,
+    price: 19.99,
+    details: 'Description for Item 1',
+    img: 'https://example.com/item1.jpg',
+    tags: ['tag1', 'tag2'],
+    category: 'Category 1',
+    stock: 10,
+  },
+  {
+    id: uuidv4(),
+    name: 'Item 2',
+    price: 29.99,
+    details: 'Description for Item 2',
+    img: 'https://example.com/item2.jpg',
+    tags: ['tag3', 'tag4'],
+    category: 'Category 2',
+    stock: 15,
+  },
+];
+const orders = [
+  {
+    order_id: uuidv4(),
+    user_id: users[0].id,
+    order_date: 
+    order_status: 'open',
+    order_total: 0,
+    items: [],
+  },
+  {
+    order_id: uuidv4(),
+    user_id: users[1].id,
+    order_date: 
+    order_status: 'open',
+    order_total: 0,
+    items: [],
+  },
+];
 
-const createTables = async () => {
-    try{
-        await db.query(`
-        CREATE TABLE users(
-            id SERIAL PRIMARY KEY,
-            name VARCHAR(255) DEFAULT 'name',
-            email VARCHAR(255) UNIQUE NOT NULL,
-            password VARCHAR(255) NOT NULL
-        )`)
-    }
-    catch(err) {
-        throw err;
-    }
-}
+const orderItems = [
+  { order_id: orders[0].order_id, product_id: items[0].id, quantity: 2 },
+  { order_id: orders[1].order_id, product_id: items[1].id, quantity: 1 },
+];
 
-const insertUsers = async () => {
-  try {
-    for (const user of users) {
-      await createUser({name: user.name, email: user.email, password: user.password});
-    }
-    console.log('Seed data inserted successfully.');
-  } catch (error) {
-    console.error('Error inserting seed data:', error);
-  }
-};
-
-const seedDatabse = async () => {
-    try {
-        db.connect();
-        await dropTables();
-        await createTables();
-        await insertUsers();
-    }
-    catch (err) {
-        throw err;
-    }
-    finally {
-        db.end()
-    }
-}
-
-seedDatabse()
+module.exports = { users, items, orders, orderItems };
