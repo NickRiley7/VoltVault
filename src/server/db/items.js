@@ -43,3 +43,18 @@ async function getALLItems () {
     throw err;
   }
 }
+
+async function createItem ({name, price, details, img, category, stock }) {
+  try {
+    const{ rows: [item] } = await client.query ( `
+    INSERT INTO items(name, price, details, img, category, stock)
+    VALUES ($1, $2, $4, $5, $6)
+    RETURNING *;
+      `,
+      [name, price, details, img, stock]
+    );
+    return item;
+  } catch (err) {
+    throw err; 
+  }
+}
