@@ -83,7 +83,7 @@ async function createItem ({name, price, details, img, category, stock }) {
 // }
 
 async function updateItem(itemId, updatedField) {
-  const {name, price, details, img, category, stock } = updateFields;
+  const {name, price, details, img, category, stock } = updatedField;
   const query = `
   UPDATE items
   SET name = $1, price = $2, details = $3, img = $4, category = $5, stock = $6
