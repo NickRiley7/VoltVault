@@ -2,6 +2,8 @@ const db = require('./client');
 const { createUser } = require('./users');
 // const { v4: uuidv4 } = require('uuid');
 
+
+
 const users = [
   {
     id: 1,
@@ -84,41 +86,76 @@ const dropTables = async () => {
   }
 };
 const createTables = async () => {
-  try{
-      await db.query(` 
+  try {
+    await db.query(`
+      DROP TABLE IF EXISTS users, items, orders, order_items;
+
       CREATE TABLE users (
-        id ,
-        username , 
-        first_name ,
-        last_name ,
-        address ,
-        email ,
-        password , 
-        is_admin 
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(100),
+        first_name VARCHAR(100),
+        last_name VARCHAR(100),
+        address VARCHAR(100),
+        email VARCHAR(100),
+        password VARCHAR(100),
+        is_admin BOOLEAN
       );
 
       CREATE TABLE items (
-        id SERIAL PRIMARY KEY, 
-        name TEXT 
-        price DECIMAL (10, 2)
-        details TEXT 
-        img VARCHAR (55)
-        category TEXT 
-        stock INT 
-        );
+        id SERIAL PRIMARY KEY,
+        name TEXT,
+        price DECIMAL(10, 2),
+        details TEXT,
+        img VARCHAR(55),
+        category TEXT,
+        stock INT
+      );
 
+      CREATE TABLE orders (
+        order_id SERIAL PRIMARY KEY,
+        user_id INTEGER REFERENCES users(id),
+        order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        order_status VARCHAR(50) DEFAULT 'open',
+        order_total DECIMAL(10, 2),
+        items JSONB[]
+      );
 
+      CREATE TABLE order_items (
+        order_id INTEGER REFERENCES orders(order_id),
+        product_id INTEGER REFERENCES items(id),
+        quantity INTEGER,
+        PRIMARY KEY (order_id, product_id)
+      );
+    `);
 
+    await Promise.all(users.map(async (user) => {
+      await createUser({
+        id: user.id,
+        username: user.username,
+      });
+    }));
 
-
-
-`
-    );
-    } catch(err) {
-      throw err;
+    console.log('Seed successfully.');
+  } catch (err) {
+    throw err;
   }
-    }
-module.exports = { users, items, orders, orderItems };
+};
+
+const seedDatabase = async () => {
+  try {
+    await db.connect();
+    await createTables();
+  } catch (err) {
+    throw err;
+  } finally {
+    db.end();
+  }
+};
+
+seedDatabase();
+// module.exports = { users, items, orders, orderItems };
 
 // need to add the SQL to the User table 
+
+// PRIMARY KEY https://www.w3schools.com/sql/sql_primarykey.ASP 
 // note for SERIAL SQL https://www.ibm.com/docs/en/informix-servers/14.10?topic=types-serialn-data-type
