@@ -2,14 +2,14 @@ const db = require('./client')
 const bcrypt = require('bcrypt');
 const SALT_COUNT = 10;
 
-const createUser = async({ name='first last', email, password }) => {
+const createUser = async({ username, firstName, lastName, address, email, password, isAdmin }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
         const { rows: [user ] } = await db.query(`
-        INSERT INTO users(name, email, password)
+        INSERT INTO users(username, firstName, lastName, address, email, password, isAdmin)
         VALUES($1, $2, $3)
         ON CONFLICT (email) DO NOTHING
-        RETURNING *`, [name, email, hashedPassword]);
+        RETURNING *`, [username, firstName, lastName, address, email, hashedPassword, isAdmin]);
 
         return user;
     } catch (err) {
@@ -50,8 +50,27 @@ const getUserByEmail = async(email) => {
     }
 }
 
+const getUserByUsername = async(username) => {
+    try {
+        const { rows: [ user ] } = await db.query(`
+        SELECt *
+        FROM users
+        WHERE username=$1;`, [ username ]);
+
+        if(!username) {
+            return;
+        }
+        return user;
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
 module.exports = {
     createUser,
     getUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserByUsername
 };
