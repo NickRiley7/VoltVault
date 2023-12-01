@@ -58,12 +58,32 @@ async function createItem ({name, price, details, img, category, stock }) {
     throw err; 
   }
 }
+async function updateItem({id, ... fields}){
 
+}
+
+async function deleteItem (id) {
+  try {
+    const{ rows: [item] } = await client.query (
+      `
+      DELETE FROM items
+      WHERE id = $1
+      return *;
+      `,
+      [id]
+    );
+    return item;
+  } catch (err){
+    throw err;
+  }
+}
 
 
 module.exports ={
   getItemID,
   getItemByName,
   getALLItems,
+  createItem,
+  updateItem,
   createItem
 };
