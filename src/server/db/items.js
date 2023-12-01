@@ -58,3 +58,12 @@ async function createItem ({name, price, details, img, category, stock }) {
     throw err; 
   }
 }
+
+
+
+module.exports ={
+  getItemID,
+  getItemByName,
+  getALLItems,
+  createItem
+};
