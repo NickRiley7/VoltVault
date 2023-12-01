@@ -4,7 +4,6 @@ const util = require ('./util.js');
 // const express = require('express');
 // const import { v4 as uuidv4 } from 'uuid';
 
-
 async function getItemID(Id) {
   try {
     const {row:[item]} = await client.query (
@@ -44,13 +43,49 @@ async function getAllItems () {
   }
 }
 
+async function createItem ({name, price, details, img, category, stock }) {
+  try {
+    const{ rows: [item] } = await client.query ( `
+    INSERT INTO items(name, price, details, img, category, stock)
+    VALUES ($1, $2, $3, $4, $5, $6)
+    RETURNING *;
+      `,
+      [name, price, details, img, category, stock]
+    );
+    return item;
+  } catch (err) {
+    throw err; 
+  }
+}
+async function updateItem({id, ... fields}){
+
+}
+
+async function deleteItem (id) {
+  try {
+    const{ rows: [item] } = await client.query (
+      `
+      DELETE FROM items
+      WHERE id = $1
+      return *;
+      `,
+      [id]
+    );
+    return item;
+  } catch (err){
+    throw err;
+  }
+}
 async function addItemToOrder () {
 
 }
 
 module.exports = {
   getAllItems,
-  addItemToOrder,
   getItemID,
-  getItemByName
+  getItemByName,
+  createItem,
+  deleteItem,
+  updateItem,
+  addItemToOrder
 }

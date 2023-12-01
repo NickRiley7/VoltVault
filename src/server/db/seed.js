@@ -1,6 +1,6 @@
 const client = require ('./client')
 const { createOrder, getOrdersWithoutItems } = require('./orders')
-const { getAllItems, addItemToOrder } = require('./items')
+const { getAllItems, createItem, addItemToOrder } = require('./items')
 // const { v4: uuidv4 } = require('uuid');
 
 async function dropTables() {
@@ -97,12 +97,12 @@ async function createInitialUsers (){
       },
     ];
 
-    const users = await Promise.all (usersToCreate.map(user => createItems (user)));
+    const users = await Promise.all (usersToCreate.map(user => createUser (user)));
     console.log ('Orders Created: ', users);
     console.log ('Finished creating users.');
   }
   catch (err) {
-    console.error(err)
+    // console.error(err)
   }
 }
 
@@ -112,7 +112,6 @@ async function createInitialItems (){
     
     const itemsToCreate = [
       {
-        id: uuidv4(),
         name: 'item1',
         price: 19.99,
         details: 'Description for Item 1',
@@ -122,7 +121,6 @@ async function createInitialItems (){
         stock: 10,
       },
       {
-        id: uuidv4(),
         name: 'Item 2',
         price: 29.99,
         details: 'Description for Item 2',
@@ -133,7 +131,7 @@ async function createInitialItems (){
       },
     ];
 
-    const items = await Promise.all (itemsToCreate.map(item => createItems (item)));
+    const items = await Promise.all (itemsToCreate.map(item => createItem (item)));
     console.log ('Orders Created: ', items);
     console.log ('Finished creating items.');
 
