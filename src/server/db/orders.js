@@ -101,7 +101,7 @@ async function createOrder({userId, order_status, order_total}) {
   try {
     const {rows: [order]} = await client.query(`
         INSERT INTO orders ("userId", "order_status", "order_total")
-        VALUES($1, $2, $3, $4)
+        VALUES($1, $2, $3)
         RETURNING *;
     `, [userId, order_status, order_total]);
 
