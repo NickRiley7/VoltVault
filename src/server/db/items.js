@@ -38,7 +38,7 @@ async function getALLItems () {
       `SELECT name, price, img 
       FROM items`
     );
-    retrun items; 
+    return items; 
   } catch (err){
     throw err;
   }
