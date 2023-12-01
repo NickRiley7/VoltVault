@@ -48,17 +48,26 @@ async function createItem ({name, price, details, img, category, stock }) {
   try {
     const{ rows: [item] } = await client.query ( `
     INSERT INTO items(name, price, details, img, category, stock)
-    VALUES ($1, $2, $4, $5, $6)
+    VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING *;
       `,
-      [name, price, details, img, stock]
+      [name, price, details, img, category, stock]
     );
     return item;
   } catch (err) {
     throw err; 
   }
 }
-async function updateItem({id, ... fields}){
+async function updateItem({id, ...fields}){
+  try {
+    const toUpdate ={}
+    for (let column in fields) {
+      if(fields[column] !== undefined) toUpdate[column] = fields[column];
+    }
+    let item; 
+    if (Object.keys)
+
+  }
 
 }
 
