@@ -1,8 +1,8 @@
-const { v4: uuidv4 } = require('uuid');
+// const { v4: uuidv4 } = require('uuid');
 
 const users = [
   {
-    id: uuidv4(),
+    id: 1,
     username: 'ross',
     firstName: 'Ross',
     lastName: 'Ritter',
@@ -12,7 +12,7 @@ const users = [
     isAdmin: true,
   },
  {
-    id: uuidv4(),
+    id: 2,
     username: 'example',
     firstName: 'John',
     lastName: 'Doe',
@@ -25,8 +25,8 @@ const users = [
 
 const items = [
   {
-    id: uuidv4(),
-    name: ‘item1,
+    id: 1,
+    name: 'item 1' ,  
     price: 19.99,
     details: 'Description for Item 1',
     img: 'https://example.com/item1.jpg',
@@ -35,7 +35,7 @@ const items = [
     stock: 10,
   },
   {
-    id: uuidv4(),
+    id: 2,
     name: 'Item 2',
     price: 29.99,
     details: 'Description for Item 2',
@@ -47,15 +47,15 @@ const items = [
 ];
 const orders = [
   {
-    order_id: uuidv4(),
+    order_id: 1,
     user_id: users[0].id,
-    order_date: 
+    order_date: DATETIME,
     order_status: 'open',
     order_total: 0,
     items: [],
   },
   {
-    order_id: uuidv4(),
+    order_id: 2,
     user_id: users[1].id,
     order_date: 
     order_status: 'open',
