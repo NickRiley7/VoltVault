@@ -1,5 +1,5 @@
 const client = require('./client')
-// const { attachProductsToOrders } = require('./products')
+// const { attachItemsToOrders } = require('./items')
 // const { getUserByUsername } = require('./users')
 const util = require('./util.js');
 
@@ -15,7 +15,7 @@ async function getOrderById(id){
   }
 }
 
-async function getOrdersWithoutProducts(){
+async function getOrdersWithoutItems(){
   try {
     const {rows} = await client.query(`
     SELECT * FROM orders;
@@ -32,7 +32,7 @@ async function getAllOrders() {
     FROM orders
     JOIN users ON orders."userId" = users.id 
     `);
-    return attachProductsToOrders(orders);
+    return attachItemsToOrders(orders);
   } catch (error) {
     throw error
   }
@@ -46,7 +46,7 @@ async function getAllOrdersByUser({username}) {
     JOIN users ON orders."userId" = users.id 
     WHERE "userId" = $1
     `, [user.id]);
-    return attachProductsToOrders(orders);
+    return attachItemsToOrders(orders);
   } catch (error) {
     throw error
   }
@@ -61,7 +61,7 @@ async function getCompletedOrdersByUser({username}) {
     WHERE "userId" = $1
     AND "order_status" = completed
     `, [user.id]);
-    return attachProductsToOrders(orders);
+    return attachItemsToOrders(orders);
   } catch (error) {
     throw error
   }
@@ -75,23 +75,23 @@ async function getAllCompletedOrders() {
     JOIN users ON orders."userId" = users.id
     WHERE "order_status" = completed
     `);
-    return attachProductsToOrders(orders);
+    return attachItemsToOrders(orders);
   } catch (error) {
     throw error
   }
 }
 
-async function getCompletedOrdersByProduct({id}) {
+async function getCompletedOrdersByItem({id}) {
   try {
     const { rows: orders } = await client.query(`
       SELECT orders.*, users.username AS "userName"
       FROM orders
       JOIN users ON orders."userId" = users.id
-      JOIN order_products ON order_products."orderId" = orders.id
+      JOIN order_items ON order_items."orderId" = orders.id
       WHERE orders."order_status" = completed
-      AND order_products."productId" = $1;
+      AND order_items."itemId" = $1;
     `, [id]);
-    return attachProductsToOrders(orders);
+    return attachItemsToOrders(orders);
   } catch (error) {
     throw error;
   }
@@ -135,7 +135,7 @@ async function updateOrder({id, ...fields}) {
 async function destroyOrder(id) {
   try {
     await client.query(`
-        DELETE FROM order_products 
+        DELETE FROM order_items 
         WHERE "orderId" = $1;
     `, [id]);
     const {rows: [order]} = await client.query(`
@@ -151,12 +151,12 @@ async function destroyOrder(id) {
 
 module.exports = {
   getOrderById,
-  getOrdersWithoutProducts,
+  getOrdersWithoutItems,
   getAllOrders,
   getAllCompletedOrders,
   getAllOrdersByUser,
   getCompletedOrdersByUser,
-  getCompletedOrdersByProduct,
+  getCompletedOrdersByItem,
   createOrder,
   updateOrder,
   destroyOrder,
