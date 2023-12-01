@@ -1,3 +1,5 @@
+const db = require('./client');
+const { createUser } = require('./users');
 // const { v4: uuidv4 } = require('uuid');
 
 const users = [
@@ -49,7 +51,8 @@ const orders = [
   {
     order_id: 1,
     user_id: users[0].id,
-    order_date: DATETIME,
+    order_date: new Date(),
+    // https://javascript.info/date#:~:text=The%20string%20format%20should%20be,%2C%20minutes%2C%20seconds%20and%20milliseconds.
     order_status: 'open',
     order_total: 0,
     items: [],
@@ -69,4 +72,53 @@ const orderItems = [
   { order_id: orders[1].order_id, product_id: items[1].id, quantity: 1 },
 ];
 
+
+const dropTables = async () => {
+  try {
+      await db.query(`
+      DROP TABLE IF EXISTS users;
+      `)
+  }
+  catch(err) {
+      throw err;
+  }
+};
+const createTables = async () => {
+  try{
+      await db.query(` 
+      CREATE TABLE users (
+        id ,
+        username , 
+        first_name ,
+        last_name ,
+        address ,
+        email ,
+        password , 
+        is_admin 
+      );
+
+      CREATE TABLE items (
+        id SERIAL PRIMARY KEY, 
+        name TEXT 
+        price DECIMAL (10, 2)
+        details TEXT 
+        img VARCHAR (55)
+        category TEXT 
+        stock INT 
+        );
+
+
+
+
+
+
+`
+    );
+    } catch(err) {
+      throw err;
+  }
+    }
 module.exports = { users, items, orders, orderItems };
+
+// need to add the SQL to the User table 
+// note for SERIAL SQL https://www.ibm.com/docs/en/informix-servers/14.10?topic=types-serialn-data-type
