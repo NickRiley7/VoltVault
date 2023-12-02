@@ -1,9 +1,9 @@
 const express = require('express')
-const router = express.Router()
+const ordersRouter = express.Router()
 const { getAllOrders } = require('../db/orders');
 const { requireUser } = require ('./utils');
 
-router.get('/', async (req, res, next) => {
+ordersRouter.get('/', async (req, res, next) => {
   try {
     const routines = await getAllOrders();
     res.send(routines);
@@ -11,3 +11,5 @@ router.get('/', async (req, res, next) => {
     next(error)
   }
 })
+
+module.exports = ordersRouter
