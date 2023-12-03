@@ -32,7 +32,7 @@ async function createTables() {
       address VARCHAR(255),
       email VARCHAR(255) UNIQUE,
       password VARCHAR(255),
-      isAdimn BOOL
+      isAdmin BOOL
     )
     `)
     
@@ -85,7 +85,7 @@ async function createInitialUsers (){
         address: '123 Main St',
         email: 'rar@email.com',
         password: 'RAR',
-        isAdmin: true,
+        isAdmin: true
       },
      {
         username: 'example',
@@ -94,7 +94,7 @@ async function createInitialUsers (){
         address: '456 Oak St',
         email: 'john@example.com',
         password: 'example',
-        isAdmin: false,
+        isAdmin: false
       },
     ];
 

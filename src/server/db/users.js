@@ -2,15 +2,14 @@ const db = require('./client')
 const bcrypt = require('bcrypt');
 const SALT_COUNT = 10;
 
-const createUser = async({ username, firstname, lastname, address, email, password = ''}) => {
+const createUser = async({ username, firstName, lastName, address, email, password,isAdmin }) => {
     const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
     try {
-
-        // still need conflict handler if username/email is the same
         const { rows: [user ] } = await db.query(`
-        INSERT INTO users(username, firstname, lastname, address, email, password)
-        VALUES($1, $2, $3, $4, $5, $6)
-        RETURNING *`, [username, firstname, lastname, address, email, password]);
+        INSERT INTO users(username, firstName, lastName, address, email, password,isAdmin)
+        VALUES($1, $2, $3, $4, $5, $6, $7)
+        ON CONFLICT (email) DO NOTHING
+        RETURNING *`, [username, firstName, lastName, address, email, hashedPassword,isAdmin]);
 
         return user;
     } catch (err) {
