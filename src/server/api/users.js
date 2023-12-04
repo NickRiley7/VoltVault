@@ -1,5 +1,6 @@
 const express = require("express");
 const usersRouter = express.Router();
+const { requireUser } = require("./utils");
 
 const { createUser, getAllUsers, getUser, getUserByEmail } = require("../db");
 
@@ -99,5 +100,51 @@ usersRouter.post("/register", async (req, res, next) => {
     next({ name, message });
   }
 });
+
+usersRouter.patch(
+  "/:userId",
+  requireUser,
+  requiredNotSent({
+    requiredParams: ["username, firstName, lastName, address, email"],
+    atLeastOne: true,
+  }),
+  async (req, res, next) => {
+    try {
+      const { username, firstName, lastName, address, email } = req.body;
+      const [id] = req.params;
+      const userToUpdate = await getUserById(userId);
+      if (!userToUpdate) {
+        next({
+          name: "Not Found",
+          message: `No user by ID ${userId}`,
+        });
+      } else if (req.user.id !== user.id) {
+        res.status(403);
+        next({
+          name: "WrongUser",
+          message: "you can only update your own account.",
+        });
+      } else {
+        const updateUser = await updateUser({
+          id: username,
+          firstName,
+          lastName,
+          address,
+          email,
+        });
+        if (updatedUser) {
+          res.send(updatedUser);
+        } else {
+          next({
+            name: "FailedToUpdate",
+            message: "There was an error updating your routine",
+          });
+        }
+      }
+    } catch (error) {
+      next(error);
+    }
+  }
+);
 
 module.exports = usersRouter;
