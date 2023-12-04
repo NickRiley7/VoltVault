@@ -101,7 +101,24 @@ async function getUserByUsername(username) {
   }
 }
 
-//UPDATE
+// GET USER BY ID
+async function getUserById(id) {
+  try {
+    const {
+      rows: [user],
+    } = await db.query(
+      `
+        SELECT * FROM users
+        WHERE id = $1
+    `,
+      [id]
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
 async function updateUser({ id, ...fields }) {
   const toUpdate = {};
   for (let column in fields) {
@@ -155,5 +172,7 @@ module.exports = {
   getUser,
   getUserByEmail,
   getUserByUsername,
+  getUserById,
+  updateUser,
   destroyUser,
 };
