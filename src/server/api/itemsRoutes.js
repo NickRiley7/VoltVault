@@ -1,5 +1,5 @@
 const express = require('express')
-const usersRouter = express.Router();
+const Router = express.Router();
 
 const {
   getALLItems,
@@ -8,11 +8,11 @@ const {
   createItem,
   deleteItem,
   updateItem,
-} = require('./items');
-const { updateItem } = require('../db/items');
+} = require('/items');
+// const { updateItem } = require('../db/items');
 
 
-router.get('./items', async (req, res, next) => {
+router.get('/items', async (req, res, next) => {
   try{
     const items = await getALLItems();
     res.send(items);
