@@ -9,7 +9,6 @@ const {
   getUserByEmail,
   getUserById,
   updateUser,
-  getUserByUsername,
   destroyUser,
 } = require("../db");
 
@@ -19,7 +18,6 @@ const jwt = require("jsonwebtoken");
 usersRouter.get("/", async (req, res, next) => {
   try {
     const users = await getAllUsers();
-    console.log(users);
     res.send({
       users,
     });
@@ -133,51 +131,53 @@ usersRouter.post("/register", async (req, res, next) => {
   }
 });
 
-usersRouter.patch(
-  "/:userId",
-  requireUser,
-  requiredNotSent({
-    requiredParams: ["username, firstName, lastName, address, email"],
-    atLeastOne: true,
-  }),
-  async (req, res, next) => {
-    try {
-      const { username, firstName, lastName, address, email } = req.body;
-      const [id] = req.params;
-      const userToUpdate = await getUserById(userId);
-      if (!userToUpdate) {
-        next({
-          name: "Not Found",
-          message: `No user by ID ${userId}`,
-        });
-      } else if (req.user.id !== user.id) {
-        res.status(403);
-        next({
-          name: "WrongUser",
-          message: "you can only update your own account.",
-        });
-      } else {
-        const updatedUser = await updateUser({
-          id: username,
-          firstName,
-          lastName,
-          address,
-          email,
-        });
-        if (updatedUser) {
-          res.send(updatedUser);
-        } else {
-          next({
-            name: "FailedToUpdate",
-            message: "There was an error updating your routine",
-          });
-        }
-      }
-    } catch (error) {
-      next(error);
-    }
-  }
-);
+// IN PROGRESS - UPDATE USER
+
+// usersRouter.patch(
+//   "/:userId",
+//   requireUser,
+//   requiredNotSent({
+//     requiredParams: ["username, firstName, lastName, address, email"],
+//     atLeastOne: true,
+//   }),
+//   async (req, res, next) => {
+//     try {
+//       const { username, firstName, lastName, address, email } = req.body;
+//       const [id] = req.params;
+//       const userToUpdate = await getUserById(userId);
+//       if (!userToUpdate) {
+//         next({
+//           name: "Not Found",
+//           message: `No user by ID ${userId}`,
+//         });
+//       } else if (req.user.id !== user.id) {
+//         res.status(403);
+//         next({
+//           name: "WrongUser",
+//           message: "you can only update your own account.",
+//         });
+//       } else {
+//         const updatedUser = await updateUser({
+//           id: username,
+//           firstName,
+//           lastName,
+//           address,
+//           email,
+//         });
+//         if (updatedUser) {
+//           res.send(updatedUser);
+//         } else {
+//           next({
+//             name: "FailedToUpdate",
+//             message: "There was an error updating your routine",
+//           });
+//         }
+//       }
+//     } catch (error) {
+//       next(error);
+//     }
+//   }
+// );
 
 usersRouter.delete("/:userId", requireUser, async (req, res, next) => {
   try {
