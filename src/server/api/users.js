@@ -1,6 +1,6 @@
 const express = require("express");
 const usersRouter = express.Router();
-const { requireUser } = require("./utils");
+const { requireUser, requiredNotSent } = require("./utils");
 
 const {
   createUser,
@@ -9,14 +9,16 @@ const {
   getUserByEmail,
   getUserById,
   updateUser,
+  getUserByUsername,
 } = require("../db");
 
 const jwt = require("jsonwebtoken");
 
+// GET ALL USERS
 usersRouter.get("/", async (req, res, next) => {
   try {
     const users = await getAllUsers();
-
+    console.log(users);
     res.send({
       users,
     });
@@ -25,6 +27,27 @@ usersRouter.get("/", async (req, res, next) => {
   }
 });
 
+//GET SINGLE USER BY ID
+usersRouter.get("/:id", async (req, res, next) => {
+  try {
+    const user = await getUserById(req.params.id);
+    res.send(user);
+  } catch (error) {
+    console.error(error.message);
+  }
+});
+
+// GET USER BY EMAIL -- needed? can pull all users & filter?
+// usersRouter.get("/:email", async (req, res, next) => {
+//   try {
+//     const user = await getUserByEmail(req.params.email);
+//     res.send(user);
+//   } catch (error) {
+//     console.error(error.message);
+//   }
+// });
+
+// LOGIN
 usersRouter.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password) {
