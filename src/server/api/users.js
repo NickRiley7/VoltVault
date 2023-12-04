@@ -83,6 +83,7 @@ usersRouter.post("/register", async (req, res, next) => {
       {
         id: user.id,
         email: user.email,
+        isAdmin: user.isAdmin,
       },
       process.env.JWT_SECRET,
       {

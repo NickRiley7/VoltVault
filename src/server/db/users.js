@@ -1,6 +1,7 @@
 const db = require("./client");
 const bcrypt = require("bcrypt");
 const SALT_COUNT = 10;
+const util = require("./util");
 
 async function createUser({
   username,
@@ -101,7 +102,25 @@ async function getUserByUsername(username) {
 }
 
 //UPDATE
-async function updateUser() {
+async function updateUser({ id, ...fields }) {
+  const toUpdate = {};
+  for (let column in fields) {
+    if (fields[column] !== undefined) toUpdate[column] = fields[column];
+  }
+  let user;
+  if (util.dbFields(fields).insert.length > 0) {
+    const { rows } = await db.query(
+      `
+        UPDATE users
+        SET ${util.dbFields(toUpdate).insert}
+        WHERE id=${id}
+        RETURNING *;
+    `,
+      Object.values(toUpdate)
+    );
+    user = rows[0];
+    return user;
+  }
   try {
   } catch (error) {
     console.error(error.message);
