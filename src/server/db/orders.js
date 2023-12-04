@@ -137,10 +137,11 @@ async function updateOrder({id, ...fields}) {
 }
 async function destroyOrder(id) {
   try {
-    await client.query(`
-        DELETE FROM order_items 
-        WHERE "orderId" = $1;
-    `, [id]);
+    console.log ('THIS IS ID: ', id)
+    // await client.query(`
+    //     DELETE FROM order_items 
+    //     WHERE "orderId" = $1;
+    // `, [id]);
     const {rows: [order]} = await client.query(`
         DELETE FROM orders 
         WHERE id = $1
@@ -148,6 +149,7 @@ async function destroyOrder(id) {
     `, [id]);
     return order;
   } catch (error) {
+    console.error ('error in destroying order')
     throw error;
   }
 }

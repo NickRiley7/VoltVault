@@ -1,6 +1,6 @@
 const express = require('express')
 const ordersRouter = express.Router()
-const { getAllOrders, getOrdersWithoutItems, createOrder, getOrderById, updateOrder } = require('../db/orders');
+const { getAllOrders, getOrdersWithoutItems, createOrder, getOrderById, updateOrder, destroyOrder } = require('../db/orders');
 const { requireUser, requiredNotSent } = require('./utils')
 
 ordersRouter.get('/', async (req, res, next) => {
@@ -83,5 +83,38 @@ ordersRouter.patch(
     }
   }
 )
+
+ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
+  try {
+    console.log ('deleting order...')
+    const {orderId} = req.params;
+    // console.log('THIS IS ORDER ID ', orderId)
+    const orderToUpdate = await getOrderById(orderId);
+    // console.log ('THIS IS ORDER TO UPDATE: ', orderToUpdate)
+    if (!orderToUpdate) {
+      next({
+        name: 'NotFound',
+        message: `No order by ID ${orderId}`
+      })
+    }
+    else if (req.user.id !== orderToUpdate.userId) {
+      res.status(403);
+      next({
+        name: 'WrongUserError',
+        message: 'You must be the same user who created this order to perform this action'
+      });
+    }
+    else {
+      
+      const deletedOrder = await destroyOrder(orderId)
+      res.send ({deletedOrder})
+      console.log ('order deleted ...')
+
+    }
+  }
+  catch (error) {
+    next(error)
+  }
+})
 
 module.exports = ordersRouter;
