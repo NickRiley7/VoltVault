@@ -7,7 +7,7 @@ import Navigations from './components/Navigation';
 // import Orders from './components/Orders';
 
 function App() {
-  const [token, setToken] = useState(0);
+  const [count, setCount] = useState(0);
 
   return (
     <Router>
