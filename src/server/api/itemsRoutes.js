@@ -9,6 +9,7 @@ const {
   deleteItem,
   updateItem,
 } = require('./items');
+const { updateItem } = require('../db/items');
 
 
 router.get('./items', async (req, res, next) => {
@@ -46,8 +47,29 @@ router.post('/items' , async (req, res, next) => {
   try {
     const newItem = req.body;
     const createItem = await createItem(newItem);
-    res.json(createdItem);
+    res.json(createItem);
   } catch (err) {
     next (err)
   }
 });
+
+router.patch('/items/:id' , async (req, res, next) => {
+  try {
+    const {id} =req.params;
+    const 
+  }
+}
+);
+
+router.delete ('/items/:id' , async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deleteItem = await deleteItem(id);
+    res.json(deletedItem);
+  } catch (err){
+    next (err)
+  }
+}
+);
+
+module.exports = routers;
