@@ -1,5 +1,5 @@
 const express = require('express')
-const Router = express.Router();
+const router = express.Router();
 
 const {
   getALLItems,
@@ -65,11 +65,11 @@ router.delete ('/items/:id' , async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleteItem = await deleteItem(id);
-    res.json(deletedItem);
+    res.json(deleteItem);
   } catch (err){
     next (err)
   }
 }
 );
 
-module.exports = routers;
+module.exports = router;
