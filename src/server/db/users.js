@@ -33,10 +33,10 @@ async function createUser({
 
 async function getAllUsers() {
   try {
-    const { rows: users } = await client.query(`
+    const { rows } = await db.query(`
         SELECT * FROM users;
         `);
-    return users;
+    return rows;
   } catch (error) {
     console.error(error.message);
   }
