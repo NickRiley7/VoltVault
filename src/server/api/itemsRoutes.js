@@ -1,5 +1,5 @@
 const express = require('express')
-const router = express.Router();
+const itemRouter = express.Router();
 
 const {
   getALLItems,
@@ -8,11 +8,11 @@ const {
   createItem,
   deleteItem,
   updateItem,
-} = require('/items');
+} = require('./db/items');
 // const { updateItem } = require('../db/items');
 
 
-router.get('/items', async (req, res, next) => {
+itemRouter.get('/items', async (req, res, next) => {
   try{
     const items = await getALLItems();
     res.send(items);
@@ -21,7 +21,7 @@ router.get('/items', async (req, res, next) => {
   }
 });
 
-router.get('/items/:id', async(req, res, next) => {
+itemRouter.get('/items/:id', async(req, res, next) => {
   try {
     const {id} = req.params;
     const item = await getItemID(id);
@@ -32,7 +32,7 @@ router.get('/items/:id', async(req, res, next) => {
 }
 );
 
-router.get('/items/name/:name', async (req, res, next) => {
+itemRouter.get('/items/name/:name', async (req, res, next) => {
   try {
     const {name} = req.params;
     const item = await getItemByName(name);
@@ -43,7 +43,7 @@ router.get('/items/name/:name', async (req, res, next) => {
 }
 );
 
-router.post('/items' , async (req, res, next) => {
+itemRouter.post('/items' , async (req, res, next) => {
   try {
     const newItem = req.body;
     const createItem = await createItem(newItem);
@@ -53,7 +53,7 @@ router.post('/items' , async (req, res, next) => {
   }
 });
 
-router.patch('/items/:id' , async (req, res, next) => {
+itemRouter.patch('/items/:id' , async (req, res, next) => {
   try {
     const {id} =req.params;
     const 
@@ -61,7 +61,7 @@ router.patch('/items/:id' , async (req, res, next) => {
 }
 );
 
-router.delete ('/items/:id' , async (req, res, next) => {
+itemRouter.delete ('/items/:id' , async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleteItem = await deleteItem(id);
@@ -72,4 +72,4 @@ router.delete ('/items/:id' , async (req, res, next) => {
 }
 );
 
-module.exports = router;
+module.exports = itemRouter;
