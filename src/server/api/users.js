@@ -55,12 +55,14 @@ usersRouter.post("/login", async (req, res, next) => {
 });
 
 usersRouter.post("/register", async (req, res, next) => {
-  const { name, email, password } = req.body;
+  const { username, firstName, lastName, address, email, password, isAdmin } =
+    req.body;
 
   try {
     const _user = await getUserByEmail(email);
 
     if (_user) {
+      res.status(401);
       next({
         name: "UserExistsError",
         message: "A user with that email already exists",
@@ -68,15 +70,19 @@ usersRouter.post("/register", async (req, res, next) => {
     }
 
     const user = await createUser({
-      name,
+      username,
+      firstName,
+      lastName,
+      address,
       email,
       password,
+      isAdmin,
     });
 
     const token = jwt.sign(
       {
         id: user.id,
-        email,
+        email: user.email,
       },
       process.env.JWT_SECRET,
       {

@@ -23,7 +23,7 @@ async function createUser({
         RETURNING *`,
       [username, firstName, lastName, address, email, hashedPassword, isAdmin]
     );
-
+    console.log(user);
     return user;
   } catch (err) {
     throw err;
@@ -111,10 +111,20 @@ async function updateUser() {
 //UPDATE - what order user removed from items?
 // what to do w/ placed orders that already have a user that is to be deleted?
 //
-async function destroyUser(user) {
+async function destroyUser(id) {
   try {
-    await db.query(`
-        DELETE FROM users`);
+    await db.query(``);
+
+    const {
+      rows: [users],
+    } = await db.query(
+      `
+        DELETE FROM users
+        WHERE id = $1
+        RETURNING *;
+    `,
+      [id]
+    );
   } catch (error) {
     throw error;
   }
@@ -126,4 +136,5 @@ module.exports = {
   getUser,
   getUserByEmail,
   getUserByUsername,
+  destroyUser,
 };
