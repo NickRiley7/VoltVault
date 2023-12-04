@@ -50,8 +50,28 @@ const getUserByEmail = async(email) => {
     }
 }
 
+const getUserById = async (userId) => {
+    // first get the user
+    try {
+      const {rows: [user]} = await client.query(`
+        SELECT *
+        FROM users
+        WHERE id = $1;
+      `, [userId]);
+      // if it doesn't exist, return null
+      if (!user) return null;
+      // if it does:
+      // delete the 'password' key from the returned object
+      delete user.password; 
+      return user;  
+    } catch (error) {
+      throw error;
+    }
+}
+
 module.exports = {
     createUser,
     getUser,
-    getUserByEmail
+    getUserByEmail,
+    getUserById
 };

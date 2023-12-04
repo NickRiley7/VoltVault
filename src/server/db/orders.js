@@ -25,10 +25,11 @@ async function getOrdersWithoutItems(){
     throw error
   }
 }
+
 async function getAllOrders() {
   try {
     const { rows: orders } = await client.query(`
-    SELECT orders.*, users.username AS "userName"
+    SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id 
     `);
@@ -37,11 +38,12 @@ async function getAllOrders() {
     throw error
   }
 }
+
 async function getAllOrdersByUser({username}) {
   try {
     const user = await getUserByUsername(username);
     const { rows: orders } = await client.query(`
-    SELECT orders.*, users.username AS "userName"
+    SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id 
     WHERE "userId" = $1
@@ -51,11 +53,12 @@ async function getAllOrdersByUser({username}) {
     throw error
   }
 }
+
 async function getCompletedOrdersByUser({username}) {
   try {
     const user = await getUserByUsername(username);
     const { rows: orders } = await client.query(`
-    SELECT orders.*, users.username AS "userName"
+    SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id 
     WHERE "userId" = $1
@@ -70,7 +73,7 @@ async function getCompletedOrdersByUser({username}) {
 async function getAllCompletedOrders() {
   try {
     const { rows: orders } = await client.query(`
-    SELECT orders.*, users.username AS "userName"
+    SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id
     WHERE "order_status" = completed
@@ -84,7 +87,7 @@ async function getAllCompletedOrders() {
 async function getCompletedOrdersByItem({id}) {
   try {
     const { rows: orders } = await client.query(`
-      SELECT orders.*, users.username AS "userName"
+      SELECT orders.*, users.username AS "username"
       FROM orders
       JOIN users ON orders."userId" = users.id
       JOIN order_items ON order_items."orderId" = orders.id
