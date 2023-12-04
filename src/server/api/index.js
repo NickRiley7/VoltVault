@@ -21,10 +21,13 @@ apiRouter.use(async (req, res, next) => {
     
     try {
       const parsedToken = jwt.verify(token, JWT_SECRET);
+      // console.log('this is parsedToken: ', parsedToken)
 
       const id = parsedToken && parsedToken.id
+      // console.log ('this is JWTSECRET ID: ', id)
       if (id) {
         req.user = await getUserById(id)
+        // console.log('THIS IS REQ.USER: ', req.user)
         next()
       }
       // TODO - Call 'jwt.verify()' to see if the token is valid. If it is, use it to get the user's 'id'. Look up the user with their 'id' and set 'req.user'
@@ -43,6 +46,9 @@ apiRouter.use(async (req, res, next) => {
 
 const usersRouter = require('./users');
 apiRouter.use('/users', usersRouter);
+
+const itemRouter = require('./itemsRouter')
+apiRouter.use('/itemsRouter', itemRouter)
 
 const ordersRouter = require('./orders');
 apiRouter.use('/orders', ordersRouter);

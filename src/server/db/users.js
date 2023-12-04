@@ -51,14 +51,16 @@ const getUserByEmail = async(email) => {
 }
 
 const getUserById = async (userId) => {
+    console.log('THIS IS USERID: ', userId)
     // first get the user
     try {
-      const {rows: [user]} = await client.query(`
+      const {rows: [user]} = await db.query(`
         SELECT *
         FROM users
         WHERE id = $1;
       `, [userId]);
       // if it doesn't exist, return null
+      console.log('THIS IS USER: ', user)
       if (!user) return null;
       // if it does:
       // delete the 'password' key from the returned object
