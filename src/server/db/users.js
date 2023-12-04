@@ -149,8 +149,6 @@ async function updateUser({ id, ...fields }) {
 //
 async function destroyUser(id) {
   try {
-    await db.query(``);
-
     const {
       rows: [users],
     } = await db.query(
@@ -161,6 +159,7 @@ async function destroyUser(id) {
     `,
       [id]
     );
+    return users;
   } catch (error) {
     throw error;
   }

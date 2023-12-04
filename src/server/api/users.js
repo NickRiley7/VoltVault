@@ -10,6 +10,7 @@ const {
   getUserById,
   updateUser,
   getUserByUsername,
+  destroyUser,
 } = require("../db");
 
 const jwt = require("jsonwebtoken");
@@ -62,7 +63,8 @@ usersRouter.post("/login", async (req, res, next) => {
       const token = jwt.sign(
         {
           id: user.id,
-          email,
+          email: user.email,
+          isAdmin: user.isAdmin,
         },
         process.env.JWT_SECRET,
         {
@@ -155,7 +157,7 @@ usersRouter.patch(
           message: "you can only update your own account.",
         });
       } else {
-        const updateUser = await updateUser({
+        const updatedUser = await updateUser({
           id: username,
           firstName,
           lastName,
@@ -176,5 +178,15 @@ usersRouter.patch(
     }
   }
 );
+
+usersRouter.delete("/:userId", requireUser, async (req, res, next) => {
+  try {
+    console.log(req.params);
+    const user = await destroyUser(req.params.userId);
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = usersRouter;
