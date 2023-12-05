@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import chalk from 'chalk';
 import Login from './components/Login';
 import Navigations from './components/Navigation';
+import Register from './components/Register';
 
 // import Orders from './components/Orders';
 
@@ -19,6 +20,7 @@ function App() {
 
         <Routes>
           <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
         </Routes>
         </div>
 
