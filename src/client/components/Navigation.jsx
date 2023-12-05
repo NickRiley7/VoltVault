@@ -4,7 +4,7 @@ export default function Navigations() {
   return (
     <nav>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
+        <div class="container-fluid">
           <a class="navbar-brand" href="/">
             <img src="./computer.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top" />VoltVault</a>
 
@@ -32,7 +32,9 @@ export default function Navigations() {
               </li>
             </ul>
             <form class="d-flex" role="search">
+              {/* styling for search bar. position-absolute top-5 start-50 end-0 w-50 translate-middle */}
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
+              {/* styling for button. position-absolute start-50 end-75 translate-middle */}
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
             <a href="login" target='_blank' class="btn btn-outline-primary m-1" tabindex="-1" role="button">Login</a>
