@@ -15,10 +15,9 @@ const {
 itemRouter.get('/', async (req, res, next) => {
   try{
     const items = await getALLItems();
-    console.log('This is the ITEMS: ', items)
-    res.json(items);
+    console.log('THIS IS ITEMS: ', items)
+    res.send(items);
   } catch (err) {
-    console.error('error', err)
     next(err);
   }
 });

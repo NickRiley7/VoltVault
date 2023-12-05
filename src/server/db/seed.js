@@ -1,4 +1,4 @@
-const db = require ('./client')
+const client = require ('./client')
 const { createOrder, getOrdersWithoutItems } = require('./orders')
 const { getAllItems, createItem, addItemToOrder } = require('./items')
 const { createUser } = require ('./users.js')
@@ -23,7 +23,7 @@ async function createTables() {
   try {
     console.log("Starting to build tables...");
 
-    await db.query(`
+    await client.query(`
     CREATE TABLE users (
       id SERIAL PRIMARY KEY,
       username VARCHAR(255) UNIQUE,
@@ -36,7 +36,7 @@ async function createTables() {
     )
     `)
     
-    await db.query(`
+    await client.query(`
     CREATE TABLE items (
       id SERIAL PRIMARY KEY,
       name TEXT,
@@ -49,7 +49,7 @@ async function createTables() {
      
     `)
 
-    await db.query(`
+    await client.query(`
     CREATE TABLE orders(
       id SERIAL PRIMARY KEY,
       "userId" INTEGER REFERENCES users(id),
@@ -58,7 +58,7 @@ async function createTables() {
       order_total DECIMAL(10,2)
     )`)
 
-    await db.query(`
+    await client.query(`
     CREATE TABLE order_items(
       id SERIAL PRIMARY KEY,
       order_id INTEGER REFERENCES orders(id),

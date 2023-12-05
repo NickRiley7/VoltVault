@@ -47,8 +47,8 @@ apiRouter.use(async (req, res, next) => {
 const usersRouter = require('./users');
 apiRouter.use('/users', usersRouter);
 
-const itemRouter = require('./items')
-apiRouter.use('/items', itemRouter)
+const itemRouter = require('./itemsRouter')
+apiRouter.use('/itemsRouter', itemRouter)
 
 const ordersRouter = require('./orders');
 apiRouter.use('/orders', ordersRouter);

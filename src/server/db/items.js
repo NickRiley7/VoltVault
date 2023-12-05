@@ -1,15 +1,14 @@
 const { query } = require('express');
-// const client = require('./client')
+const client = require('./client')
 const util = require ('./util.js');
-const db = require("./client");
 
 // const express = require('express');
 // const import { v4 as uuidv4 } from 'uuid';
 
 
-async function getItemID(id) {
+async function getItemID(Id) {
   try {
-    const { rows: [item] } = await db.query (
+    const {row:[item]} = await client.query (
       `SELECT * FROM items 
       WHERE id = $1`,
       [id]); 
@@ -22,7 +21,7 @@ async function getItemID(id) {
 
 async function getItemByName(name) {
   try {
-    const{ rows: [item] } = await db.query(
+    const{ rows: [item] } = await client.query(
       `SELECT * FROM items
       WHERE name = $1 
       `,
@@ -36,7 +35,7 @@ async function getItemByName(name) {
 
 async function getALLItems () {
   try {
-    const{ rows } = await db.query (
+    const{ rows } = await client.query (
       `SELECT name, price, img 
       FROM items`
     );
@@ -48,7 +47,7 @@ async function getALLItems () {
 
 async function createItem ({name, price, details, img, category, stock }) {
   try {
-    const{ rows: [item] } = await db.query ( `
+    const{ rows: [item] } = await client.query ( `
     INSERT INTO items(name, price, details, img, category, stock)
     VALUES ($1, $2, $3, $4, $5, $6)
     RETURNING *;
@@ -93,7 +92,7 @@ async function updateItem(itemId, updatedField) {
    `;
    const values = [name, price, details, img, category, stock, itemId];
    try {
-    const result = await db.query(query, values );
+    const result = await client.query(query, values );
     return result.rows[0];
    } catch (err){
     console.log("Err updating" );
@@ -104,7 +103,7 @@ async function updateItem(itemId, updatedField) {
 
 async function deleteItem (id) {
   try {
-    const{ rows: [item] } = await db.query (
+    const{ rows: [item] } = await client.query (
       `
       DELETE FROM items
       WHERE id = $1
