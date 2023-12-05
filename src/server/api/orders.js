@@ -1,6 +1,7 @@
 const express = require('express')
 const ordersRouter = express.Router()
-const { getAllOrders, getOrdersWithoutItems, createOrder, getOrderById, updateOrder, destroyOrder } = require('../db/orders');
+const { getAllOrders, getOrdersWithoutItems, getOrdersByUserId, createOrder, getOrderById, updateOrder, destroyOrder } = require('../db/orders');
+const { getUserById } = require ('../db/users')
 const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
 
 ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
@@ -17,9 +18,13 @@ ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
 
 ordersRouter.get('/:userId/myorders', requireUser, async (req, res, next) => {
   try{
-    
+    const {userId} = req.params;
+    console.log(userId)
+    const orders = await getOrdersByUserId (userId)
+    console.log(orders)
   }
   catch(error) {
+    console.error(error)
     next(error)
   }
 })

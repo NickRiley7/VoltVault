@@ -29,7 +29,7 @@ itemRouter.get('/items/:id', async(req, res, next) => {
     console.log ('THIS IS ID: ', id)
     const item = await getItemID(id);
     console.log('THIS IS ITEM: ', item)
-    res.json(item);
+    res.send(item);
   } catch(err){
     next(err)
   }
