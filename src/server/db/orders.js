@@ -25,10 +25,11 @@ async function getOrdersWithoutItems(){
     throw error
   }
 }
+
 async function getAllOrders() {
   try {
     const { rows: orders } = await client.query(`
-    SELECT orders.*, users.username AS "userName"
+    SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id 
     `);
@@ -41,7 +42,8 @@ async function getAllOrdersByUser({username}) {
   try {
     const user = await getUserByUsername(username);
     const { rows: orders } = await client.query(`
-    SELECT orders.*, users.username AS "userName"
+
+    SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id 
     WHERE "userId" = $1
@@ -51,11 +53,12 @@ async function getAllOrdersByUser({username}) {
     throw error
   }
 }
+
 async function getCompletedOrdersByUser({username}) {
   try {
     const user = await getUserByUsername(username);
     const { rows: orders } = await client.query(`
-    SELECT orders.*, users.username AS "userName"
+    SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id 
     WHERE "userId" = $1
@@ -70,7 +73,7 @@ async function getCompletedOrdersByUser({username}) {
 async function getAllCompletedOrders() {
   try {
     const { rows: orders } = await client.query(`
-    SELECT orders.*, users.username AS "userName"
+    SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id
     WHERE "order_status" = completed
@@ -84,7 +87,7 @@ async function getAllCompletedOrders() {
 async function getCompletedOrdersByItem({id}) {
   try {
     const { rows: orders } = await client.query(`
-      SELECT orders.*, users.username AS "userName"
+      SELECT orders.*, users.username AS "username"
       FROM orders
       JOIN users ON orders."userId" = users.id
       JOIN order_items ON order_items."orderId" = orders.id
@@ -101,7 +104,7 @@ async function createOrder({userId, order_status, order_total}) {
   try {
     const {rows: [order]} = await client.query(`
         INSERT INTO orders ("userId", "order_status", "order_total")
-        VALUES($1, $2, $3, $4)
+        VALUES($1, $2, $3)
         RETURNING *;
     `, [userId, order_status, order_total]);
 
@@ -134,10 +137,11 @@ async function updateOrder({id, ...fields}) {
 }
 async function destroyOrder(id) {
   try {
-    await client.query(`
-        DELETE FROM order_items 
-        WHERE "orderId" = $1;
-    `, [id]);
+    console.log ('THIS IS ID: ', id)
+    // await client.query(`
+    //     DELETE FROM order_items 
+    //     WHERE "orderId" = $1;
+    // `, [id]);
     const {rows: [order]} = await client.query(`
         DELETE FROM orders 
         WHERE id = $1
@@ -145,6 +149,7 @@ async function destroyOrder(id) {
     `, [id]);
     return order;
   } catch (error) {
+    console.error ('error in destroying order')
     throw error;
   }
 }

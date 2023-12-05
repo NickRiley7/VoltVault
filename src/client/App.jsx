@@ -7,7 +7,7 @@ import Navigations from './components/Navigation';
 // import Orders from './components/Orders';
 
 function App() {
-  const [token, setToken] = useState(0);
+  const [count, setCount] = useState(0);
 
   return (
     <Router>
@@ -16,12 +16,12 @@ function App() {
           <h1>VoltVault</h1>
           <img id='comp-img' src='./computer.png'></img>
 
-          <Navigations token={token} />
+          <Navigations />
         </div>
 
-        {/* <Routes>
-          
-        </Routes> */}
+        <Routes>
+          <Route path="login" element={<Login />} />
+        </Routes>
 
 
       </>
