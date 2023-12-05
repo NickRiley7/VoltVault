@@ -37,8 +37,8 @@ export default function Navigations() {
               {/* styling for button. position-absolute start-50 end-75 translate-middle */}
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
-            <a href="login" target='_blank' class="btn btn-outline-primary m-1" tabindex="-1" role="button">Login</a>
-            <a href="register" target='_blank' class="btn btn-outline-primary" tabindex="-1" role="button">Signup</a>
+            <a href="login" class="btn btn-outline-primary m-1" tabindex="-1" role="button">Login</a>
+            <a href="register" class="btn btn-outline-primary" tabindex="-1" role="button">Signup</a>
           </div>
         </div>
       </nav>
