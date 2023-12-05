@@ -1,5 +1,6 @@
 const express = require('express')
-const itemRouter = express.Router();
+const itemRouter = express.Router()
+const { requireUser, requiredNotSent } = require('./utils')
 
 const {
   getALLItems,
