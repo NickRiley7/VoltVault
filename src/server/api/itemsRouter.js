@@ -44,7 +44,7 @@ itemRouter.get('/items/name/:name', async (req, res, next) => {
 }
 );
 
-itemRouter.post('/items' , async (req, res, next) => {
+itemRouter.post('/items', requireUser, async (req, res, next) => {
   try {
     const newItem = req.body;
     const createItem = await createItem(newItem);
@@ -54,7 +54,7 @@ itemRouter.post('/items' , async (req, res, next) => {
   }
 });
 
-// itemRouter.patch('/items/:id' , async (req, res, next) => {
+// itemRouter.patch('/items/:id', requireUser, async (req, res, next) => {
 //   try {
 //     const {id} =req.params;
 //     const 
@@ -62,7 +62,7 @@ itemRouter.post('/items' , async (req, res, next) => {
 // }
 // );
 
-itemRouter.delete ('/items/:id' , async (req, res, next) => {
+itemRouter.delete ('/items/:id',requireUser, async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleteItem = await deleteItem(id);
