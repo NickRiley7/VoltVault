@@ -8,16 +8,17 @@ const {
   createItem,
   deleteItem,
   updateItem,
-  requireUser
-} = require('./db/items');
+} = require('../db/items');
 // const { updateItem } = require('../db/items');
 
 
-itemRouter.get('/items', async (req, res, next) => {
+itemRouter.get('/', async (req, res, next) => {
   try{
     const items = await getALLItems();
-    res.send(items);
+    console.log('This is the ITEMS: ', items)
+    res.json(items);
   } catch (err) {
+    console.error('error', err)
     next(err);
   }
 });
@@ -44,7 +45,7 @@ itemRouter.get('/items/name/:name', async (req, res, next) => {
 }
 );
 
-itemRouter.post('/items', requireUser, async (req, res, next) => {
+itemRouter.post('/items' , async (req, res, next) => {
   try {
     const newItem = req.body;
     const createItem = await createItem(newItem);
@@ -54,15 +55,15 @@ itemRouter.post('/items', requireUser, async (req, res, next) => {
   }
 });
 
-itemRouter.patch('/items/:id',requireUser, async (req, res, next) => {
-  try {
-    const {id} =req.params;
-    const 
-  }
-}
-);
+// itemRouter.patch('/items/:id' , async (req, res, next) => {
+//   try {
+//     const {id} =req.params;
+//     const 
+//   }
+// }
+// );
 
-itemRouter.delete ('/items/:id', requireUser, async (req, res, next) => {
+itemRouter.delete ('/items/:id' , async (req, res, next) => {
   try {
     const { id } = req.params;
     const deleteItem = await deleteItem(id);

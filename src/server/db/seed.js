@@ -1,6 +1,7 @@
-const client = require ('./client')
+const db = require ('./client')
 const { createOrder, getOrdersWithoutItems } = require('./orders')
-const { getAllItems, addItemToOrder } = require('./items')
+const { getAllItems, createItem, addItemToOrder } = require('./items')
+const { createUser } = require ('./users.js')
 // const { v4: uuidv4 } = require('uuid');
 
 async function dropTables() {
@@ -22,20 +23,20 @@ async function createTables() {
   try {
     console.log("Starting to build tables...");
 
-    await client.query(`
+    await db.query(`
     CREATE TABLE users (
       id SERIAL PRIMARY KEY,
-      username VARCHAR(255),
+      username VARCHAR(255) UNIQUE,
       firstName VARCHAR(255),
       lastName VARCHAR(255),
       address VARCHAR(255),
-      email VARCHAR(255),
+      email VARCHAR(255) UNIQUE,
       password VARCHAR(255),
-      isAdimn BOOL
+      isAdmin BOOL
     )
     `)
     
-    await client.query(`
+    await db.query(`
     CREATE TABLE items (
       id SERIAL PRIMARY KEY,
       name TEXT,
@@ -48,16 +49,16 @@ async function createTables() {
      
     `)
 
-    await client.query(`
+    await db.query(`
     CREATE TABLE orders(
       id SERIAL PRIMARY KEY,
-      userId INTEGER REFERENCES users(id),
+      "userId" INTEGER REFERENCES users(id),
       order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       order_status VARCHAR(255),
       order_total DECIMAL(10,2)
     )`)
 
-    await client.query(`
+    await db.query(`
     CREATE TABLE order_items(
       id SERIAL PRIMARY KEY,
       order_id INTEGER REFERENCES orders(id),
@@ -84,7 +85,7 @@ async function createInitialUsers (){
         address: '123 Main St',
         email: 'rar@email.com',
         password: 'RAR',
-        isAdmin: true,
+        isAdmin: true
       },
      {
         username: 'example',
@@ -93,12 +94,12 @@ async function createInitialUsers (){
         address: '456 Oak St',
         email: 'john@example.com',
         password: 'example',
-        isAdmin: false,
+        isAdmin: false
       },
     ];
 
-    const users = await Promise.all (usersToCreate.map(user => createItems (user)));
-    console.log ('Orders Created: ', users);
+    const users = await Promise.all (usersToCreate.map(user => createUser (user)));
+    console.log ('Users Created: ', users);
     console.log ('Finished creating users.');
   }
   catch (err) {
@@ -112,7 +113,6 @@ async function createInitialItems (){
     
     const itemsToCreate = [
       {
-        id: uuidv4(),
         name: 'item1',
         price: 19.99,
         details: 'Description for Item 1',
@@ -122,7 +122,6 @@ async function createInitialItems (){
         stock: 10,
       },
       {
-        id: uuidv4(),
         name: 'Item 2',
         price: 29.99,
         details: 'Description for Item 2',
@@ -133,15 +132,14 @@ async function createInitialItems (){
       },
     ];
 
-    const items = await Promise.all (itemsToCreate.map(item => createItems (item)));
-    console.log ('Orders Created: ', items);
+    const items = await Promise.all (itemsToCreate.map(item => createItem (item)));
+    console.log ('Items Created: ', items);
     console.log ('Finished creating items.');
 
   }
   catch (err){
     console.error(err)
   }
-
 }
 
 async function createInitialOrders () {
@@ -150,15 +148,13 @@ async function createInitialOrders () {
 
     const ordersToCreate = [
       {
-        id: uuidv4(),
-        userId: users[0].id,
+        userId: 1,
         order_status: 'open',
         order_total: 0,
         items: [],
       },
       {
-        id: uuidv4(),
-        userId: users[1].id,
+        userId: 1,
         order_status: 'open',
         order_total: 0,
         items: [],
@@ -181,8 +177,8 @@ async function createInitialOrderItems() {
     const [item1, item2] = await getAllItems();
     
     const orderItemsToCreate = [
-      { order_id: orders[0].order_id, item_id: items[0].id, quantity: 2 },
-      { order_id: orders[1].order_id, item_id: items[1].id, quantity: 1 },
+      { order_id: order1.id, item_id: item1.id, quantity: 2 },
+      { order_id: order2.id, item_id: item2.id, quantity: 1 },
     ];
     const orderItems = await Promise.all(orderItemsToCreate.map(addItemToOrder));
     console.log('order_items created: ', orderItems)
@@ -215,6 +211,9 @@ async function rebuildDB() {
 
 
 rebuildDB()
+
+// module.exports = { users, items, orders, orderItems };
+
 // module.exports = { users, items, orders, orderItems };
 
 // need to add the SQL to the User table 
