@@ -15,10 +15,6 @@ async function getItemID(id) {
       WHERE id = $1`,
       [id]);
 
-      if (result.rowCount === 0) {
-        console.log('Item not found')
-        return null;
-      }
       const {row: [item]} = result
       return item; 
     

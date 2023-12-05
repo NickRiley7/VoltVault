@@ -53,6 +53,22 @@ async function getAllOrdersByUser({username}) {
   }
 }
 
+async function getOrdersByUserId ({userId}) {
+  try{
+    const user = await getUserById (userId);
+    const { rows: orders } = await client.query(`
+      SELECT
+        orders.*, users.id AS "userId"
+      FROM
+        orders
+      JOIN users ON orders."userId" = users.id
+      WHERE "userId" = $1
+    `, [user.id])
+  } catch (error) {
+    throw error
+  }
+}
+
 async function getCompletedOrdersByUser({username}) {
   try {
     const user = await getUserByUsername(username);

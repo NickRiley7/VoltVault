@@ -15,6 +15,15 @@ ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
 
 // somewhat similar to me users endpoint
 
+ordersRouter.get('/:userId/myorders', requireUser, async (req, res, next) => {
+  try{
+    
+  }
+  catch(error) {
+    next(error)
+  }
+})
+
 ordersRouter.post('/', requireUser, async (req, res, next) => { //should have requireUser as parameter later on
   const { order_total, items } = req.body;
 
