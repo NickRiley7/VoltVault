@@ -14,18 +14,31 @@ ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
   }
 })
 
-// somewhat similar to me users endpoint
-
-ordersRouter.get('/:userId/myorders', requireUser, async (req, res, next) => {
-  try{
-    const {userId} = req.params;
-    console.log(userId)
-    const orders = await getOrdersByUserId (userId)
-    console.log(orders)
+ordersRouter.get('/:orderId', requireUser, async (req, res, next) => {
+  try {
+    const {orderId} =req.params;
+    const order = await getOrderById(orderId);
+    console.log ('THIS IS ORDER ID ', orderId)
+    if(!order) {
+      next({
+        name: 'NotFound',
+        message: `No order by ID ${orderId}`
+      })
+    } else if (req.user.id !== order.userId) {
+      res.status(403);
+      // console.log ('THIS IS LOGGED-IN USER: ', req.user.id)
+      // console.log ('THIS IS ORDER'S USER: ', orderToUpdate.userId)
+      next ({
+        name: "WrongUserError",
+        message: "You must be the same user who created this routine to perform this action"
+      });
+    } else {
+      res.send(order)
+    }
   }
-  catch(error) {
-    console.error(error)
-    next(error)
+  catch (error){
+    console.error ('Error in Getting order')
+    next (error)
   }
 })
 
