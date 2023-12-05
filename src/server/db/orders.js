@@ -38,11 +38,11 @@ async function getAllOrders() {
     throw error
   }
 }
-
 async function getAllOrdersByUser({username}) {
   try {
     const user = await getUserByUsername(username);
     const { rows: orders } = await client.query(`
+
     SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id 
