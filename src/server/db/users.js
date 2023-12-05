@@ -113,6 +113,8 @@ async function getUserById(id) {
     `,
       [id]
     );
+    if (!user) return null;
+    delete user.password
     return user;
   } catch (error) {
     throw error;
@@ -163,27 +165,6 @@ async function destroyUser(id) {
   } catch (error) {
     throw error;
   }
-}
-
-const getUserById = async (userId) => {
-    // console.log('THIS IS USERID: ', userId)
-    // first get the user
-    try {
-      const {rows: [user]} = await db.query(`
-        SELECT *
-        FROM users
-        WHERE id = $1;
-      `, [userId]);
-      // if it doesn't exist, return null
-    //   console.log('THIS IS USER: ', user)
-      if (!user) return null;
-      // if it does:
-      // delete the 'password' key from the returned object
-      delete user.password; 
-      return user;  
-    } catch (error) {
-      throw error;
-    }
 }
 
 module.exports = {
