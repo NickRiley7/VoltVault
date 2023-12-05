@@ -26,7 +26,9 @@ itemRouter.get('/', async (req, res, next) => {
 itemRouter.get('/items/:id', async(req, res, next) => {
   try {
     const {id} = req.params;
+    console.log ('THIS IS ID: ', id)
     const item = await getItemID(id);
+    console.log('THIS IS ITEM: ', item)
     res.json(item);
   } catch(err){
     next(err)
