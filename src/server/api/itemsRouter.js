@@ -63,6 +63,7 @@ itemRouter.post('/items', requireUser, async (req, res, next) => {
 // }
 // );
 
+
 itemRouter.delete ('/items/:id',requireUser, async (req, res, next) => {
   try {
     const { id } = req.params;

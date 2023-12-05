@@ -213,10 +213,3 @@ async function rebuildDB() {
 rebuildDB()
 
 // module.exports = { users, items, orders, orderItems };
-
-// module.exports = { users, items, orders, orderItems };
-
-// need to add the SQL to the User table 
-
-// PRIMARY KEY https://www.w3schools.com/sql/sql_primarykey.ASP 
-// note for SERIAL SQL https://www.ibm.com/docs/en/informix-servers/14.10?topic=types-serialn-data-type
