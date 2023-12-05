@@ -1,6 +1,6 @@
 const express = require("express");
 const usersRouter = express.Router();
-const { requireUser, requiredNotSent } = require("./utils");
+const { requireUser, requiredNotSent, requireAdmin } = require("./utils");
 
 const {
   createUser,
@@ -15,7 +15,7 @@ const {
 const jwt = require("jsonwebtoken");
 
 // GET ALL USERS
-usersRouter.get("/", async (req, res, next) => {
+usersRouter.get("/", requireAdmin, async (req, res, next) => {
   try {
     const users = await getAllUsers();
     res.send({
@@ -182,7 +182,7 @@ usersRouter.post("/register", async (req, res, next) => {
 //   }
 // );
 
-usersRouter.delete("/:userId", requireUser, async (req, res, next) => { // no priority. But can be for admin
+usersRouter.delete("/:userId", requireAdmin, async (req, res, next) => { // no priority. But can be for admin
   try {
     console.log(req.params);
     const user = await destroyUser(req.params.userId);
