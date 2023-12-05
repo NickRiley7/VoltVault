@@ -7,21 +7,21 @@ import Navigations from './components/Navigation';
 // import Orders from './components/Orders';
 
 function App() {
-  const [token, setToken] = useState(0);
+  const [count, setCount] = useState(0);
 
   return (
     <Router>
+      <Navigations />
       <>
         <div className='App'>
-          <h1>VoltVault</h1>
-          <img id='comp-img' src='./computer.png'></img>
-
-          <Navigations />
-        </div>
+          {/* <h1>VoltVault</h1> */}
+          {/* <img id='comp-img' src='./computer.png'></img> */}
 
         <Routes>
           <Route path="login" element={<Login />} />
         </Routes>
+        </div>
+
 
 
       </>
