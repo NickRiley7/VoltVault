@@ -47,7 +47,7 @@ itemRouter.get('/items/name/:name', async (req, res, next) => {
 }
 );
 
-itemRouter.post('/items', requireUser, async (req, res, next) => {
+itemRouter.post('/items', requireUser, async (req, res, next) => { //admin only access
   try {
     const newItem = req.body;
     const createItem = await createItem(newItem);
@@ -66,7 +66,7 @@ itemRouter.post('/items', requireUser, async (req, res, next) => {
 // );
 
 
-itemRouter.delete ('/items/:id',requireUser, async (req, res, next) => {
+itemRouter.delete ('/items/:id',requireUser, async (req, res, next) => { //admin only
   try {
     const { id } = req.params;
     const deleteItem = await deleteItem(id);

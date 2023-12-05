@@ -3,7 +3,7 @@ const ordersRouter = express.Router()
 const { getAllOrders, getOrdersWithoutItems, createOrder, getOrderById, updateOrder, destroyOrder } = require('../db/orders');
 const { requireUser, requiredNotSent } = require('./utils')
 
-ordersRouter.get('/', async (req, res, next) => {
+ordersRouter.get('/', async (req, res, next) => { //admin
   try {
     const orders = await getOrdersWithoutItems();
     res.send(orders);
@@ -11,6 +11,8 @@ ordersRouter.get('/', async (req, res, next) => {
     next(error)
   }
 })
+
+// somewhat similar to me users endpoint
 
 ordersRouter.post('/', requireUser, async (req, res, next) => { //should have requireUser as parameter later on
   const { order_total, items } = req.body;
@@ -51,6 +53,7 @@ ordersRouter.patch(
       const{order_status, order_total, items} = req.body;
       const {orderId} =req.params;
       const orderToUpdate = await getOrderById(orderId);
+      console.log ('THIS IS ORDER ID ', orderId)
       if(!orderToUpdate) {
         next({
           name: 'NotFound',
@@ -79,6 +82,7 @@ ordersRouter.patch(
       }
     }
     catch (error){
+      console.error ('Error in Patching orders')
       next (error)
     }
   }

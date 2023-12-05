@@ -27,7 +27,7 @@ usersRouter.get("/", async (req, res, next) => {
 });
 
 //GET SINGLE USER BY ID
-usersRouter.get("/:id", async (req, res, next) => {
+usersRouter.get("/:id", async (req, res, next) => { //requireAdmin
   try {
     const user = await getUserById(req.params.id);
     res.send(user);
@@ -35,6 +35,9 @@ usersRouter.get("/:id", async (req, res, next) => {
     console.error(error.message);
   }
 });
+
+// (/me) endpoint
+
 
 // GET USER BY EMAIL -- needed? can pull all users & filter?
 // usersRouter.get("/:email", async (req, res, next) => {
@@ -179,7 +182,7 @@ usersRouter.post("/register", async (req, res, next) => {
 //   }
 // );
 
-usersRouter.delete("/:userId", requireUser, async (req, res, next) => {
+usersRouter.delete("/:userId", requireUser, async (req, res, next) => { // no priority. But can be for admin
   try {
     console.log(req.params);
     const user = await destroyUser(req.params.userId);

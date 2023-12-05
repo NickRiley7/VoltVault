@@ -1,4 +1,5 @@
 function requireUser(req, res, next) {
+  console.log ('THIS IS USER IN REQUIREUSER ', user)
   if (!req.user) {
     res.status(401);
     next({
@@ -9,6 +10,12 @@ function requireUser(req, res, next) {
 
   next();
 }
+
+// require admin here
+
+// function requireAdmin (req,res,next) {
+//    // if the user is an admin,
+// }
 
 const requiredNotSent = ({ requiredParams, atLeastOne = false }) => {
   return (req, res, next) => {
