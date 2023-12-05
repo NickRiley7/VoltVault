@@ -1,5 +1,4 @@
 function requireUser(req, res, next) {
-  console.log ('THIS IS USER IN REQUIREUSER ', user)
   if (!req.user) {
     res.status(401);
     next({
@@ -11,6 +10,17 @@ function requireUser(req, res, next) {
   next();
 }
 
+function requireAdmin(req, res, next) {
+  if (!req.user.isadmin) {
+    res.status(401);
+    next({
+      name: "NotAnAdmin",
+      message: "You must be an admin to perform this action"
+    });
+  }
+
+  next();
+}
 // require admin here
 
 // function requireAdmin (req,res,next) {
@@ -54,5 +64,6 @@ const requiredNotSent = ({ requiredParams, atLeastOne = false }) => {
 
 module.exports = {
   requireUser,
-  requiredNotSent
+  requiredNotSent,
+  requireAdmin
 }

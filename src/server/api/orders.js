@@ -1,12 +1,13 @@
 const express = require('express')
 const ordersRouter = express.Router()
 const { getAllOrders, getOrdersWithoutItems, createOrder, getOrderById, updateOrder, destroyOrder } = require('../db/orders');
-const { requireUser, requiredNotSent } = require('./utils')
+const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
 
-ordersRouter.get('/', async (req, res, next) => { //admin
+ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
   try {
     const orders = await getOrdersWithoutItems();
     res.send(orders);
+    console.log ('this is the user:', req.user.isadmin )
   } catch (error) {
     next(error)
   }
