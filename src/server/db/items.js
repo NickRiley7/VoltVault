@@ -6,7 +6,7 @@ const util = require ('./util.js');
 // const import { v4 as uuidv4 } from 'uuid';
 
 
-async function getItemID(Id) {
+async function getItemID(id) {
   try {
     const {row:[item]} = await client.query (
       `SELECT * FROM items 

@@ -1,53 +1,168 @@
-const db = require('./client')
-const bcrypt = require('bcrypt');
+const db = require("./client");
+const bcrypt = require("bcrypt");
 const SALT_COUNT = 10;
+const util = require("./util");
 
-const createUser = async({ username, firstName, lastName, address, email, password,isAdmin }) => {
-    const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
-    try {
-        const { rows: [user ] } = await db.query(`
-        INSERT INTO users(username, firstName, lastName, address, email, password,isAdmin)
+async function createUser({
+  username,
+  firstName,
+  lastName,
+  address,
+  email,
+  password,
+  isAdmin,
+}) {
+  const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
+  try {
+    const {
+      rows: [user],
+    } = await db.query(
+      `
+        INSERT INTO users(username, firstName, lastName, address, email, password, isAdmin)
         VALUES($1, $2, $3, $4, $5, $6, $7)
         ON CONFLICT (email) DO NOTHING
-        RETURNING *`, [username, firstName, lastName, address, email, hashedPassword,isAdmin]);
-
-        return user;
-    } catch (err) {
-        throw err;
-    }
+        RETURNING *`,
+      [username, firstName, lastName, address, email, hashedPassword, isAdmin]
+    );
+    console.log(user);
+    return user;
+  } catch (err) {
+    throw err;
+  }
 }
 
-const getUser = async({email, password}) => {
-    if(!email || !password) {
-        return;
-    }
-    try {
-        const user = await getUserByEmail(email);
-        if(!user) return;
-        const hashedPassword = user.password;
-        const passwordsMatch = await bcrypt.compare(password, hashedPassword);
-        if(!passwordsMatch) return;
-        delete user.password;
-        return user;
-    } catch (err) {
-        throw err;
-    }
+async function getAllUsers() {
+  try {
+    const { rows } = await db.query(`
+        SELECT * FROM users;
+        `);
+    return rows;
+  } catch (error) {
+    console.error(error.message);
+  }
 }
 
-const getUserByEmail = async(email) => {
-    try {
-        const { rows: [ user ] } = await db.query(`
+async function getUser({ email, password }) {
+  if (!email || !password) {
+    return;
+  }
+  try {
+    const user = await getUserByEmail(email);
+    if (!user) return;
+    const hashedPassword = user.password;
+    const passwordsMatch = await bcrypt.compare(password, hashedPassword);
+    if (!passwordsMatch) return;
+    delete user.password;
+    return user;
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function getUserByEmail(email) {
+  try {
+    const {
+      rows: [user],
+    } = await db.query(
+      `
         SELECT * 
         FROM users
-        WHERE email=$1;`, [ email ]);
+        WHERE email=$1;`,
+      [email]
+    );
 
-        if(!user) {
-            return;
-        }
-        return user;
-    } catch (err) {
-        throw err;
+    if (!user) {
+      return;
     }
+    return user;
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function getUserByUsername(username) {
+  try {
+    const {
+      rows: [user],
+    } = await db.query(
+      `
+        SELECt *
+        FROM users
+        WHERE username=$1;`,
+      [username]
+    );
+
+    if (!username) {
+      return;
+    }
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// GET USER BY ID
+async function getUserById(id) {
+  try {
+    const {
+      rows: [user],
+    } = await db.query(
+      `
+        SELECT * FROM users
+        WHERE id = $1
+    `,
+      [id]
+    );
+    return user;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function updateUser({ id, ...fields }) {
+  const toUpdate = {};
+  for (let column in fields) {
+    if (fields[column] !== undefined) toUpdate[column] = fields[column];
+  }
+  let user;
+  if (util.dbFields(fields).insert.length > 0) {
+    const { rows } = await db.query(
+      `
+        UPDATE users
+        SET ${util.dbFields(toUpdate).insert}
+        WHERE id=${id}
+        RETURNING *;
+    `,
+      Object.values(toUpdate)
+    );
+    user = rows[0];
+    return user;
+  }
+  try {
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+//UPDATE - what order user removed from items?
+// what to do w/ placed orders that already have a user that is to be deleted?
+//
+async function destroyUser(id) {
+  try {
+    const {
+      rows: [users],
+    } = await db.query(
+      `
+        DELETE FROM users
+        WHERE id = $1
+        RETURNING *;
+    `,
+      [id]
+    );
+    return users;
+  } catch (error) {
+    throw error;
+  }
 }
 
 const getUserById = async (userId) => {
@@ -72,8 +187,12 @@ const getUserById = async (userId) => {
 }
 
 module.exports = {
-    createUser,
-    getUser,
-    getUserByEmail,
-    getUserById
+  createUser,
+  getAllUsers,
+  getUser,
+  getUserByEmail,
+  getUserByUsername,
+  getUserById,
+  updateUser,
+  destroyUser,
 };
