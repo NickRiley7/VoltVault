@@ -23,18 +23,20 @@ itemRouter.get('/', async (req, res, next) => {
   }
 });
 
-itemRouter.get('/items/:id', async(req, res, next) => {
+itemRouter.get('/:id', async(req, res, next) => {
   try {
     const {id} = req.params;
+    console.log ('THIS IS ID: ', id)
     const item = await getItemID(id);
-    res.json(item);
+    console.log('THIS IS ITEM: ', item)
+    res.send(item);
   } catch(err){
     next(err)
   }
 }
 );
 
-itemRouter.get('/items/name/:name', async (req, res, next) => {
+itemRouter.get('/name/:name', async (req, res, next) => {
   try {
     const {name} = req.params;
     const item = await getItemByName(name);
@@ -45,7 +47,7 @@ itemRouter.get('/items/name/:name', async (req, res, next) => {
 }
 );
 
-itemRouter.post('/items', requireUser, async (req, res, next) => {
+itemRouter.post('/', requireUser, async (req, res, next) => { //admin only access
   try {
     const newItem = req.body;
     const createItem = await createItem(newItem);
@@ -64,7 +66,7 @@ itemRouter.post('/items', requireUser, async (req, res, next) => {
 // );
 
 
-itemRouter.delete ('/items/:id',requireUser, async (req, res, next) => {
+itemRouter.delete ('/:id',requireUser, async (req, res, next) => { //admin only
   try {
     const { id } = req.params;
     const deleteItem = await deleteItem(id);
