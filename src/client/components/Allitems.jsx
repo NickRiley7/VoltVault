@@ -31,7 +31,7 @@ function AllItems() {
               <p>Price: ${item.price}</p>
               <img src={item.img} alt={`Image of ${item.name}`} />
               
-              {/* <button className="goldButton" onClick={() => navigate(`/details/${item.id}`)}>Show Details</button> */}
+              
             </li>
           ))}
         </ul>
