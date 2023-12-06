@@ -5,7 +5,7 @@ import Login from './components/Login';
 import Navigations from './components/Navigation';
 import Register from './components/Register';
 import AllItems from './components/Allitems';
-
+import UserAccount from "./components/UserAccount";
 // import Orders from './components/Orders';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
     <Router>
       <Navigations />
       <>
-        <div className='App'>
+        <div className="App">
           {/* <h1>VoltVault</h1> */}
           {/* <img id='comp-img' src='./computer.png'></img> */}
 
@@ -23,11 +23,9 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="/" element={<AllItems />} />
+          <Route path="account" element={<UserAccount />} />
         </Routes>
         </div>
-
-
-
       </>
     </Router>
   );
