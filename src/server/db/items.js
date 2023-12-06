@@ -36,7 +36,7 @@ async function getItemByName(name) {
 async function getALLItems () {
   try {
     const{ rows } = await client.query (
-      `SELECT name, price, img 
+      `SELECT * 
       FROM items`
     );
     return rows; 

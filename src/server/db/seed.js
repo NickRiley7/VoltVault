@@ -42,7 +42,7 @@ async function createTables() {
       name TEXT,
       price DECIMAL(10, 2),
       details TEXT,
-      img VARCHAR (55),
+      img TEXT,
       category TEXT,
       stock INT
      );
@@ -114,12 +114,11 @@ async function createInitialItems (){
     const itemsToCreate = [
       {
         id: 1,
-        name: 'item1',
-        price: 19.99,
+        name: 'Apple iPhone 15 Pro Max',
+        price: 1199.99,
         details: 'Description for Item 1',
-        img: 'https://example.com/item1.jpg',
-        tags: ['tag1', 'tag2'],
-        category: 'Category 1',
+        img: ''
+        category: 'phone',
         stock: 10,
       },
       {
