@@ -1,7 +1,8 @@
 const express = require('express')
 const ordersRouter = express.Router()
 const { getAllOrders, getOrdersWithoutItems, getOrdersByUserId, createOrder, getOrderById, updateOrder, destroyOrder } = require('../db/orders');
-const { getUserById } = require ('../db/users')
+const { getUserById } = require ('../db/users');
+const { addItemToOrder, getOrderItemById, getOrderItemsByOrder } = require ('../db/order_items')
 const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
 
 ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
@@ -148,5 +149,32 @@ ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
     next(error)
   }
 })
+
+ordersRouter.post ('/:orderId/items', requiredNotSent({requiredParams: [ 'item_id', 'quantity']}), async (req, res, next) => {
+  try {
+    const {item_id, quantity} = req.body;
+    const {orderId} = req.params;
+    const foundOrderItems = await getOrderItemsByOrder ({id: orderId});
+    const existingOrderItems = foundOrderItems && foundOrderItems.filter(orderItem => orderItem.item_id === item_id);
+    if(existingOrderItems && existingOrderItems.length) {
+      next({
+        name: 'RoutineActivityExistsError',
+        message: `A routine_activity by that order_id ${order_id}, item_id ${item_id} combination already exists`
+      });
+    } else {
+      const createdOrderItem = await addItemToOrder({ order_id, item_id, quantity });
+      if(createdOrderItem) {
+        res.send(createdOrderItem);
+      } else {
+        next({
+          name: 'FailedToCreate',
+          message: `There was an error adding item ${item_id} to order ${order_id}`
+        })
+      }
+    }
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = ordersRouter;

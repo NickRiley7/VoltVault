@@ -15,7 +15,7 @@ async function getItemID(id) {
       WHERE id = $1`,
       [id]);
 
-      const {row: [item]} = result
+      const {rows: [item]} = result
       return item; 
     
   } catch (err) {

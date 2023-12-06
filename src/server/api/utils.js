@@ -6,20 +6,23 @@ function requireUser(req, res, next) {
       message: "You must be logged in to perform this action"
     });
   }
-
-  next();
+  else {
+    next();
+  }
 }
 
 function requireAdmin(req, res, next) {
-  if (!req.user.isadmin) {
+  // console.log ('THIS IS REQ.USER', req.user)
+  if (!req.user || !req.user.isadmin ) {
     res.status(401);
     next({
       name: "NotAnAdmin",
       message: "You must be an admin to perform this action"
     });
   }
-
-  next();
+  else {
+    next();
+  }
 }
 // require admin here
 
