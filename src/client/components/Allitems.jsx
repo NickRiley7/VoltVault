@@ -32,6 +32,7 @@ function AllItems() {
               <img src={item.img} alt={`Image of ${item.name}`} />
 
               <button> Show Item details</button>
+              <button> Add item to Cart</button>
               
               
             </li>
