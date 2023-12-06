@@ -6,6 +6,7 @@ import Navigations from './components/Navigation';
 import Register from './components/Register';
 import AllItems from './components/Allitems';
 import UserAccount from "./components/UserAccount";
+import ItemDetails from './components/singleItemDetail';
 // import Orders from './components/Orders';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
           <Route path="register" element={<Register />} />
           <Route path="/" element={<AllItems />} />
           <Route path="account" element={<UserAccount />} />
+          <Route path="/items/:itemid" element ={<ItemDetails />}/>
         </Routes>
         </div>
       </>
