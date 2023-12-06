@@ -122,6 +122,40 @@ async function deleteItem (id) {
   }
 }
 
+async function attachItemsToOrders(orders) {
+  // no side effects]
+  console.log('THIS IS ORDER IN ATTACH ITEMS ORDERS', orders)
+  const ordersToReturn = [...orders];
+  console.log('THIS IS ORDERS ', ordersToReturn)
+  const binds = orders.map((_, index) => `$${index + 1}`).join(', ');
+  console.log ("THIS IS BINDS", binds)
+  const orderIds = orders.map(order => order.id);
+  if (!orderIds?.length) return [];
+  console.log('THIS IS ORDER IDS ', orderIds)
+  
+  try {
+    // get the items, JOIN with order_items (so we can get a orderId), and only those that have those order ids on the order_items join
+    const { rows: items } = await client.query(`
+      SELECT items.*, order_items.quantity, order_items.id AS "orderItemsId", order_items.order_id
+      FROM items 
+      JOIN order_items ON order_items.item_id = items.id
+      WHERE order_items.order_id IN (${ binds });
+    `, orderIds);
+
+    // loop over the orders
+    for(const order of ordersToReturn) {
+      // filter the items to only include those that have this orderId
+      const itemsToAdd = items.filter(activity => activity.orderId === order.id);
+      // attach the items to each single order
+      order.items = itemsToAdd;
+    }
+    return ordersToReturn;
+  } catch (error) {
+    console.error ('error in attaching items to order')
+    throw error;
+  }
+}
+
 
 module.exports ={
   getItemID,
@@ -129,5 +163,6 @@ module.exports ={
   getALLItems,
   createItem,
   updateItem,
-  deleteItem
+  deleteItem,
+  attachItemsToOrders
 };
