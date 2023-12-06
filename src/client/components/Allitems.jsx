@@ -30,6 +30,9 @@ function AllItems() {
               <h3>{item.name}</h3>
               <p>Price: ${item.price}</p>
               <img src={item.img} alt={`Image of ${item.name}`} />
+
+              <button> Show Item details</button>
+              <button> Add item to Cart</button>
               
               
             </li>
