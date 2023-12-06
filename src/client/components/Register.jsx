@@ -90,7 +90,7 @@ return (
           Email:{" "}
           <input
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </label>
         
