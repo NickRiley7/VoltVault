@@ -14,17 +14,21 @@ async function getOrderItemById(id){
 }
 
 async function addItemToOrder({
-  orderId,
-  itemId,
+  order_id,
+  item_id,
   quantity
 }) {
   try {
+    console.log('Adding item to order:', { order_id, item_id, quantity })
+
     const { rows: [orderItem] } = await client.query(`
-    INSERT INTO order_items ( "orderId", "itemId", quantity)
+    INSERT INTO order_items ( "order_id", "item_id", quantity)
     VALUES($1, $2, $3)
-    ON CONFLICT ("orderId", "itemId") DO NOTHING
     RETURNING *;
-      `, [ orderId, itemId, quantity]);
+    `, [ order_id, item_id, quantity]);
+
+    console.log('Order item added:', orderItem);
+
     return orderItem;
   } catch (error) {
     throw error;
