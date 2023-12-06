@@ -6,7 +6,7 @@ export default function Navigations() {
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="/">
-            <img src="./computer.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top" />VoltVault</a>
+            <img src="src/client/assets/TFFS0158.PNG" alt="Logo" width="40" height="35" class="d-inline-block align-text-top" href="/"/>VoltVault</a>
 
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -37,8 +37,8 @@ export default function Navigations() {
               {/* styling for button. position-absolute start-50 end-75 translate-middle */}
               <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
-            <a href="login" target='_blank' class="btn btn-outline-primary m-1" tabindex="-1" role="button">Login</a>
-            <a href="#" target='_blank' class="btn btn-outline-primary" tabindex="-1" role="button">Signup</a>
+            <a href="login" class="btn btn-outline-primary m-1" tabindex="-1" role="button">Login</a>
+            <a href="register" class="btn btn-outline-primary" tabindex="-1" role="button">Signup</a>
           </div>
         </div>
       </nav>

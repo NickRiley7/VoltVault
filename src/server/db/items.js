@@ -8,13 +8,18 @@ const util = require ('./util.js');
 
 async function getItemID(id) {
   try {
-    const {row:[item]} = await client.query (
-      `SELECT * FROM items 
+    console.log ('GETTING ITEM BY ID...')
+    console.log ('THIS IS ID FROM THE FUNCTION: ', id)
+    const result = await client.query (
+      `SELECT * FROM items
       WHERE id = $1`,
-      [id]); 
+      [id]);
+
+      const {rows: [item]} = result
       return item; 
     
   } catch (err) {
+    console.error ('ERROR IN GETTING ITEM BY ID', err)
     throw err; 
   }
 }
@@ -36,7 +41,7 @@ async function getItemByName(name) {
 async function getALLItems () {
   try {
     const{ rows } = await client.query (
-      `SELECT name, price, img 
+      `SELECT * 
       FROM items`
     );
     return rows; 

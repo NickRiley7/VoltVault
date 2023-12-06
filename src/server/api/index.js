@@ -48,13 +48,13 @@ const usersRouter = require('./users');
 apiRouter.use('/users', usersRouter);
 
 const itemRouter = require('./itemsRouter')
-apiRouter.use('/itemsRouter', itemRouter)
+apiRouter.use('/items', itemRouter)
 
 const ordersRouter = require('./orders');
 apiRouter.use('/orders', ordersRouter);
 
 apiRouter.use((err, req, res, next) => {
-    res.status(500).send(err)
+  res.status(res.statusCode ? res.statusCode : 500).send(err)
   })
 
 module.exports = apiRouter;

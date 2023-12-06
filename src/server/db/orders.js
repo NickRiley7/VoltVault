@@ -1,4 +1,5 @@
 const client = require('./client')
+const { getUserById } = require('./users')
 // const { attachItemsToOrders } = require('./items')
 // const { getUserByUsername } = require('./users')
 const util = require('./util.js');
@@ -48,6 +49,22 @@ async function getAllOrdersByUser({username}) {
     WHERE "userId" = $1
     `, [user.id]);
     return attachItemsToOrders(orders);
+  } catch (error) {
+    throw error
+  }
+}
+
+async function getOrdersByUserId ({userId}) {
+  try{
+    const user = await getUserById (userId);
+    const { rows: orders } = await client.query(`
+      SELECT
+        orders.*, users.id AS "userId"
+      FROM
+        orders
+      JOIN users ON orders."userId" = users.id
+      WHERE "userId" = $1
+    `, [user.id])
   } catch (error) {
     throw error
   }
@@ -158,7 +175,8 @@ module.exports = {
   getOrdersWithoutItems,
   getAllOrders,
   getAllCompletedOrders,
-  getAllOrdersByUser,
+  getAllOrdersByUser, 
+  getOrdersByUserId,
   getCompletedOrdersByUser,
   getCompletedOrdersByItem,
   createOrder,

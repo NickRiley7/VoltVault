@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import chalk from "chalk";
-import Login from "./components/Login";
-import Navigations from "./components/Navigation";
+import { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import chalk from 'chalk';
+import Login from './components/Login';
+import Navigations from './components/Navigation';
+import Register from './components/Register';
+import AllItems from './components/Allitems';
 import UserAccount from "./components/UserAccount";
-// import Cart from './components/Cart';
 // import Orders from './components/Orders';
 
 function App() {
@@ -18,10 +19,12 @@ function App() {
           {/* <h1>VoltVault</h1> */}
           {/* <img id='comp-img' src='./computer.png'></img> */}
 
-          <Routes>
-            <Route path="login" element={<Login />} />
-            <Route path="/account" element={<UserAccount />} />
-          </Routes>
+        <Routes>
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="/" element={<AllItems />} />
+          <Route path="account" element={<UserAccount />} />
+        </Routes>
         </div>
       </>
     </Router>

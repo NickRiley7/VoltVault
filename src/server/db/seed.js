@@ -1,8 +1,10 @@
 const client = require ('./client')
-const { createOrder, getOrdersWithoutItems } = require('./orders')
-const { getAllItems, createItem, addItemToOrder } = require('./items')
+const { addItemToOrder } = require ('./order_items.js')
+const { createOrder, getOrdersWithoutItems, getAllOrders } = require('./orders')
+const { getALLItems, createItem } = require('./items')
 const { createUser } = require ('./users.js')
 // const { v4: uuidv4 } = require('uuid');
+
 
 async function dropTables() {
   console.log('Dropping All Tables...');
@@ -42,7 +44,7 @@ async function createTables() {
       name TEXT,
       price DECIMAL(10, 2),
       details TEXT,
-      img VARCHAR (55),
+      img TEXT,
       category TEXT,
       stock INT
      );
@@ -62,7 +64,7 @@ async function createTables() {
     CREATE TABLE order_items(
       id SERIAL PRIMARY KEY,
       order_id INTEGER REFERENCES orders(id),
-      items_id INTEGER REFERENCES items(id),
+      item_id INTEGER REFERENCES items(id),
       quantity INTEGER
     )`)
   } 
@@ -113,16 +115,66 @@ async function createInitialItems (){
     
     const itemsToCreate = [
       {
-        name: 'item1',
-        price: 19.99,
+        id: 1,
+        name: 'Apple iPhone 15 Pro Max',
+        price: 1199.99,
         details: 'Description for Item 1',
-        img: 'https://example.com/item1.jpg',
-        tags: ['tag1', 'tag2'],
-        category: 'Category 1',
+        img: '',
+        category: 'phone',
         stock: 10,
       },
       {
+        id: 2,
         name: 'Item 2',
+        price: 29.99,
+        details: 'Description for Item 2',
+        img: 'https://example.com/item2.jpg',
+        tags: ['tag3', 'tag4'],
+        category: 'Category 2',
+        stock: 15,
+      },
+      {
+        id: 3,
+        name: 'Item 3',
+        price: 29.99,
+        details: 'Description for Item 2',
+        img: 'https://example.com/item2.jpg',
+        tags: ['tag3', 'tag4'],
+        category: 'Category 2',
+        stock: 15,
+      },
+      {
+        id: 4,
+        name: 'Item 4',
+        price: 29.99,
+        details: 'Description for Item 2',
+        img: 'https://example.com/item2.jpg',
+        tags: ['tag3', 'tag4'],
+        category: 'Category 2',
+        stock: 15,
+      },
+      {
+        id: 5,
+        name: 'Item 5',
+        price: 29.99,
+        details: 'Description for Item 2',
+        img: 'https://example.com/item2.jpg',
+        tags: ['tag3', 'tag4'],
+        category: 'Category 2',
+        stock: 15,
+      },
+      {
+        id: 6,
+        name: 'Item 6',
+        price: 29.99,
+        details: 'Description for Item 2',
+        img: 'https://example.com/item2.jpg',
+        tags: ['tag3', 'tag4'],
+        category: 'Category 2',
+        stock: 15,
+      },{
+        id: 7,
+        name: 'Item 7',
         price: 29.99,
         details: 'Description for Item 2',
         img: 'https://example.com/item2.jpg',
@@ -173,12 +225,12 @@ async function createInitialOrders () {
 async function createInitialOrderItems() {
   try {
     console.log ('starting to create order_items...');
-    const [order1, order2] = await getOrdersWithoutItems();
-    const [item1, item2] = await getAllItems();
-    
+    const orders = await getOrdersWithoutItems();
+    const items = await getALLItems();
+
     const orderItemsToCreate = [
-      { order_id: order1.id, item_id: item1.id, quantity: 2 },
-      { order_id: order2.id, item_id: item2.id, quantity: 1 },
+      { order_id: orders[0].id, item_id: items[0].id, quantity: 2 },
+      { order_id: orders[0].id, item_id: items[1].id, quantity: 1 },
     ];
     const orderItems = await Promise.all(orderItemsToCreate.map(addItemToOrder));
     console.log('order_items created: ', orderItems)
