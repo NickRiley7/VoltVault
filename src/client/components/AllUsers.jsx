@@ -25,6 +25,7 @@ function AllUsers() {
 
   return (
     <>
+      <h1>Registered Users</h1>
       <table>
         <thead>
           <tr>
@@ -44,7 +45,8 @@ function AllUsers() {
         {users.map((user) => {
           return (
             <tr key={user.id}>
-              <td>{user.id}</td>
+              {/* USER ID NEEDS TO BE SET TO UNDERLINE/COLOR DIFFERENT TO INDICATE LINK */}
+              <td onClick={() => Navigate(`/users/${user.id}`)}>{user.id}</td>
               <td>{user.username}</td>
               <td>{user.firstname}</td>
               <td>{user.lastname}</td>
