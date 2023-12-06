@@ -31,6 +31,8 @@ function AllItems() {
               <p>Price: ${item.price}</p>
               <img src={item.img} alt={`Image of ${item.name}`} />
 
+              <p>Available in Stock: {item.stock > 0 ? 'Yes' : 'No'}</p>
+
               <button> Show Item details</button>
               <button> Add item to Cart</button>
               
