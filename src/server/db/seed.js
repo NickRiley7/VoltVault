@@ -119,7 +119,7 @@ async function createInitialItems (){
         name: 'Apple iPhone 15 Pro Max',
         price: 1199.99,
         details: 'Description for Item 1',
-        img: ''
+        img: '',
         category: 'phone',
         stock: 10,
       },
