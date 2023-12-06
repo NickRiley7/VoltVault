@@ -24,30 +24,38 @@ function AllItems() {
     <div>
       <h2>All Items</h2>
       {items.length ? (
+        // <div class="row row-cols-1 row-cols-md-2 g-4">
+        //   <div class="col">
         <ul>
-          {items.map((item) => (
-            <li key={item.id}>
-              <h3>{item.name}</h3>
-              <p>Price: ${item.price}</p>
-              <img src={item.img} alt={`Image of ${item.name}`} />
+          <div class="card-group">
+            {items.map((item) => (
+              <li class="card m-1" key={item.id}>
+                <h3 class="card-title">{item.name}</h3>
+                <p class="card-body">Price: ${item.price}</p>
+                <img class="card-img-top" src={item.img} alt={`Image of ${item.name}`} />
 
-              <p>Available in Stock: {item.stock > 0 ? 'Yes' : 'No'}</p>
+                <p>Available in Stock: {item.stock > 0 ? 'Yes' : 'No'}</p>
 
-              <button> Show Item details</button>
-              <button> Add item to Cart</button>
-              
-              
-            </li>
-          ))}
+                <a href="#" class="btn btn-primary m-1" tabindex="-1">Show Item details</a>
+                <a href="#" class="btn btn-primary" tabindex="-1">Add item to Cart</a>
+
+
+              </li>
+            ))}
+          </div>
         </ul>
+        //   </div>
+        // </div>
+
       ) : (
         <h2>
           Loading Items ... <br />
           <br />
           A wizard is never late, nor is he early, he arrives precisely when he means to. 🧙‍♂️
         </h2>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 
