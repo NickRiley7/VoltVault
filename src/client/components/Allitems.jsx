@@ -13,7 +13,7 @@ function AllItems() {
     let API = "http://localhost:3000/api";
 
     try {
-      const response = await axios.get(`${API}/itemsRouter/`);
+      const response = await axios.get(`${API}/items/`);
       setItems(response.data);
     } catch (err) {
       console.error(err.message);
