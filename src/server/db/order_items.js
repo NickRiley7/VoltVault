@@ -19,15 +19,12 @@ async function addItemToOrder({
   quantity
 }) {
   try {
-    console.log('Adding item to order:', { order_id, item_id, quantity })
-
+    
     const { rows: [orderItem] } = await client.query(`
     INSERT INTO order_items ( "order_id", "item_id", quantity)
     VALUES($1, $2, $3)
     RETURNING *;
     `, [ order_id, item_id, quantity]);
-
-    console.log('Order item added:', orderItem);
 
     return orderItem;
   } catch (error) {

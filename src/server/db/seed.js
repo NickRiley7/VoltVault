@@ -178,8 +178,6 @@ async function createInitialOrderItems() {
     const orders = await getOrdersWithoutItems();
     const items = await getALLItems();
 
-    console.log ('THIS IS ITEMS:', items[0])
-    
     const orderItemsToCreate = [
       { order_id: orders[0].id, item_id: items[0].id, quantity: 2 },
       { order_id: orders[0].id, item_id: items[1].id, quantity: 1 },
