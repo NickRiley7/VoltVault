@@ -151,7 +151,7 @@ async function createInitialItems (){
         img: 'https://example.com/item2.jpg',
         tags: ['tag3', 'tag4'],
         category: 'Category 2',
-        stock: 15,
+        stock: 0,
       },
       {
         id: 5,
