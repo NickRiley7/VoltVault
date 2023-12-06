@@ -7,7 +7,9 @@ const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
 
 ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
   try {
-    const orders = await getOrdersWithoutItems();
+    const orders = await getOrdersWithoutItems()
+    // const orders = await getAllOrders(); //change to getOrdersWithOutItems if getAllOrders still not working
+    console.log ('successfully getting all orders')
     res.send(orders);
     console.log ('this is the user:', req.user.isadmin )
   } catch (error) {
