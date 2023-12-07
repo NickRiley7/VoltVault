@@ -145,8 +145,10 @@ async function createInitialUsers (){
         address2: '',
         city: 'Paris',
         state: 'LA',
-
-
+        zip: 70001,
+        email: 'empj@email.com',
+        password: 'TestTest',
+        isAdmin: false
       }
     ];
 
