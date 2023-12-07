@@ -30,29 +30,33 @@ function AllItems() {
       {items.length ? (
         <ul>
           {items.map((item) => (
-            <li key={item.id}>
-              <h3>{item.name}</h3>
-              <p>Price: ${item.price}</p>
-              <img src= {item.img} alt={`Image of ${item.name}`} />
+            <li id="cards" class="card m-1 w-75 mb-3 shadow p-3 mb-5 bg-body-tertiary rounded" key={item.id}>
+              <div class="card-body">
+                <img class="card-img-top" src={item.img} alt={`Image of ${item.name}`} />
+                <h3 class="card-title">{item.name}</h3>
+                <p class="card-text">Price: ${item.price}</p>
 
-              <p>Available in Stock: {item.stock > 0 ? 'Yes' : 'No'}</p>
-              {/* <p>{item.stock}</p> */}
+                <p class="card-text">Available in Stock: {item.stock > 0 ? 'Yes' : 'No'}</p>
+                {/* <p>{item.stock}</p> */}
 
-              <button onClick={() => navigate(`/items/${item.id}`)}> Show Item details</button>
-              <button> Add item to Cart</button>
-              
-              
+                <button type="button" class="btn btn-outline-primary" onClick={() => navigate(`/items/${item.id}`)}> Show Item details</button>
+                <button type="button" class="btn btn-outline-primary m-1"> Add item to Cart</button>
+
+
+              </div>
             </li>
           ))}
         </ul>
+
       ) : (
         <h2>
           Loading Items ... <br />
           <br />
           A wizard is never late, nor is he early, he arrives precisely when he means to. 🧙‍♂️
         </h2>
-      )}
-    </div>
+      )
+      }
+    </div >
   );
 }
 
