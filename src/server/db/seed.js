@@ -254,7 +254,7 @@ async function createInitialItems() {
         name: 'iPhone 15',
         price: 799.00,
         details: "Experience the extraordinary with the new iPhone. Choose between the 6.7″ or 6.1″ Super Retina XDR display for stunning visuals. Crafted with an aluminum frame and color-infused glass back, it exudes elegance. The A16 Bionic chip with 5-core GPU ensures seamless performance. Capture moments with the advanced dual-camera system featuring a 48MP Main and Ultra Wide lens. Enjoy super-high-resolution photos, next-gen portraits, and a 4x optical zoom range. Stay safe with Emergency SOS, Crash Detection, and Roadside Assistance via satellite. With up to 26 hours of video playback, it's a powerhouse. Connect with USB‑C and enjoy the convenience of Face ID. This iPhone is a blend of innovation and style.",
-        img: 'https://example.com/item2.jpg',
+        img: '',
         tags: ['tag3', 'tag4'],
         category: 'Category 2',
         stock: 45,
