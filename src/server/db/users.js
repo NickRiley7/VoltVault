@@ -111,6 +111,7 @@ async function getUserByUsername(username) {
     if (!username) {
       return;
     }
+    delete user.password;
     return user;
   } catch (error) {
     throw error;
@@ -157,6 +158,7 @@ async function updateUser({ id, ...fields }) {
         Object.values(toUpdate)
       );
       user = rows[0];
+      delete user.password;
       return user;
     }
   }
@@ -181,6 +183,7 @@ async function destroyUser(id) {
     `,
       [id]
     );
+    delete users.password;
     return users;
   } catch (error) {
     throw error;

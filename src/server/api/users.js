@@ -15,7 +15,7 @@ const {
 const jwt = require("jsonwebtoken");
 
 // GET ALL USERS
-usersRouter.get("/", async (req, res, next) => {
+usersRouter.get("/", requireAdmin, async (req, res, next) => {
   try {
     const users = await getAllUsers();
     res.send({
@@ -27,7 +27,7 @@ usersRouter.get("/", async (req, res, next) => {
 });
 
 //GET SINGLE USER BY ID
-usersRouter.get("/:id", async (req, res, next) => {
+usersRouter.get("/:id", requireAdmin, async (req, res, next) => {
   //requireAdmin
   try {
     const user = await getUserById(req.params.id);
@@ -191,9 +191,21 @@ usersRouter.delete("/:userId", requireAdmin, async (req, res, next) => {
   // no priority. But can be for admin
   try {
     console.log(req.params);
-    const user = await destroyUser(req.params.userId);
-    res.send(user);
+    const {userId} = req.params
+    const userToUpdate = await getUserById(userId);
+    if (!userToUpdate) {
+      next({
+        name: 'NotFound',
+        message: `No user by ID ${userId}`
+      })
+    }
+    else {
+      const deletedUser = await destroyUser(userId);
+      res.send(deletedUser);
+      console.log ('user deleted!')
+    }
   } catch (error) {
+    console.error ('ERROR!')
     next(error);
   }
 });
