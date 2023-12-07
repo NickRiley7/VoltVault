@@ -19,7 +19,7 @@ async function addItemToOrder({
   quantity
 }) {
   try {
-    
+    console.log('THIS IS order_id', order_id)
     const { rows: [orderItem] } = await client.query(`
     INSERT INTO order_items ( "order_id", "item_id", quantity)
     VALUES($1, $2, $3)
@@ -47,8 +47,9 @@ async function getOrderItemsByOrder({id}) {
   try {
     const {rows} = await client.query(`
       SELECT * FROM order_items
-      WHERE "orderId" = ${id}
+      WHERE "order_id" = ${id}
     `);
+
     return rows;
   } catch (error) {
     throw error;

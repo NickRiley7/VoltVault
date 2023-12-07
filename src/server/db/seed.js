@@ -1,23 +1,27 @@
-const client = require ('./client')
-const { addItemToOrder } = require ('./order_items.js')
-const { createOrder, getOrdersWithoutItems, getAllOrders } = require('./orders')
-const { getALLItems, createItem } = require('./items')
-const { createUser } = require ('./users.js')
+const client = require("./client");
+const { addItemToOrder } = require("./order_items.js");
+const {
+  createOrder,
+  getOrdersWithoutItems,
+  getAllOrders,
+} = require("./orders");
+const { getALLItems, createItem } = require("./items");
+const { createUser } = require("./users.js");
+const { mergeAlias } = require("vite");
 // const { v4: uuidv4 } = require('uuid');
 
-
 async function dropTables() {
-  console.log('Dropping All Tables...');
+  console.log("Dropping All Tables...");
   // drop all tables, in the correct order
   try {
-    await  client.query(`
+    await client.query(`
     DROP TABLE IF EXISTS order_items;
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS items;
     DROP TABLE IF EXISTS users;
-  `)
+  `);
   } catch (error) {
-    throw error; 
+    throw error;
   }
 }
 
@@ -32,12 +36,16 @@ async function createTables() {
       firstName VARCHAR(255),
       lastName VARCHAR(255),
       address VARCHAR(255),
+      address2 VARCHAR(255),
+      city VARCHAR(255),
+      state VARCHAR(2),
+      zip INTEGER,
       email VARCHAR(255) UNIQUE,
       password VARCHAR(255),
       isAdmin BOOL
     )
-    `)
-    
+    `);
+
     await client.query(`
     CREATE TABLE items (
       id SERIAL PRIMARY KEY,
@@ -49,7 +57,7 @@ async function createTables() {
       stock INT
      );
      
-    `)
+    `);
 
     await client.query(`
     CREATE TABLE orders(
@@ -58,7 +66,7 @@ async function createTables() {
       order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
       order_status VARCHAR(255),
       order_total DECIMAL(10,2)
-    )`)
+    )`);
 
     await client.query(`
     CREATE TABLE order_items(
@@ -66,65 +74,114 @@ async function createTables() {
       order_id INTEGER REFERENCES orders(id),
       item_id INTEGER REFERENCES items(id),
       quantity INTEGER
-    )`)
-  } 
-  catch (err) {
+    )`);
+  } catch (err) {
     console.error(err);
     // throw error;
   }
 }
 
-async function createInitialUsers (){
-  try{
-
-    console.log ('starting to create users...')
+async function createInitialUsers() {
+  try {
+    console.log("starting to create users...");
 
     const usersToCreate = [
       {
-        username: 'ross',
-        firstName: 'Ross',
-        lastName: 'Ritter',
-        address: '123 Main St',
-        email: 'rar@email.com',
-        password: 'RAR',
-        isAdmin: true
+        username: "ross",
+        firstName: "Ross",
+        lastName: "Ritter",
+        address: "123 Main St",
+        address2: "",
+        city: "Winston Salem",
+        state: "NC",
+        zip: 27023,
+        email: "rar@email.com",
+        password: "RAR",
+        isAdmin: true,
       },
-     {
-        username: 'example',
-        firstName: 'John',
-        lastName: 'Doe',
-        address: '456 Oak St',
-        email: 'john@example.com',
-        password: 'example',
-        isAdmin: false
+      {
+        username: "example",
+        firstName: "John",
+        lastName: "Doe",
+        address: "456 Oak St",
+        address2: "",
+        city: "Atlanta",
+        state: "GA",
+        zip: 30033,
+        email: "john@example.com",
+        password: "example",
+        isAdmin: false,
+      },
+      {
+        username: "test",
+        firstName: "Nick",
+        lastName: "Waters",
+        address: "1822 Sherman Ave, NW",
+        address2: "Apt 593",
+        city: "Washington",
+        state: "DC",
+        zip: 20010,
+        email: "nrw@gmail.com",
+        password: "test",
+        isAdmin: true,
+      },
+      {
+        username: "ThisGudy",
+        firstName: "Alex",
+        lastName: "Lane",
+        address: "103 End Rd",
+        address2: "Apt 6",
+        city: "Winona",
+        state: "MN",
+        zip: 55987,
+        email: "aol@mail.com",
+        password: "pswd1",
+        isAdmin: false,
+      },
+      {
+        username: "Empress4ever",
+        firstName: "Josie",
+        lastName: "Beau",
+        address: "153 Main St.",
+        address2: "",
+        city: "Paris",
+        state: "LA",
+        zip: 70001,
+        email: "empj@email.com",
+        password: "TestTest",
+        isAdmin: false,
       },
     ];
 
-    const users = await Promise.all (usersToCreate.map(user => createUser (user)));
-    console.log ('Users Created: ', users);
-    console.log ('Finished creating users.');
-  }
-  catch (err) {
-    console.error(err)
+    const users = await Promise.all(
+      usersToCreate.map((user) => createUser(user))
+    );
+    console.log("Users Created: ", users);
+    console.log("Finished creating users.");
+  } catch (err) {
+    console.error(err);
   }
 }
 
-async function createInitialItems (){
-  try{
-    console.log('starting to create items...')
-    
+async function createInitialItems() {
+  try {
+    console.log("starting to create items...");
+
     const itemsToCreate = [
       {
         id: 1,
-        name: 'Apple iPhone 15 Pro Max',
+        name: "Apple iPhone 15 Pro Max",
         price: 1199.99,
+
         details: "Experience the ultimate iPhone with the iPhone 15 Pro Max. Choose between a 6.7\" or 6.1\" Super Retina XDR display featuring ProMotion technology and an Always-On display. The device boasts a sleek Titanium design with a textured matte glass back and an innovative Action button. Powered by the A17 Pro chip with a 6-core GPU, enjoy a magical interaction with the Dynamic Island feature. Capture stunning photos with the Pro camera system, including a 48MP Main, Ultra Wide, and Telephoto lens. Emergency SOS, Crash Detection, and Roadside Assistance via satellite provide added safety features. With up to 29 hours of video playback, USB‑C support, and Face ID, the iPhone 15 Pro Max is the epitome of cutting-edge technology.",
         img: '',
         category: 'phone',
+
         stock: 10,
       },
       {
         id: 2,
+
         name: 'MacBook Pro',
         price: 2500.69,
         details: "Unleash the power of the Apple M3 Max chip in the MacBook Pro. Featuring a 16‑core CPU, 40‑core GPU, and 16‑core Neural Engine, this powerhouse ensures unparalleled performance. With 48GB unified memory and a 1TB SSD, multitasking and storage are seamless. Immerse yourself in the stunning visuals of the 16-inch Liquid Retina XDR display. Stay connected with three Thunderbolt 4 ports, HDMI, SDXC card slot, and MagSafe 3 port. The Backlit Magic Keyboard with Touch ID provides convenience and security. Includes a 140W USB-C Power Adapter for fast charging. Elevate your computing experience with this cutting-edge MacBook Pro.",
@@ -231,50 +288,52 @@ async function createInitialItems (){
         tags: ['tag3', 'tag4'],
         category: 'Category 2',
         stock: 66,
+
       },
     ];
 
-    const items = await Promise.all (itemsToCreate.map(item => createItem (item)));
-    console.log ('Items Created: ', items);
-    console.log ('Finished creating items.');
-
-  }
-  catch (err){
-    console.error(err)
+    const items = await Promise.all(
+      itemsToCreate.map((item) => createItem(item))
+    );
+    console.log("Items Created: ", items);
+    console.log("Finished creating items.");
+  } catch (err) {
+    console.error(err);
   }
 }
 
-async function createInitialOrders () {
-  try{
-    console.log('starting to create orders...')
+async function createInitialOrders() {
+  try {
+    console.log("starting to create orders...");
 
     const ordersToCreate = [
       {
         userId: 1,
-        order_status: 'open',
+        order_status: "open",
         order_total: 0,
         items: [],
       },
       {
         userId: 1,
-        order_status: 'open',
+        order_status: "open",
         order_total: 0,
         items: [],
       },
     ];
 
-    const orders = await Promise.all (ordersToCreate.map(order => createOrder (order)));
-    console.log ('Orders Created: ', orders);
-    console.log ('Finished creating orders.');
-  }
-  catch (err) {
-    console.error(err)
+    const orders = await Promise.all(
+      ordersToCreate.map((order) => createOrder(order))
+    );
+    console.log("Orders Created: ", orders);
+    console.log("Finished creating orders.");
+  } catch (err) {
+    console.error(err);
   }
 }
 
 async function createInitialOrderItems() {
   try {
-    console.log ('starting to create order_items...');
+    console.log("starting to create order_items...");
     const orders = await getOrdersWithoutItems();
     const items = await getALLItems();
 
@@ -282,19 +341,18 @@ async function createInitialOrderItems() {
       { order_id: orders[0].id, item_id: items[0].id, quantity: 2 },
       { order_id: orders[0].id, item_id: items[1].id, quantity: 1 },
     ];
-    const orderItems = await Promise.all(orderItemsToCreate.map(addItemToOrder));
-    console.log('order_items created: ', orderItems)
-    console.log('Finished creating order_items!')
-    
-
+    const orderItems = await Promise.all(
+      orderItemsToCreate.map(addItemToOrder)
+    );
+    console.log("order_items created: ", orderItems);
+    console.log("Finished creating order_items!");
   } catch (err) {
-    console.error(err)
+    console.error(err);
   }
 }
 
-
 async function rebuildDB() {
-  try{
+  try {
     client.connect();
     await dropTables();
     await createTables();
@@ -302,16 +360,13 @@ async function rebuildDB() {
     await createInitialItems();
     await createInitialOrders();
     await createInitialOrderItems();
-  } 
-  catch (err) {
-    console.log('Error during rebuildDB')
-  }
-  finally {
-    client.end()
+  } catch (err) {
+    console.log("Error during rebuildDB");
+  } finally {
+    client.end();
   }
 }
 
-
-rebuildDB()
+rebuildDB();
 
 // module.exports = { users, items, orders, orderItems };

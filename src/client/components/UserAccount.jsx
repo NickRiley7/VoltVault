@@ -9,7 +9,7 @@ function UserAccount() {
 
   useEffect(() => {
     fetchUser();
-    fetchOrders();
+    // fetchOrders();
   }, []);
 
   async function fetchUser() {
@@ -24,13 +24,13 @@ function UserAccount() {
     }
   }
 
-  async function fetchOrders() {
-    try {
-      let { data } = await axios.get(`${API}/`);
-    } catch (err) {
-      console.error(err.message);
-    }
-  }
+  // async function fetchOrders() {
+  //   try {
+  //     let { data } = await axios.get(`${API}/`);
+  //   } catch (err) {
+  //     console.error(err.message);
+  //   }
+  // }
 
   // if (!token) {
   //   return <h2>Please login or create an account.</h2>;
