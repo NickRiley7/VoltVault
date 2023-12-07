@@ -6,7 +6,7 @@ const util = require ('./util.js');
 // const import { v4 as uuidv4 } from 'uuid';
 
 
-async function getItemID(id) {
+async function getItemById(id) {
   try {
     console.log ('GETTING ITEM BY ID...')
     console.log ('THIS IS ID FROM THE FUNCTION: ', id)
@@ -38,7 +38,7 @@ async function getItemByName(name) {
   }
 }
 
-async function getALLItems () {
+async function getAllItems () {
   try {
     const{ rows } = await client.query (
       `SELECT * 
@@ -47,6 +47,22 @@ async function getALLItems () {
     return rows; 
   } catch (err){
     throw err;
+  }
+}
+
+async function getAllItemsByCategory (category) {
+  try {
+    console.log ('getting all items by category...')
+    const { rows: [item] } = await client.query (
+      `SELECT * FROM items
+      WHERE category = $1
+      `, [category]
+    );
+    console.log ('finished getting all items by category!')
+    return item
+  } catch (error) {
+    console.error ('ERROR! Cannot get all items by category')
+    throw error
   }
 }
 
@@ -158,9 +174,10 @@ async function attachItemsToOrders(orders) {
 
 
 module.exports ={
-  getItemID,
+  getItemById,
   getItemByName,
-  getALLItems,
+  getAllItems,
+  getAllItemsByCategory,
   createItem,
   updateItem,
   deleteItem,
