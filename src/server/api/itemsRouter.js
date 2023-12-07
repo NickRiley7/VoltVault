@@ -4,7 +4,7 @@ const { requireUser, requiredNotSent } = require('./utils')
 
 const {
   getALLItems,
-  getItemID,
+  getItemById,
   getItemByName,
   createItem,
   deleteItem,
@@ -27,7 +27,7 @@ itemRouter.get('/:id', async(req, res, next) => {
   try {
     const {id} = req.params;
     console.log ('THIS IS ID: ', id)
-    const item = await getItemID(id);
+    const item = await getItemById(id);
     console.log('THIS IS ITEM: ', item)
     res.send(item);
   } catch(err){

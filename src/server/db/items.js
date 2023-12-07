@@ -6,7 +6,7 @@ const util = require ('./util.js');
 // const import { v4 as uuidv4 } from 'uuid';
 
 
-async function getItemID(id) {
+async function getItemById(id) {
   try {
     console.log ('GETTING ITEM BY ID...')
     console.log ('THIS IS ID FROM THE FUNCTION: ', id)
@@ -158,7 +158,7 @@ async function attachItemsToOrders(orders) {
 
 
 module.exports ={
-  getItemID,
+  getItemById,
   getItemByName,
   getALLItems,
   createItem,
