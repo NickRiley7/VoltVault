@@ -5,7 +5,7 @@ const {
   getOrdersWithoutItems,
   getAllOrders,
 } = require("./orders");
-const { getALLItems, createItem } = require("./items");
+const { getAllItems, createItem } = require("./items");
 const { createUser } = require("./users.js");
 const { mergeAlias } = require("vite");
 // const { v4: uuidv4 } = require('uuid');
@@ -335,7 +335,7 @@ async function createInitialOrderItems() {
   try {
     console.log("starting to create order_items...");
     const orders = await getOrdersWithoutItems();
-    const items = await getALLItems();
+    const items = await getAllItems();
 
     const orderItemsToCreate = [
       { order_id: orders[0].id, item_id: items[0].id, quantity: 2 },

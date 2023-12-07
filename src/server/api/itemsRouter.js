@@ -3,7 +3,7 @@ const itemRouter = express.Router()
 const { requireUser, requiredNotSent } = require('./utils')
 
 const {
-  getALLItems,
+  getAllItems,
   getItemById,
   getItemByName,
   createItem,
@@ -15,7 +15,7 @@ const {
 
 itemRouter.get('/', async (req, res, next) => {
   try{
-    const items = await getALLItems();
+    const items = await getAllItems();
     console.log('THIS IS ITEMS: ', items)
     res.send(items);
   } catch (err) {

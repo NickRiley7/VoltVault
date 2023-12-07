@@ -38,7 +38,7 @@ async function getItemByName(name) {
   }
 }
 
-async function getALLItems () {
+async function getAllItems () {
   try {
     const{ rows } = await client.query (
       `SELECT * 
@@ -160,7 +160,7 @@ async function attachItemsToOrders(orders) {
 module.exports ={
   getItemById,
   getItemByName,
-  getALLItems,
+  getAllItems,
   createItem,
   updateItem,
   deleteItem,
