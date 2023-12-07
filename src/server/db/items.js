@@ -50,6 +50,22 @@ async function getAllItems () {
   }
 }
 
+async function getAllItemsByCategory (category) {
+  try {
+    console.log ('getting all items by category...')
+    const { rows: [item] } = await client.query (
+      `SELECT * FROM items
+      WHERE category = $1
+      `, [category]
+    );
+    console.log ('finished getting all items by category!')
+    return item
+  } catch (error) {
+    console.error ('ERROR! Cannot get all items by category')
+    throw error
+  }
+}
+
 async function createItem ({name, price, details, img, category, stock }) {
   try {
     const{ rows: [item] } = await client.query ( `
@@ -161,6 +177,7 @@ module.exports ={
   getItemById,
   getItemByName,
   getAllItems,
+  getAllItemsByCategory,
   createItem,
   updateItem,
   deleteItem,

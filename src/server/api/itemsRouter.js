@@ -6,6 +6,7 @@ const {
   getAllItems,
   getItemById,
   getItemByName,
+  getAllItemsByCategory,
   createItem,
   deleteItem,
   updateItem,
@@ -35,6 +36,29 @@ itemRouter.get('/:id', async(req, res, next) => {
   }
 }
 );
+
+itemRouter.get ('/category/:category', async (req,res,next) => {
+  try{
+    const {category} = req.params
+    console.log(`getting items with ${category} category`)
+    const items = await getAllItemsByCategory(category)
+    console.log(`displaying items with ${category} category: ${items}`)
+
+    if (!items) {
+      next ({
+        name: 'NotFound',
+        message: `No items with ${category} category`
+      })
+    } else {
+      res.send (items)
+      console.log (`successfully getting items with ${category} category!`)
+    }
+  }
+  catch (error){
+    console.error ('error in GET Items by Category endpoint')
+    throw error
+  }
+})
 
 itemRouter.get('/name/:name', async (req, res, next) => {
   try {
