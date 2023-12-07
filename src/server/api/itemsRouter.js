@@ -1,6 +1,6 @@
 const express = require('express')
 const itemRouter = express.Router()
-const { requireUser, requiredNotSent } = require('./utils')
+const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
 
 const {
   getAllItems,
@@ -71,15 +71,47 @@ itemRouter.get('/name/:name', async (req, res, next) => {
 }
 );
 
-itemRouter.post('/', requireUser, async (req, res, next) => { //admin only access
+itemRouter.post('/', requireAdmin, async (req, res, next) => { //admin only access
+  const {name, price, details, img, category, stock} = req.body;
+  const itemData = {}
   try {
-    const newItem = req.body;
-    const createItem = await createItem(newItem);
-    res.json(createItem);
+    console.log (`posting new item with the following details: ${req.body}`)
+
+    itemData.name = name;
+    itemData.price = price;
+    itemData.details = details;
+    itemData.img = img;
+    itemData.category = category;
+    itemData.stock = stock;
+
+    const newItem = await createItem(itemData);
+
+    res.send(newItem);
+    console.log (`finished adding the following item into the data! ${newItem}`)
   } catch (err) {
+    console.error ("error in posting new item")
     next (err)
   }
 });
+
+// ===== TO CONTINUE WORKING ON PATCH ITEM ENDPOINT =======
+
+// itemRouter.patch ('/:itemId', 
+// requireAdmin, 
+// requiredNotSent({requiredParams: ['name', 'price', 'details', 'img', 'category', 'stock'], atLeastOne: true}),
+// async (req,res,next) => {
+//   try{
+//     const {itemId} = req.params
+
+//   }
+//   catch (error){
+//     console.error ('error in patching this item!')
+//     throw error
+//   }
+// })
+
+// ====================================================
+
 
 // itemRouter.patch('/items/:id', requireUser, async (req, res, next) => {
 //   try {
