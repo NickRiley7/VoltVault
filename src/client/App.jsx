@@ -7,7 +7,7 @@ import Register from "./components/Register";
 import AllItems from "./components/Allitems";
 import UserAccount from "./components/UserAccount";
 
-import ItemDetails from './components/singleItemDetail';
+import ItemDetails from './components/SingleItemDetail';
 
 import AllUsers from "./components/AllUsers";
 
