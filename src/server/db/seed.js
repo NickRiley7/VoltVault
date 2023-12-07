@@ -42,7 +42,7 @@ async function createTables() {
       zip INTEGER,
       email VARCHAR(255) UNIQUE,
       password VARCHAR(255),
-      isAdmin BOOL DEFAULT FALSE
+      isAdmin BOOL
     )
     `);
 

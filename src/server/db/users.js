@@ -120,45 +120,49 @@ async function getUserByUsername(username) {
 // GET USER BY ID
 async function getUserById(id) {
   try {
-    const {
-      rows: [user],
-    } = await db.query(
-      `
-        SELECT * FROM users
-        WHERE id = $1
-    `,
-      [id]
-    );
+    // console.log ('Getting User by ID ....')
+    // console.log ('THIS IS ID ', id)
+    const {rows: [user]} = await db.query(`
+      SELECT * FROM users
+      WHERE id = $1
+    `, [id]);
+
     if (!user) return null;
     delete user.password;
+
+    // console.log ('finished getting user by id!')
     return user;
   } catch (error) {
+    console.error ('ERROR IN GETTING ID BY USER')
     throw error;
   }
 }
 
 async function updateUser({ id, ...fields }) {
-  const toUpdate = {};
-  for (let column in fields) {
-    if (fields[column] !== undefined) toUpdate[column] = fields[column];
-  }
-  let user;
-  if (util.dbFields(fields).insert.length > 0) {
-    const { rows } = await db.query(
-      `
-        UPDATE users
-        SET ${util.dbFields(toUpdate).insert}
-        WHERE id=${id}
-        RETURNING *;
-    `,
-      Object.values(toUpdate)
-    );
-    user = rows[0];
-    return user;
-  }
   try {
-  } catch (error) {
-    console.error(error.message);
+    console.log('updating user...')
+    const toUpdate = {};
+    for (let column in fields) {
+      if (fields[column] !== undefined) toUpdate[column] = fields[column];
+    }
+    let user;
+    if (util.dbFields(fields).insert.length > 0) {
+      const { rows } = await db.query(
+        `
+          UPDATE users
+          SET ${util.dbFields(toUpdate).insert}
+          WHERE id=${id}
+          RETURNING *;
+      `,
+        Object.values(toUpdate)
+      );
+      user = rows[0];
+      return user;
+    }
+  }
+  catch (error) {
+    console.error ('error in updating the user function!')
+    throw error
   }
 }
 

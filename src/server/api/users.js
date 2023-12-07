@@ -143,20 +143,22 @@ usersRouter.patch(
   "/:userId",
   requireUser,
   requiredNotSent({
-    requiredParams: ["username, firstName, lastName, address, email"],
-    atLeastOne: true,
-  }),
+    requiredParams: ['username', 'firstName', 'lastName', 'address', 'address2', 'city', 'state', 'zip', 'email', 'password', 'isAdmin'],
+    atLeastOne: true}),
   async (req, res, next) => {
     try {
-      const { username, firstName, lastName, address, email } = req.body;
-      const [id] = req.params;
+      console.log('THIS IS USER ID IN PARAMS ', req.params)
+      const { username, firstName, lastName, address, address2, city, state, zip, email, password, isAdmin } = req.body;
+      const {userId} = req.params;
       const userToUpdate = await getUserById(userId);
+      console.log ('THIS IS USER TO UPDATE ',userToUpdate)
+      console.log ('THIS IS ADMIN STATUS ', isAdmin)
       if (!userToUpdate) {
         next({
           name: "Not Found",
           message: `No user by ID ${userId}`,
         });
-      } else if (req.user.id !== user.id) {
+      } else if (req.user.id !== userToUpdate.id) {
         res.status(403);
         next({
           name: "WrongUser",
@@ -164,15 +166,14 @@ usersRouter.patch(
         });
       } else {
         const updatedUser = await updateUser({
-          id: username,
-          firstName,
-          lastName,
-          address,
-          email,
+          id: userId, username, firstname: firstName, lastname: lastName, address, address2, city, state, zip, email, password, isadmin: isAdmin
         });
         if (updatedUser) {
+          console.log ('updating user...')
           res.send(updatedUser);
+          console.log ('finished updating user!')
         } else {
+          console.log ('error in updating the user!')
           next({
             name: "FailedToUpdate",
             message: "There was an error updating your routine",
@@ -180,6 +181,7 @@ usersRouter.patch(
         }
       }
     } catch (error) {
+      console.error ("ERROR!")
       next(error);
     }
   }

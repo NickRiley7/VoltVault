@@ -138,6 +138,7 @@ async function updateOrder({id, ...fields}) {
     for(let column in fields) {
       if(fields[column] !== undefined) toUpdate[column] = fields[column];
     }
+    console.log ('THIS IS UTIL DBFIELDS ', util.dbFields(toUpdate).insert)
     let order;
     if (util.dbFields(fields).insert.length > 0) {
       const {rows} = await client.query(`
