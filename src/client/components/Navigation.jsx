@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 export default function Navigations() {
   return (
     <nav>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
         <div class="container-fluid">
           <a class="navbar-brand" href="/">
             <img src="src/client/assets/TFFS0158.PNG" alt="Logo" width="40" height="35" class="d-inline-block align-text-top" href="/"/>VoltVault</a>
