@@ -4,6 +4,9 @@
   align-items: center;
   justify-content: center;
   height: 100vh; 
+  background-color: #BFBFBF;
+  height: 100%;
+  margin-top: 1%;
 }
 
 .App-header {
@@ -16,3 +19,6 @@
 }
 
 /* Add more styling for other elements if needed */
+/* #cards {
+  display: flex;
+} */
