@@ -147,7 +147,7 @@ async function createInitialItems (){
         id: 4,
         name: 'Galaxy Z Fold5',
         price: 1799.99,
-        details: ' ',
+        details: "Experience the future of mobile technology with the Galaxy Z Fold5. Unfold the massive 7.6'' cinematic screen for an immersive streaming experience on the go. Elevate your gaming with a powerful device, high refresh rates, and minimal input delays. Dual-App Viewing lets you do more with the expansive display, and S Pen capability enhances precision and productivity. Enjoy two experiences in one with the 6.2'' cover display and 7.6'' interior screen. Put it in Flex Mode for hands-free video calling or watching content. The sleek design, three unique colors, and durable build with Gorilla Glass Victus and IPX8 water resistance make the Galaxy Z Fold5 a head-turning device. Sync your world and simplify your life with connected Galaxy features like Quick Share and Galaxy Watch integration.",
         img: 'https://example.com/item2.jpg',
         tags: ['tag3', 'tag4'],
         category: 'Category 2',
