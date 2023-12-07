@@ -35,8 +35,8 @@ function AllItems() {
               <p>Price: ${item.price}</p>
               <img src= {item.img} alt={`Image of ${item.name}`} />
 
-              {/* <p>Available in Stock: {item.stock > 0 ? 'Yes' : 'No'}</p> */}
-              <p>{item.stock}</p>
+              <p>Available in Stock: {item.stock > 0 ? 'Yes' : 'No'}</p>
+              {/* <p>{item.stock}</p> */}
 
               <button onClick={() => navigate(`/items/${item.id}`)}> Show Item details</button>
               <button> Add item to Cart</button>
