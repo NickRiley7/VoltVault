@@ -176,7 +176,7 @@ usersRouter.patch(
           console.log ('error in updating the user!')
           next({
             name: "FailedToUpdate",
-            message: "There was an error updating your routine",
+            message: "There was an error updating the user",
           });
         }
       }
@@ -190,7 +190,6 @@ usersRouter.patch(
 usersRouter.delete("/:userId", requireAdmin, async (req, res, next) => {
   // no priority. But can be for admin
   try {
-    console.log(req.params);
     const {userId} = req.params
     const userToUpdate = await getUserById(userId);
     if (!userToUpdate) {
