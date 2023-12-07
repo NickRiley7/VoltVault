@@ -96,19 +96,19 @@ itemRouter.post('/', requireAdmin, async (req, res, next) => { //admin only acce
 
 // ===== TO CONTINUE WORKING ON PATCH ITEM ENDPOINT =======
 
-// itemRouter.patch ('/:itemId', 
-// requireAdmin, 
-// requiredNotSent({requiredParams: ['name', 'price', 'details', 'img', 'category', 'stock'], atLeastOne: true}),
-// async (req,res,next) => {
-//   try{
-//     const {itemId} = req.params
+itemRouter.patch ('/:itemId', 
+requireAdmin, 
+requiredNotSent({requiredParams: ['name', 'price', 'details', 'img', 'category', 'stock'], atLeastOne: true}),
+async (req,res,next) => {
+  try{
+    const {itemId} = req.params
 
-//   }
-//   catch (error){
-//     console.error ('error in patching this item!')
-//     throw error
-//   }
-// })
+  }
+  catch (error){
+    console.error ('error in patching this item!')
+    throw error
+  }
+})
 
 // ====================================================
 
