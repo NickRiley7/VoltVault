@@ -3,10 +3,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh; 
+  /* height: 100vh; */
   background-color: #BFBFBF;
   height: 100%;
-  margin-top: 1%;
+  padding-top: 3%;
 }
 
 .App-header {
