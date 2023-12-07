@@ -53,6 +53,9 @@ apiRouter.use('/items', itemRouter)
 const ordersRouter = require('./orders');
 apiRouter.use('/orders', ordersRouter);
 
+const orderItemsRouter = require('./orderItems');
+apiRouter.use('/order_items', orderItemsRouter);
+
 apiRouter.use((err, req, res, next) => {
   res.status(res.statusCode ? res.statusCode : 500).send(err)
   })

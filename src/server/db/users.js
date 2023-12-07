@@ -8,6 +8,10 @@ async function createUser({
   firstName,
   lastName,
   address,
+  address2,
+  city,
+  state,
+  zip,
   email,
   password,
   isAdmin,
@@ -18,11 +22,23 @@ async function createUser({
       rows: [user],
     } = await db.query(
       `
-        INSERT INTO users(username, firstName, lastName, address, email, password, isAdmin)
-        VALUES($1, $2, $3, $4, $5, $6, $7)
+        INSERT INTO users(username, firstName, lastName, address, address2, city, state, zip, email, password, isAdmin)
+        VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
         ON CONFLICT (email) DO NOTHING
         RETURNING *`,
-      [username, firstName, lastName, address, email, hashedPassword, isAdmin]
+      [
+        username,
+        firstName,
+        lastName,
+        address,
+        address2,
+        city,
+        state,
+        zip,
+        email,
+        hashedPassword,
+        isAdmin,
+      ]
     );
     console.log(user);
     return user;
@@ -114,7 +130,7 @@ async function getUserById(id) {
       [id]
     );
     if (!user) return null;
-    delete user.password
+    delete user.password;
     return user;
   } catch (error) {
     throw error;

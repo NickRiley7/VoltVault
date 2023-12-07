@@ -1,6 +1,6 @@
 const client = require('./client')
 const { getUserById } = require('./users')
-// const { attachItemsToOrders } = require('./items')
+const { attachItemsToOrders } = require('./items')
 // const { getUserByUsername } = require('./users')
 const util = require('./util.js');
 
@@ -29,11 +29,13 @@ async function getOrdersWithoutItems(){
 
 async function getAllOrders() {
   try {
+    console.log('Getting all orders...')
     const { rows: orders } = await client.query(`
     SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id 
     `);
+    console.log('THIS IS ORDERS IN GET ALL ORDERS: ', orders)
     return attachItemsToOrders(orders);
   } catch (error) {
     throw error

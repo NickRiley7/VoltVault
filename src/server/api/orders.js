@@ -7,7 +7,9 @@ const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
 
 ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
   try {
-    const orders = await getOrdersWithoutItems();
+    // const orders = await getOrdersWithoutItems()
+    const orders = await getAllOrders(); //change to getOrdersWithOutItems if getAllOrders still not working
+    console.log ('successfully getting all orders')
     res.send(orders);
     console.log ('this is the user:', req.user.isadmin )
   } catch (error) {
@@ -153,22 +155,29 @@ ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
 ordersRouter.post ('/:orderId/items', requiredNotSent({requiredParams: [ 'item_id', 'quantity']}), async (req, res, next) => {
   try {
     const {item_id, quantity} = req.body;
+    console.log ('THIS IS ITEM AND QUANTITY', item_id, quantity)
+
     const {orderId} = req.params;
     const foundOrderItems = await getOrderItemsByOrder ({id: orderId});
+    console.log ('THIS IS FOUND ORDER ITEMS', foundOrderItems)
     const existingOrderItems = foundOrderItems && foundOrderItems.filter(orderItem => orderItem.item_id === item_id);
+    console.log ('THIS IS EXISTING ORDER ITEMS: ', existingOrderItems)
     if(existingOrderItems && existingOrderItems.length) {
+      console.log ('THIS COMBINATION IS ALREADY EXIST', orderId, item_id)
       next({
-        name: 'RoutineActivityExistsError',
-        message: `A routine_activity by that order_id ${order_id}, item_id ${item_id} combination already exists`
+        name: 'OrderItemsExistError',
+        message: `An order_id by that order_id ${orderId}, item_id ${item_id} combination already exists`
       });
     } else {
-      const createdOrderItem = await addItemToOrder({ order_id, item_id, quantity });
+      console.log ('CREATING ORDER_ITEM...')
+      console.log ('THIS IS ORDER_ID', orderId)
+      const createdOrderItem = await addItemToOrder({ order_id: orderId, item_id, quantity });
       if(createdOrderItem) {
         res.send(createdOrderItem);
       } else {
         next({
           name: 'FailedToCreate',
-          message: `There was an error adding item ${item_id} to order ${order_id}`
+          message: `There was an error adding item ${item_id} to order ${orderId}`
         })
       }
     }
