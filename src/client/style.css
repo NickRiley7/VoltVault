@@ -19,6 +19,6 @@
 }
 
 /* Add more styling for other elements if needed */
-/* #cards {
-  display: flex;
-} */
+#cart {
+  width: 50px;
+}
