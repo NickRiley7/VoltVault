@@ -60,7 +60,7 @@ itemRouter.get ('/category/:category', async (req,res,next) => {
   }
 })
 
-itemRouter.get('/name/:name', async (req, res, next) => {
+itemRouter.get('/name/:name', async (req, res, next) => { //we might need this for search bar
   try {
     const {name} = req.params;
     const item = await getItemByName(name);
