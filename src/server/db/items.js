@@ -145,7 +145,7 @@ async function attachItemsToOrders(orders) {
     // loop over the orders
     for(const order of ordersToReturn) {
       // filter the items to only include those that have this orderId
-      const itemsToAdd = items.filter(activity => activity.orderId === order.id);
+      const itemsToAdd = items.filter(item => item.order_id === order.id);
       // attach the items to each single order
       order.items = itemsToAdd;
     }

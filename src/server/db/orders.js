@@ -1,6 +1,6 @@
 const client = require('./client')
 const { getUserById } = require('./users')
-// const { attachItemsToOrders } = require('./items')
+const { attachItemsToOrders } = require('./items')
 // const { getUserByUsername } = require('./users')
 const util = require('./util.js');
 
