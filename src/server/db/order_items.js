@@ -99,7 +99,7 @@ async function updateOrderItem ({id, ...fields}) {
   }
 }
 
-async function destroyOrderItem(id) {
+async function destroyOrderItems(id) {
   try {
     const {rows: [orderItem]} = await client.query(`
         DELETE FROM order_items 
@@ -127,6 +127,6 @@ module.exports = {
   getAllOrderItems,
   getOrderItemsByOrder,
   updateOrderItem,
-  destroyOrderItem,
+  destroyOrderItems,
   canEditOrderItem,
 };
