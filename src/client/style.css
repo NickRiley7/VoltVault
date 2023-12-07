@@ -22,3 +22,9 @@
 #cart {
   width: 50px;
 }
+
+#singleItem {
+  padding: 2%;
+  background-color: #BFBFBF;
+  height: 100vh;
+}

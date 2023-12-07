@@ -33,14 +33,22 @@ function ItemDetails() {
   }
 
   return (
-    <div className='singleItemDetail'>
-      <h2>{item.name} details </h2>
-      <p>{item.details}</p>
-      <p>Stock: {item.stock}</p>
-      <p>Price: ${item.price}</p>
-      <img src= {item.img} alt={`Image of ${item.name}`} /> 
-      <br/>
-      <button> Add item to Cart</button>
+    <div id="singleItem" class="card mb-3 w-75 mb-3 shadow p-3 mb-5 bg-body-tertiary rounded" className='singleItemDetail'>
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src={item.img} class="img-fluid rounded-start" alt={`Image of ${item.name}`} />
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h2 class="card-title pb-2">{item.name} details </h2>
+            <p>{item.details}</p>
+            <p class="card-text"><small class="text-body-secondary">Stock: {item.stock}</small></p>
+            <p class="card-text"><small class="text-body-secondary">Price: ${item.price}</small></p>
+            <br />
+            <button type="button" class="btn btn-outline-success"> Add item to Cart</button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
