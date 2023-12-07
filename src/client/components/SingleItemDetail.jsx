@@ -38,6 +38,8 @@ function ItemDetails() {
       <p>{item.details}</p>
       <p>Stock: {item.stock}</p>
       <p>Price: ${item.price}</p>
+      <img src= {item.img} alt={`Image of ${item.name}`} /> 
+      <br/>
       <button> Add item to Cart</button>
     </div>
   );
