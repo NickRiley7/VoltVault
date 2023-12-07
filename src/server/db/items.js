@@ -126,18 +126,21 @@ async function updateItem({id, ...fields}){
 
 // I find this way of doing the create item function is easier to understand what is going on
 
-async function deleteItem (id) {
+async function destroyItem (id) {
   try {
+    console.log (`starting to destroy item with ID ${id}`)
     const{ rows: [item] } = await client.query (
       `
       DELETE FROM items
       WHERE id = $1
-      return *;
+      RETURNING *;
       `,
       [id]
     );
+    console.log(`completed destroying item ID ${id}`)
     return item;
   } catch (err){
+    console.error (`error in destroying item with id ${id}`)
     throw err;
   }
 }
@@ -184,6 +187,6 @@ module.exports ={
   getAllItemsByCategory,
   createItem,
   updateItem,
-  deleteItem,
+  destroyItem,
   attachItemsToOrders
 };

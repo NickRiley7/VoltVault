@@ -190,7 +190,6 @@ usersRouter.patch(
 usersRouter.delete("/:userId", requireAdmin, async (req, res, next) => {
   // no priority. But can be for admin
   try {
-    console.log(req.params);
     const {userId} = req.params
     const userToUpdate = await getUserById(userId);
     if (!userToUpdate) {

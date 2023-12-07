@@ -8,7 +8,7 @@ const {
   getItemByName,
   getAllItemsByCategory,
   createItem,
-  deleteItem,
+  destroyItem,
   updateItem,
 } = require('../db/items');
 // const { updateItem } = require('../db/items');
@@ -145,12 +145,26 @@ async (req,res,next) => {
 // );
 
 
-itemRouter.delete ('/:id',requireUser, async (req, res, next) => { //admin only
+itemRouter.delete ('/:itemId',requireAdmin, async (req, res, next) => { 
   try {
-    const { id } = req.params;
-    const deleteItem = await deleteItem(id);
-    res.json(deleteItem);
+    const { itemId } = req.params;
+    console.log (`destroying item with id ${itemId}`)
+    const itemToUpdate = await getItemById(itemId);
+
+    if(!itemToUpdate) {
+      next({
+        name: 'NotFound',
+        message: `No item with ID ${itemId}` 
+      })
+    }
+    else {
+      const deletedItem = await destroyItem(itemId);
+      res.send(deletedItem);
+      console.log (`item deleted!`)
+    }
+
   } catch (err){
+    console.error ('error in deleting the item')
     next (err)
   }
 }
