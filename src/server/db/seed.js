@@ -3,6 +3,7 @@ const { addItemToOrder } = require ('./order_items.js')
 const { createOrder, getOrdersWithoutItems, getAllOrders } = require('./orders')
 const { getALLItems, createItem } = require('./items')
 const { createUser } = require ('./users.js')
+const { mergeAlias } = require('vite')
 // const { v4: uuidv4 } = require('uuid');
 
 
@@ -32,6 +33,10 @@ async function createTables() {
       firstName VARCHAR(255),
       lastName VARCHAR(255),
       address VARCHAR(255),
+      address2 VARCHAR(255),
+      city VARCHAR(255),
+      state VARCHAR(2),
+      zip INTEGER
       email VARCHAR(255) UNIQUE,
       password VARCHAR(255),
       isAdmin BOOL
@@ -85,6 +90,10 @@ async function createInitialUsers (){
         firstName: 'Ross',
         lastName: 'Ritter',
         address: '123 Main St',
+        address2: '',
+        city: 'Winston Salem',
+        state: 'NC',
+        zip: 27023, 
         email: 'rar@email.com',
         password: 'RAR',
         isAdmin: true
@@ -94,10 +103,53 @@ async function createInitialUsers (){
         firstName: 'John',
         lastName: 'Doe',
         address: '456 Oak St',
+        address2: '',
+        city: 'Atlanta',
+        state: 'GA',
+        zip: 30033,
         email: 'john@example.com',
         password: 'example',
         isAdmin: false
       },
+      {
+        username: 'test',
+        firstName: 'Nick',
+        lastName: 'Waters',
+        address: '1822 Kenyon St, NW',
+        address2: 'Apt 593',
+        city: 'Washington',
+        state: 'DC',
+        zip: 20010,
+        email: 'nrw@gmail.com',
+        password: 'test',
+        isAdmin: true
+      },
+      {
+        username: 'ThisGudy',
+        firstName: 'Alex',
+        lastName: 'Lane',
+        address: '103 End Rd',
+        address2: 'Apt 6',
+        city: 'Winona',
+        state 'MN',
+        zip: 55987,
+        email: 'aol@mail.com',
+        password: 'pswd1',
+        isAdmin: false
+      },
+      {
+        username: 'Empress4ever',
+        firstName: 'Josie',
+        lastName: 'Beau',
+        address: '153 Main St.',
+        address2: '',
+        city: 'Paris',
+        state: 'LA',
+        zip: 70001,
+        email: 'empj@email.com',
+        password: 'TestTest',
+        isAdmin: false
+      }
     ];
 
     const users = await Promise.all (usersToCreate.map(user => createUser (user)));
