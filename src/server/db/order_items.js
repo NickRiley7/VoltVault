@@ -1,7 +1,7 @@
 const client = require('./client');
 const util = require('./util');
 
-async function getOrderItemById(id){
+async function getOrderItemsById(id){
   try {
     const {rows: [orderItem]} = await client.query(`
       SELECT * FROM order_items
@@ -99,7 +99,7 @@ async function updateOrderItem ({id, ...fields}) {
   }
 }
 
-async function destroyOrderItem(id) {
+async function destroyOrderItems(id) {
   try {
     const {rows: [orderItem]} = await client.query(`
         DELETE FROM order_items 
@@ -122,11 +122,11 @@ async function canEditOrderItem(orderItemId, userId) {
 }
 
 module.exports = {
-  getOrderItemById,
+  getOrderItemsById,
   addItemToOrder,
   getAllOrderItems,
   getOrderItemsByOrder,
   updateOrderItem,
-  destroyOrderItem,
+  destroyOrderItems,
   canEditOrderItem,
 };
