@@ -39,6 +39,7 @@ export default function Navigations() {
             </form>
             <a href="login" class="btn btn-outline-primary m-1" tabindex="-1" role="button">Login</a>
             <a href="register" class="btn btn-outline-primary" tabindex="-1" role="button">Signup</a>
+            <img id="cart" href="#" class="btn btn-light m-1" src='/src/client/assets/cart icon.png'></img>
           </div>
         </div>
       </nav>
