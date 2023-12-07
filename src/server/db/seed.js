@@ -116,7 +116,7 @@ async function createInitialUsers() {
         username: "test",
         firstName: "Nick",
         lastName: "Waters",
-        address: "1822 Kenyon St, NW",
+        address: "1822 Sherman Ave, NW",
         address2: "Apt 593",
         city: "Washington",
         state: "DC",
