@@ -75,7 +75,7 @@ itemRouter.post('/', requireAdmin, async (req, res, next) => { //admin only acce
   const {name, price, details, img, category, stock} = req.body;
   const itemData = {}
   try {
-    console.log (`posting new item with the following details: ${req.body}`)
+    console.log (`posting new item...`)
 
     itemData.name = name;
     itemData.price = price;
@@ -87,7 +87,7 @@ itemRouter.post('/', requireAdmin, async (req, res, next) => { //admin only acce
     const newItem = await createItem(itemData);
 
     res.send(newItem);
-    console.log (`finished adding the following item into the data! ${newItem}`)
+    console.log (`finished adding new item!`)
   } catch (err) {
     console.error ("error in posting new item")
     next (err)
@@ -101,8 +101,31 @@ requireAdmin,
 requiredNotSent({requiredParams: ['name', 'price', 'details', 'img', 'category', 'stock'], atLeastOne: true}),
 async (req,res,next) => {
   try{
+    console.log ('starting to patch items with the following id', req.params)
+    const {itemName, price, details, img, category, stock} = req.body;
     const {itemId} = req.params
-
+    const itemToUpdate = await getItemById(itemId)
+    if (!itemToUpdate) {
+      next({
+        name: 'NotFound',
+        message: `No item by ID ${itemId}`
+      });
+    } else {
+      const updatedItem = await updateItem({
+        id: itemId, name: itemName, price, details, img, category, stock
+      });
+      if (updatedItem) {
+        console.log (`start patching the following item ${itemToUpdate}`)
+        res.send (updatedItem)
+        console.log ('item finished updated!', updatedItem)
+      } else {
+        console.log ('error in updating the item!')
+        next ({
+          name: "FailedToUpdate",
+          message: "There was an error in updating the item"
+        })
+      }
+    }
   }
   catch (error){
     console.error ('error in patching this item!')

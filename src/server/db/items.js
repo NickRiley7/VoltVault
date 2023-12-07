@@ -80,46 +80,50 @@ async function createItem ({name, price, details, img, category, stock }) {
     throw err; 
   }
 }
-// async function updateItem({id, ...fields}){
-//   try {
-//     const toUpdate ={}
-//     for (let column in fields) {
-//       if(fields[column] !== undefined) toUpdate[column] = fields[column];
-//     }
-//     let item; 
-//     if (Object.keys(tpUpdate).length > 0 ) {
-//       const { rows } = await client.query(
-//         `
-//         UPDATE items
-//         SET ${Object.keys(toUpdate).length + 1}
-//         RETURNING *; 
-//         `,
-//         [...Object.values(toUpdate), id]);
-//         item = rows[0];
-//         return item;
-//     }
-//   } catch (err){
-//     throw err;
-//   }
+async function updateItem({id, ...fields}){
+  try {
+    console.log('updating item...')
+    const toUpdate = {};
+    for (let column in fields) {
+      if (fields[column] !== undefined) toUpdate[column] = fields[column];
+    }
+    let item;
+    if (util.dbFields(fields).insert.length > 0) {
+      const { rows } = await client.query(
+        `
+          UPDATE items
+          SET ${util.dbFields(toUpdate).insert}
+          WHERE id=${id}
+          RETURNING *;
+      `,
+        Object.values(toUpdate)
+      );
+      item = rows[0];
+      return item;
+    }
+  } catch (err){
+    throw err;
+  }
+}
+
+// async function updateItem(itemId, updatedField) {
+//   const {name, price, details, img, category, stock } = updatedField;
+//   const query = `
+//   UPDATE items
+//   SET name = $1, price = $2, details = $3, img = $4, category = $5, stock = $6
+//   WHERE id = $7
+//   RETURNING *;
+//    `;
+//    const values = [name, price, details, img, category, stock, itemId];
+//    try {
+//     const result = await client.query(query, values );
+//     return result.rows[0];
+//    } catch (err){
+//     console.log("Err updating" );
+//     throw err
+//    }
 // }
 
-async function updateItem(itemId, updatedField) {
-  const {name, price, details, img, category, stock } = updatedField;
-  const query = `
-  UPDATE items
-  SET name = $1, price = $2, details = $3, img = $4, category = $5, stock = $6
-  WHERE id = $7
-  RETURNING *;
-   `;
-   const values = [name, price, details, img, category, stock, itemId];
-   try {
-    const result = await client.query(query, values );
-    return result.rows[0];
-   } catch (err){
-    console.log("Err updating" );
-    throw err
-   }
-}
 // I find this way of doing the create item function is easier to understand what is going on
 
 async function deleteItem (id) {

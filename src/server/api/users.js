@@ -176,7 +176,7 @@ usersRouter.patch(
           console.log ('error in updating the user!')
           next({
             name: "FailedToUpdate",
-            message: "There was an error updating your routine",
+            message: "There was an error updating the user",
           });
         }
       }
