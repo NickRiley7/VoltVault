@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-export default function RegistrationForm({ setToken }) {
+export default function RegistrationForm() {
   const [username, setUsername] = useState("");
-  const [firstName, setFirstname] = useState("");
-  const [lastName, setLastname] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [address, setAddress] = useState("");
   const [address2, setAddress2] = useState("");
   const [city, setCity] = useState("");
@@ -13,6 +13,7 @@ export default function RegistrationForm({ setToken }) {
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState(null);
+  const [token, setToken] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -47,8 +48,8 @@ export default function RegistrationForm({ setToken }) {
       setToken(result.token);
       setSuccessMessage(result.message);
       setUsername("");
-      setFirstname("");
-      setLastname("");
+      setFirstName("");
+      setLastName("");
       setAddress("");
       setAddress2("");
       setCity("");
@@ -79,7 +80,7 @@ export default function RegistrationForm({ setToken }) {
           First Name:{""}
           <input
             value={firstName}
-            onChange={(e) => setFirstname(e.target.value)}
+            onChange={(e) => setFirstName(e.target.value)}
           />
         </label>
 
@@ -87,7 +88,7 @@ export default function RegistrationForm({ setToken }) {
           Last Name:{""}
           <input
             value={lastName}
-            onChange={(e) => setLastname(e.target.value)}
+            onChange={(e) => setLastName(e.target.value)}
           />
         </label>
 
