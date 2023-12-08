@@ -26,6 +26,16 @@ usersRouter.get("/", requireAdmin, async (req, res, next) => {
   }
 });
 
+
+usersRouter.get('/account', requireUser, async (req,res,next) => {
+  try{
+    res.send (req.user)
+  }
+  catch (error) {
+    next(error)
+  }
+})
+
 //GET SINGLE USER BY ID
 usersRouter.get("/:id", requireAdmin, async (req, res, next) => {
   //requireAdmin
