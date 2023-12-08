@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function RegistrationForm() {
+export default function RegistrationForm({ setToken }) {
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -13,7 +13,6 @@ export default function RegistrationForm() {
   const [password, setPassword] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [error, setError] = useState(null);
-  const [token, setToken] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
