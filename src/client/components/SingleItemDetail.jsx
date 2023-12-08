@@ -33,7 +33,7 @@ function ItemDetails() {
   }
 
   return (
-    <div id="singleItem" className="card mb-3 w-75 mb-3 shadow p-3 mb-5 bg-body-tertiary rounded" class='singleItemDetail'>
+    <div id="singleItem" className="card mb-3 w-75 mb-3 shadow p-3 mb-5 bg-body-tertiary rounded singleItemDetail">
       <div className="row g-0">
         <div className="col-md-4">
           <img src={item.img} className="img-fluid rounded-start" alt={`Image of ${item.name}`} />
