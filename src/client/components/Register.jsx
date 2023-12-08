@@ -16,6 +16,10 @@ export default function RegistrationForm({ setToken }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
+    register();
+  }
+
+  async function register(e) {
     try {
       const response = await fetch("http://localhost:3000/api/users/register", {
         method: "POST",
@@ -35,9 +39,11 @@ export default function RegistrationForm({ setToken }) {
           password,
         }),
       });
-
       const result = await response.json();
       console.log("Signup Result:", result);
+      if (!response.ok) {
+        throw result;
+      }
       setToken(result.token);
       setSuccessMessage(result.message);
       setUsername("");
@@ -50,8 +56,8 @@ export default function RegistrationForm({ setToken }) {
       setZip("");
       setEmail("");
       setPassword("");
-    } catch (error) {
-      setError(error.message);
+    } catch (err) {
+      console.error(err);
     }
   }
 
