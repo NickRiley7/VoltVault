@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
+import Searchbar from './SearchBar';
+
 
 export default function Navigations() {
   return (
@@ -75,49 +77,14 @@ export default function Navigations() {
                 </ul>
               </li>
             </ul>
-            <form className="d-flex" role="search">
-              {/* styling for search bar. position-absolute top-5 start-50 end-0 w-50 translate-middle */}
-              <input
-                className="form-control me-2"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-              {/* styling for button. position-absolute start-50 end-75 translate-middle */}
-              <button className="btn btn-outline-success" type="submit">
-                Search
-              </button>
-            </form>
-            <Link
-              to="login"
-              className="btn btn-outline-primary m-1"
-              tabIndex="-1"
-              role="button"
-            >
-              Login
-            </Link>
-            <Link
-              className="btn btn-outline-primary"
-              to="register"
-              tabIndex="-1"
-              role="button"
-            >
-              Signup
-            </Link>
-            <Link
-              className="btn btn-outline-primary"
-              to="users"
-              tabIndex="-1"
-              role="button"
-            >
-              Users
-            </Link>
-            <img
-              id="cart"
-              href="#"
-              className="btn btn-light m-1"
-              src="/src/client/assets/cart icon.png"
-            ></img>
+            <Searchbar/>
+            
+
+
+
+            <Link to="login" className="btn btn-outline-primary m-1" tabIndex="-1" role="button">Login</a>
+            <Link to="register" className="btn btn-outline-primary" tabIndex="-1" role="button">Signup</a>
+            <img id="cart" href="#" className="btn btn-light m-1" src='/src/client/assets/cart icon.png'></img>
           </div>
         </div>
       </nav>
