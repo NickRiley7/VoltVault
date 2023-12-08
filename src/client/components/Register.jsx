@@ -109,7 +109,6 @@ export default function RegistrationForm() {
           City:{""}
           <input value={city} onChange={(e) => setCity(e.target.value)} />
         </label>
-
         <label>
           State:
           <select value={state} onChange={(e) => setState(e.target.value)}>

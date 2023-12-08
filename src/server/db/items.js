@@ -6,7 +6,7 @@ const util = require ('./util.js');
 // const import { v4 as uuidv4 } from 'uuid';
 
 
-async function getItemID(id) {
+async function getItemById(id) {
   try {
     console.log ('GETTING ITEM BY ID...')
     console.log ('THIS IS ID FROM THE FUNCTION: ', id)
@@ -38,7 +38,7 @@ async function getItemByName(name) {
   }
 }
 
-async function getALLItems () {
+async function getAllItems () {
   try {
     const{ rows } = await client.query (
       `SELECT * 
@@ -47,6 +47,22 @@ async function getALLItems () {
     return rows; 
   } catch (err){
     throw err;
+  }
+}
+
+async function getAllItemsByCategory (category) {
+  try {
+    console.log ('getting all items by category...')
+    const { rows: [item] } = await client.query (
+      `SELECT * FROM items
+      WHERE category = $1
+      `, [category]
+    );
+    console.log ('finished getting all items by category!')
+    return item
+  } catch (error) {
+    console.error ('ERROR! Cannot get all items by category')
+    throw error
   }
 }
 
@@ -64,60 +80,67 @@ async function createItem ({name, price, details, img, category, stock }) {
     throw err; 
   }
 }
-// async function updateItem({id, ...fields}){
-//   try {
-//     const toUpdate ={}
-//     for (let column in fields) {
-//       if(fields[column] !== undefined) toUpdate[column] = fields[column];
-//     }
-//     let item; 
-//     if (Object.keys(tpUpdate).length > 0 ) {
-//       const { rows } = await client.query(
-//         `
-//         UPDATE items
-//         SET ${Object.keys(toUpdate).length + 1}
-//         RETURNING *; 
-//         `,
-//         [...Object.values(toUpdate), id]);
-//         item = rows[0];
-//         return item;
-//     }
-//   } catch (err){
-//     throw err;
-//   }
+async function updateItem({id, ...fields}){
+  try {
+    console.log('updating item...')
+    const toUpdate = {};
+    for (let column in fields) {
+      if (fields[column] !== undefined) toUpdate[column] = fields[column];
+    }
+    let item;
+    if (util.dbFields(fields).insert.length > 0) {
+      const { rows } = await client.query(
+        `
+          UPDATE items
+          SET ${util.dbFields(toUpdate).insert}
+          WHERE id=${id}
+          RETURNING *;
+      `,
+        Object.values(toUpdate)
+      );
+      item = rows[0];
+      return item;
+    }
+  } catch (err){
+    throw err;
+  }
+}
+
+// async function updateItem(itemId, updatedField) {
+//   const {name, price, details, img, category, stock } = updatedField;
+//   const query = `
+//   UPDATE items
+//   SET name = $1, price = $2, details = $3, img = $4, category = $5, stock = $6
+//   WHERE id = $7
+//   RETURNING *;
+//    `;
+//    const values = [name, price, details, img, category, stock, itemId];
+//    try {
+//     const result = await client.query(query, values );
+//     return result.rows[0];
+//    } catch (err){
+//     console.log("Err updating" );
+//     throw err
+//    }
 // }
 
-async function updateItem(itemId, updatedField) {
-  const {name, price, details, img, category, stock } = updatedField;
-  const query = `
-  UPDATE items
-  SET name = $1, price = $2, details = $3, img = $4, category = $5, stock = $6
-  WHERE id = $7
-  RETURNING *;
-   `;
-   const values = [name, price, details, img, category, stock, itemId];
-   try {
-    const result = await client.query(query, values );
-    return result.rows[0];
-   } catch (err){
-    console.log("Err updating" );
-    throw err
-   }
-}
 // I find this way of doing the create item function is easier to understand what is going on
 
-async function deleteItem (id) {
+async function destroyItem (id) {
   try {
+    console.log (`starting to destroy item with ID ${id}`)
     const{ rows: [item] } = await client.query (
       `
       DELETE FROM items
       WHERE id = $1
-      return *;
+      RETURNING *;
       `,
       [id]
     );
+    console.log(`completed destroying item ID ${id}`)
     return item;
   } catch (err){
+    console.error (`error in destroying item with id ${id}`)
     throw err;
   }
 }
@@ -158,11 +181,12 @@ async function attachItemsToOrders(orders) {
 
 
 module.exports ={
-  getItemID,
+  getItemById,
   getItemByName,
-  getALLItems,
+  getAllItems,
+  getAllItemsByCategory,
   createItem,
   updateItem,
-  deleteItem,
+  destroyItem,
   attachItemsToOrders
 };
