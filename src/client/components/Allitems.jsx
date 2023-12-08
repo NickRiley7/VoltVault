@@ -30,17 +30,17 @@ function AllItems() {
       {items.length ? (
         <ul>
           {items.map((item) => (
-            <li id="cards" class="card m-1 w-75 mb-3 shadow p-3 mb-5 bg-body-tertiary rounded" key={item.id}>
-              <div class="card-body">
-                <img class="card-img-top" src={item.img} alt={`Image of ${item.name}`} />
-                <h3 class="card-title">{item.name}</h3>
-                <p class="card-text">Price: ${item.price}</p>
+            <li id="cards" className="card m-1 w-75 mb-3 shadow p-3 mb-5 bg-body-tertiary rounded" key={item.id}>
+              <div className="card-body">
+                <img className="card-img-top" src={item.img} alt={`Image of ${item.name}`} />
+                <h3 className="card-title">{item.name}</h3>
+                <p className="card-text">Price: ${item.price}</p>
 
-                <p class="card-text">Available in Stock: {item.stock > 0 ? 'Yes' : 'No'}</p>
+                <p className="card-text">Available in Stock: {item.stock > 0 ? 'Yes' : 'No'}</p>
                 {/* <p>{item.stock}</p> */}
 
-                <button type="button" class="btn btn-outline-primary" onClick={() => navigate(`/items/${item.id}`)}> Show Item details</button>
-                <button type="button" class="btn btn-outline-primary m-1"> Add item to Cart</button>
+                <button type="button" className="btn btn-outline-primary" onClick={() => navigate(`/items/${item.id}`)}> Show Item details</button>
+                <button type="button" className="btn btn-outline-primary m-1"> Add item to Cart</button>
 
 
               </div>
