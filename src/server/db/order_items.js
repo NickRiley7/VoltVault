@@ -43,14 +43,15 @@ async function getAllOrderItems() {
   }
 }
 
-async function getOrderItemsByOrder({id}) {
+async function getOrderItemsByOrder(id) {
   try {
-    const {rows} = await client.query(`
+    console.log (`starting getting order items with this id ${id}...`)
+    const {rows : [orderItems]} = await client.query(`
       SELECT * FROM order_items
-      WHERE "order_id" = ${id}
-    `);
+      WHERE "order_id" = $1
+    `, [id]);
 
-    return rows;
+    return orderItems;
   } catch (error) {
     throw error;
   }
@@ -113,12 +114,14 @@ async function destroyOrderItems(id) {
 }
 
 async function canEditOrderItem(orderItemId, userId) {
+  console.log ('starting can edit order item function...')
   const {rows: [orderFromOrderItem]} = await client.query(`
       SELECT * FROM order_items
-      JOIN orders ON order_items."orderId" = orders.id
+      JOIN orders ON order_items.order_id = orders.id
       AND order_items.id = $1
     `, [orderItemId]);
-    return orderFromOrderItem.creatorId === userId;
+    console.log ('this is ')
+    return orderFromOrderItem.userId === userId;
 }
 
 module.exports = {
