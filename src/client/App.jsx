@@ -7,7 +7,7 @@ import Register from "./components/Register";
 import AllItems from "./components/Allitems";
 import UserAccount from "./components/UserAccount";
 
-import ItemDetails from './components/SingleItemDetail';
+import ItemDetails from "./components/SingleItemDetail";
 
 import AllUsers from "./components/AllUsers";
 
@@ -15,6 +15,7 @@ import AllUsers from "./components/AllUsers";
 
 function App() {
   const [count, setCount] = useState(0);
+  const [token, setToken] = useState("");
 
   return (
     <Router>
@@ -24,16 +25,17 @@ function App() {
           {/* <h1>VoltVault</h1> */}
           {/* <img id='comp-img' src='./computer.png'></img> */}
 
-
-        <Routes>
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-          <Route path="/" element={<AllItems />} />
-          <Route path="account" element={<UserAccount />} />
-          <Route path="/items/:itemid" element ={<ItemDetails />}/>
-          <Route path="users" element={<AllUsers />} />
+          <Routes>
+            <Route path="login" element={<Login setToken={setToken} />} />
+            <Route path="register" element={<Register setToken={setToken} />} />
+            <Route path="/" element={<AllItems token={token} />} />
+            <Route path="account" element={<UserAccount token={token} />} />
+            <Route
+              path="/items/:itemid"
+              element={<ItemDetails token={token} />}
+            />
+            <Route path="users" element={<AllUsers token={token} />} />
           </Routes>
-
         </div>
       </>
     </Router>
