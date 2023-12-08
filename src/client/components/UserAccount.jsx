@@ -12,9 +12,9 @@ function UserAccount() {
     // fetchOrders();
   }, []);
 
-  async function fetchUser() {
+  async function fetchUser({ token }) {
     try {
-      let { data } = await axios.get(`${API}/users/1`);
+      let { data } = await axios.get(`${API}/users/account`);
       console.log(data);
       setFirstName(data.firstname);
       setUsername(data.username);

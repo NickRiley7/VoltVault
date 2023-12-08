@@ -29,6 +29,7 @@ const Login = ({ setToken }) => {
         }),
       });
       const result = await response.json();
+      console.log(result);
       setMessage(result.message);
       setToken(result.token);
       if (!response.ok) {
