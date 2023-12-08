@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom';
-import Searchbar from './SearchBar';
-
+import { Link } from "react-router-dom";
+import Searchbar from "./SearchBar";
 
 export default function Navigations() {
   return (
@@ -77,14 +76,30 @@ export default function Navigations() {
                 </ul>
               </li>
             </ul>
-            <Searchbar/>
-            
+            <Searchbar />
 
-
-
-            <Link to="login" className="btn btn-outline-primary m-1" tabIndex="-1" role="button">Login</a>
-            <Link to="register" className="btn btn-outline-primary" tabIndex="-1" role="button">Signup</a>
-            <img id="cart" href="#" className="btn btn-light m-1" src='/src/client/assets/cart icon.png'></img>
+            <Link
+              to="login"
+              className="btn btn-outline-primary m-1"
+              tabIndex="-1"
+              role="button"
+            >
+              Login
+            </Link>
+            <Link
+              to="register"
+              className="btn btn-outline-primary"
+              tabIndex="-1"
+              role="button"
+            >
+              Signup
+            </Link>
+            <img
+              id="cart"
+              href="#"
+              className="btn btn-light m-1"
+              src="/src/client/assets/cart icon.png"
+            ></img>
           </div>
         </div>
       </nav>
