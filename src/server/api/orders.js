@@ -1,10 +1,11 @@
 const express = require('express')
 const ordersRouter = express.Router()
-const { getAllOrders, getOrdersWithoutItems, getOrdersByUserId, createOrder, getOrderById, updateOrder, destroyOrder } = require('../db/orders');
+const { getAllOrders, getOrdersWithoutItems, getOrdersByUserId, getAllOpenOrders, getOpenOrderByUserId, createOrder, getOrderById, updateOrder, destroyOrder } = require('../db/orders');
 const { getUserById } = require ('../db/users');
 const { addItemToOrder, getOrderItemById, getOrderItemsByOrder } = require ('../db/order_items')
 const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
 
+// GET All Orders
 ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
   try {
     // const orders = await getOrdersWithoutItems()
@@ -17,6 +18,22 @@ ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
   }
 })
 
+// GET All open orders
+ordersRouter.get ('/open_orders', requireAdmin, async (req, res, next) => {
+  try{
+    console.log ('Starting to get all open orders...')
+    const orders = await getAllOpenOrders ()
+    console.log ('Successfully getting all open orders!')
+    res.send(orders)
+  }
+  catch (error) {
+    console.error ('ERROR! in getting all open orders')
+    throw error
+  }
+})
+
+
+// GET order by order ID
 ordersRouter.get('/:orderId', requireUser, async (req, res, next) => {
   try {
     const {orderId} =req.params;
@@ -45,6 +62,8 @@ ordersRouter.get('/:orderId', requireUser, async (req, res, next) => {
   }
 })
 
+
+// POST new order
 ordersRouter.post('/', requireUser, async (req, res, next) => { //should have requireUser as parameter later on
   const { order_total, items } = req.body;
 
@@ -75,6 +94,7 @@ ordersRouter.post('/', requireUser, async (req, res, next) => { //should have re
   }
 })
 
+// PATCH an order
 ordersRouter.patch(
   '/:orderId',
   requireUser,
@@ -119,6 +139,7 @@ ordersRouter.patch(
   }
 )
 
+// DELETE an order
 ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
   try {
     console.log ('deleting order...')
@@ -152,6 +173,7 @@ ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
   }
 })
 
+// POST new item into an order
 ordersRouter.post ('/:orderId/items', requiredNotSent({requiredParams: [ 'item_id', 'quantity']}), async (req, res, next) => {
   try {
     const {item_id, quantity} = req.body;

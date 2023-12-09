@@ -42,6 +42,7 @@ async function getAllOrders() {
     throw error
   }
 }
+
 async function getAllOrdersByUser({username}) {
   try {
     const user = await getUserByUsername(username);
@@ -73,6 +74,45 @@ async function getOrdersByUserId ({userId}) {
   }
 }
 
+async function getAllOpenOrders () {
+  try {
+    console.log ('starting getAllOpenOrders...')
+    const { rows: orders } = await client.query(`
+      SELECT 
+        orders.*, users.id AS "userId", users.username, users.firstname, users.lastname, users.address, users.address2, users.city, users.state, users.zip, users.email
+      FROM orders
+      JOIN users ON orders."userId" = users.id
+      WHERE orders.order_status = "open"
+    `)
+    console.log ('THIS IS ORDER STATUS', orders.order_status)
+    return attachItemsToOrders(orders)
+  }
+  catch (error){ 
+    console.error ('ERROR! in getting all open orders')
+    throw error
+  }
+}
+
+async function getOpenOrderByUserId (userId) {
+
+  try {
+    const user = await getUserById (userId);
+    const { rows: orders } = await client.query(`
+      SELECT 
+        orders.*, users.id AS "userId", users.username, users.firstname, users.lastname, users.address, users.address2, users.city, users.state, users.zip, users.email
+      FROM orders
+      JOIN users ON orders."userId" = users.id
+      WHERE orders."userId" = $1
+      AND order_status = "open"
+    `, [user.id])
+    return attachItemsToOrders(orders)
+  }
+  catch (error){
+    console.error ('ERROR! in getting open order by user id!')
+    throw error
+  }
+}
+
 async function getCompletedOrdersByUser({username}) {
   try {
     const user = await getUserByUsername(username);
@@ -81,7 +121,7 @@ async function getCompletedOrdersByUser({username}) {
     FROM orders
     JOIN users ON orders."userId" = users.id 
     WHERE "userId" = $1
-    AND "order_status" = completed
+    AND "order_status" = "completed"
     `, [user.id]);
     return attachItemsToOrders(orders);
   } catch (error) {
@@ -199,6 +239,8 @@ module.exports = {
   getAllCompletedOrders,
   getAllOrdersByUser, 
   getOrdersByUserId,
+  getAllOpenOrders,
+  getOpenOrderByUserId,
   getCompletedOrdersByUser,
   getCompletedOrdersByItem,
   createOrder,
