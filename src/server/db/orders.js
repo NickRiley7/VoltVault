@@ -1,6 +1,7 @@
 const client = require('./client')
 const { getUserById } = require('./users')
 const { attachItemsToOrders } = require('./items')
+const { getAllItemsByOrderId } = require('./items.js')
 // const { getUserByUsername } = require('./users')
 const util = require('./util.js');
 
@@ -173,6 +174,22 @@ async function destroyOrder(id) {
   }
 }
 
+async function totalAmountCalc(orderId) {
+  try {
+    console.log (`starting calculation for orderid no. ${orderId}...`)
+    const items = await getAllItemsByOrderId(orderId)
+    console.log (`These are the items that we are going to start calculate ${items}`)
+    const totalItemAmount = items.map(item => item.price * item.quantity)
+    const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur,0)
+
+    return overallTotalAmount
+  }
+  catch (error) {
+    console.error ('ERROR! in calculating total amount')
+    throw error
+  }
+}
+
 module.exports = {
   getOrderById,
   getOrdersWithoutItems,
@@ -185,4 +202,5 @@ module.exports = {
   createOrder,
   updateOrder,
   destroyOrder,
+  totalAmountCalc
 }

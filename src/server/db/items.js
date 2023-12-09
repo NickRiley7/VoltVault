@@ -66,6 +66,24 @@ async function getAllItemsByCategory (category) {
   }
 }
 
+async function getAllItemsByOrderId (orderId) {
+  try {
+    console.log (`starting to get all items by order id ${orderId}`)
+    const {rows: item} = await client.query(`
+      SELECT items.*, order_items.*
+      FROM items
+      JOIN order_items ON order_items.item_id = items.id
+      WHERE order_items.order_id = $1;
+    `, [orderId])
+  
+    return item
+  }
+  catch (error) {
+    console.error ('ERROR! Cannot get all items by order id!')
+    throw error
+  }
+}
+
 async function createItem ({name, price, details, img, category, stock }) {
   try {
     const{ rows: [item] } = await client.query ( `
@@ -185,6 +203,7 @@ module.exports ={
   getItemByName,
   getAllItems,
   getAllItemsByCategory,
+  getAllItemsByOrderId,
   createItem,
   updateItem,
   destroyItem,

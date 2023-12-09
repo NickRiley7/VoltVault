@@ -1,7 +1,7 @@
 const express = require('express')
 const itemRouter = express.Router()
 const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
-
+const { totalAmountCalc } = require('../db/orders')
 const {
   getAllItems,
   getItemById,
@@ -10,6 +10,7 @@ const {
   createItem,
   destroyItem,
   updateItem,
+  getAllItemsByOrderId,
 } = require('../db/items');
 // const { updateItem } = require('../db/items');
 
@@ -23,6 +24,21 @@ itemRouter.get('/', async (req, res, next) => {
     next(err);
   }
 });
+
+itemRouter.get('/inorder/:orderId', async (req, res, next)=> {
+  try {
+    const {orderId} = req.params;
+    const items = await getAllItemsByOrderId(orderId);
+
+    const overallTotalAmount = await totalAmountCalc(orderId)
+    console.log ('THIS IS TOTAL AMOUNT ', overallTotalAmount)
+    res.send(items)
+  }
+  catch (error){
+    console.error ('error in getting all items by order ID')
+    throw error
+  }
+})
 
 itemRouter.get('/:id', async(req, res, next) => {
   try {
