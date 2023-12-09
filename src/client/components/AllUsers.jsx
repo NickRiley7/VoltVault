@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 let API = "http://localhost:3000/api";
 
-function AllUsers() {
+function AllUsers({ token }) {
   const [users, setUsers] = useState([]);
   const Navigate = useNavigate();
 
@@ -13,14 +13,16 @@ function AllUsers() {
   }, []);
 
   async function fetchAllUsers() {
-    try {
-      let { data } = await axios.get(`${API}/users`);
-      console.log(data);
-      setUsers(data.users);
-      console.log(users);
-    } catch (err) {
-      console.error(err);
-    }
+    let { data } = await axios.get(`${API}/users`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log(data);
+    setUsers(data.users);
+    console.log(users);
   }
 
   return (
