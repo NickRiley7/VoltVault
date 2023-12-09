@@ -406,6 +406,7 @@ async function createInitialOrders() {
       ordersToCreate.map((order) => createOrder(order))
     );
     console.log("Orders Created: ", orders);
+    console.log("THESE ARE ORDERS TOTAL AMOUNT", orders.order_total)
     console.log("Finished creating orders.");
   } catch (err) {
     console.error(err);
@@ -425,7 +426,7 @@ async function createInitialOrderItems() {
     const orderItems = await Promise.all(
       orderItemsToCreate.map(addItemToOrder)
     );
-    console.log("order_items created: ", orderItems);
+    // console.log("order_items created: ", orderItems);
     console.log("Finished creating order_items!");
   } catch (err) {
     console.error(err);

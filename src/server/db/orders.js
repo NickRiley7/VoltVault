@@ -121,13 +121,15 @@ async function getCompletedOrdersByItem({id}) {
 
 async function createOrder({userId, order_status, order_total}) {
   try {
-    const {rows: [order]} = await client.query(`
+    const {rows: orders} = await client.query(`
         INSERT INTO orders ("userId", "order_status", "order_total")
         VALUES($1, $2, $3)
         RETURNING *;
     `, [userId, order_status, order_total]);
 
-    return order;
+    console.log ('THESE ARE THE ORDERS IN CREATE ORDER FUNCTION', orders)
+
+    return attachItemsToOrders(orders);
   } catch (error) {
     throw error;
   }
