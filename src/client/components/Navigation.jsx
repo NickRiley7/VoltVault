@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Searchbar from "./SearchBar";
 
-export default function Navigations() {
+export default function Navigations({ token }) {
   return (
     <nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
       <div className="container-fluid">
