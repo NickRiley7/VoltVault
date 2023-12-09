@@ -45,24 +45,26 @@ function Searchbar() {
   }, []);
 
   return (
-    <div>
-      <div className="input-wrapper">
+    <div className="nav-search-field position-absolute pt-2 top-0 start-50 translate-middle-x">
+      <form className="d-flex" role="search">
         <input
+          className="form-control me-2"
+          type="search"
           placeholder="Search..."
           value={input}
           onChange={(e) => handleChange(e.target.value)}
         />
-      </div>
+      </form>
 
       {results.length > 0 && (
-        <div>
-          <ul>
+        <div id="searchCard" className="card">
+          <div className="card-body">
             {results.map((result) => (
-              <li key={result.id} onClick={() => handleItemClick(result.id)}>
+              <p className="card-text" key={result.id} onClick={() => handleItemClick(result.id)}>
                 {result.name}
-              </li>
+              </p>
             ))}
-          </ul>
+          </div>
         </div>
       )}
       {/* {results.length === 0 && <p>No item found.</p>} */}
