@@ -6,7 +6,7 @@
   /* height: 100vh; */
   background-color: #BFBFBF;
   height: 100%;
-  padding-top: 3%;
+  padding-top: 4%;
 }
 
 .App-header {
@@ -14,7 +14,7 @@
   font-size: 24px;
 }
 
-#comp-img{
+#comp-img {
   width: 250px;
 }
 
@@ -27,4 +27,14 @@
   padding: 2%;
   background-color: #BFBFBF;
   height: 100vh;
+}
+
+#searchCard {
+  position: absolute;
+  width: 219.667px;
+  background: white;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  max-height: auto;
+  overflow-y: auto;
 }
