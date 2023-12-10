@@ -6,7 +6,7 @@ import Navigations from "./components/Navigation";
 import Register from "./components/Register";
 import AllItems from "./components/Allitems";
 import UserAccount from "./components/UserAccount";
-import FilterForComputer from "./components/computerFilter";
+import FilterForComputer from "./components/ComputerFilter";
 import FilterForPhone from "./components/PhoneFilter";
 
 import ItemDetails from "./components/SingleItemDetail";
