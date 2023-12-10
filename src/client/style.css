@@ -42,3 +42,8 @@
 #searchBar {
   padding-top: 13px;
 }
+
+#loginCard {
+  height: 100vh;
+  background-color: #BFBFBF;
+}
