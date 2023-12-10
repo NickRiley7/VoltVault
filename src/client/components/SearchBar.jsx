@@ -67,7 +67,6 @@ function Searchbar() {
           </div>
         </div>
       )}
-      {/* {results.length === 0 && <p>No item found.</p>} */}
     </div>
   );
 }
