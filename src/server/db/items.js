@@ -66,6 +66,24 @@ async function getAllItemsByCategory (category) {
   }
 }
 
+async function getAllItemsByOrderId (orderId) {
+  try {
+    console.log (`starting to get all items by order id ${orderId}`)
+    const {rows: item} = await client.query(`
+      SELECT items.*, order_items.*
+      FROM items
+      JOIN order_items ON order_items.item_id = items.id
+      WHERE order_items.order_id = $1;
+    `, [orderId])
+  
+    return item
+  }
+  catch (error) {
+    console.error ('ERROR! Cannot get all items by order id!')
+    throw error
+  }
+}
+
 async function createItem ({name, price, details, img, category, stock }) {
   try {
     const{ rows: [item] } = await client.query ( `
@@ -147,14 +165,14 @@ async function destroyItem (id) {
 
 async function attachItemsToOrders(orders) {
   // no side effects]
-  console.log('THIS IS ORDER IN ATTACH ITEMS ORDERS', orders)
+  // console.log('THIS IS ORDER IN ATTACH ITEMS ORDERS', orders)
   const ordersToReturn = [...orders];
-  console.log('THIS IS ORDERS ', ordersToReturn)
+  // console.log('THIS IS ORDERS ', ordersToReturn)
   const binds = orders.map((_, index) => `$${index + 1}`).join(', ');
-  console.log ("THIS IS BINDS", binds)
+  // console.log ("THIS IS BINDS", binds)
   const orderIds = orders.map(order => order.id);
   if (!orderIds?.length) return [];
-  console.log('THIS IS ORDER IDS ', orderIds)
+  // console.log('THIS IS ORDER IDS ', orderIds)
   
   try {
     // get the items, JOIN with order_items (so we can get a orderId), and only those that have those order ids on the order_items join
@@ -185,6 +203,7 @@ module.exports ={
   getItemByName,
   getAllItems,
   getAllItemsByCategory,
+  getAllItemsByOrderId,
   createItem,
   updateItem,
   destroyItem,

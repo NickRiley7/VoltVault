@@ -25,6 +25,7 @@ orderItemsRouter.get ('/:orderId', requireUser, async (req,res,next) => {
   }
 })
 
+//PATCH Endpoint for item quantity in cart
 orderItemsRouter.patch ('/:orderItemsId', requireUser, requiredNotSent({requiredParams: ['quantity'], atLeastOne: true}), async (req, res, next) => {
   try{
     console.log ('start patching orderItems ...')

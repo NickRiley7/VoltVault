@@ -1,16 +1,21 @@
 const client = require('./client')
 const { getUserById } = require('./users')
 const { attachItemsToOrders } = require('./items')
+const { getAllItemsByOrderId } = require('./items.js')
 // const { getUserByUsername } = require('./users')
 const util = require('./util.js');
 
 async function getOrderById(id){
   try {
-    const {rows: [order]} = await client.query(`
-      SELECT * FROM orders
-      WHERE id = $1
+    console.log(`starting getOrderById with the following ID ${id}...`)
+    const {rows: order} = await client.query(`
+      SELECT orders.*, users.username AS "username" 
+      FROM orders
+      JOIN users ON orders."userId" = users.id
+      WHERE orders.id = $1
     `, [id]);
-    return order;
+    console.log ('successfully get an order!')
+    return attachItemsToOrders(order);
   } catch (error) {
     throw error;
   }
@@ -35,12 +40,14 @@ async function getAllOrders() {
     FROM orders
     JOIN users ON orders."userId" = users.id 
     `);
-    console.log('THIS IS ORDERS IN GET ALL ORDERS: ', orders)
-    return attachItemsToOrders(orders);
+    const ordersWithItems = await attachItemsToOrders(orders)
+    console.log('THIS IS ORDERS IN GET ALL ORDERS: ', ordersWithItems)
+    return ordersWithItems;
   } catch (error) {
     throw error
   }
 }
+
 async function getAllOrdersByUser({username}) {
   try {
     const user = await getUserByUsername(username);
@@ -72,6 +79,46 @@ async function getOrdersByUserId ({userId}) {
   }
 }
 
+async function getAllOpenOrders () {
+  try {
+    console.log ('starting getAllOpenOrders...')
+    const { rows: orders } = await client.query(`
+      SELECT 
+        orders.*, users.id AS "userId", users.username, users.firstname, users.lastname, users.address, users.address2, users.city, users.state, users.zip, users.email
+      FROM orders
+      JOIN users ON orders."userId" = users.id
+      WHERE orders."isOpen" = true
+    `)
+    // console.log ('THIS IS ORDER STATUS', orders."isOpen")
+    return attachItemsToOrders(orders)
+  }
+  catch (error){ 
+    console.error ('ERROR! in getting all open orders')
+    throw error
+  }
+}
+
+async function getOpenOrderByUserId (userId) {
+
+  try {
+    console.log ('starting getOpenOrderByUserId function...')
+    const user = await getUserById (userId);
+    const { rows: orders } = await client.query(`
+      SELECT 
+        orders.*, users.id AS "userId", users.username, users.firstname, users.lastname, users.address, users.address2, users.city, users.state, users.zip, users.email
+      FROM orders
+      JOIN users ON orders."userId" = users.id
+      WHERE orders."userId" = $1
+      AND "isOpen" = true
+    `, [user.id])
+    return attachItemsToOrders(orders)
+  }
+  catch (error){
+    console.error ('ERROR! in getting open order by user id!')
+    throw error
+  }
+}
+
 async function getCompletedOrdersByUser({username}) {
   try {
     const user = await getUserByUsername(username);
@@ -80,7 +127,7 @@ async function getCompletedOrdersByUser({username}) {
     FROM orders
     JOIN users ON orders."userId" = users.id 
     WHERE "userId" = $1
-    AND "order_status" = completed
+    AND ""isOpen"" = false
     `, [user.id]);
     return attachItemsToOrders(orders);
   } catch (error) {
@@ -94,7 +141,7 @@ async function getAllCompletedOrders() {
     SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id
-    WHERE "order_status" = completed
+    WHERE ""isOpen"" = false
     `);
     return attachItemsToOrders(orders);
   } catch (error) {
@@ -109,7 +156,7 @@ async function getCompletedOrdersByItem({id}) {
       FROM orders
       JOIN users ON orders."userId" = users.id
       JOIN order_items ON order_items."orderId" = orders.id
-      WHERE orders."order_status" = completed
+      WHERE orders."isOpen" = false
       AND order_items."itemId" = $1;
     `, [id]);
     return attachItemsToOrders(orders);
@@ -118,15 +165,17 @@ async function getCompletedOrdersByItem({id}) {
   }
 }
 
-async function createOrder({userId, order_status, order_total}) {
+async function createOrder({userId, isOpen, order_total}) {
   try {
-    const {rows: [order]} = await client.query(`
-        INSERT INTO orders ("userId", "order_status", "order_total")
+    const {rows: orders} = await client.query(`
+        INSERT INTO orders ("userId", "isOpen", "order_total")
         VALUES($1, $2, $3)
         RETURNING *;
-    `, [userId, order_status, order_total]);
+    `, [userId, isOpen, order_total]);
 
-    return order;
+    console.log ('THESE ARE THE ORDERS IN CREATE ORDER FUNCTION', orders)
+
+    return attachItemsToOrders(orders);
   } catch (error) {
     throw error;
   }
@@ -156,11 +205,12 @@ async function updateOrder({id, ...fields}) {
 }
 async function destroyOrder(id) {
   try {
+    console.log ('starting to destroy order no. ', id)
     console.log ('THIS IS ID: ', id)
-    // await client.query(`
-    //     DELETE FROM order_items 
-    //     WHERE "orderId" = $1;
-    // `, [id]);
+    await client.query(`
+        DELETE FROM order_items 
+        WHERE "order_id" = $1;
+    `, [id]);
     const {rows: [order]} = await client.query(`
         DELETE FROM orders 
         WHERE id = $1
@@ -173,6 +223,22 @@ async function destroyOrder(id) {
   }
 }
 
+async function totalAmountCalc(orderId) {
+  try {
+    console.log (`starting calculation for orderid no. ${orderId}...`)
+    const items = await getAllItemsByOrderId(orderId)
+    console.log (`These are the items that we are going to start calculate ${items}`)
+    const totalItemAmount = items.map(item => item.price * item.quantity)
+    const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur,0)
+
+    return overallTotalAmount
+  }
+  catch (error) {
+    console.error ('ERROR! in calculating total amount')
+    throw error
+  }
+}
+
 module.exports = {
   getOrderById,
   getOrdersWithoutItems,
@@ -180,9 +246,12 @@ module.exports = {
   getAllCompletedOrders,
   getAllOrdersByUser, 
   getOrdersByUserId,
+  getAllOpenOrders,
+  getOpenOrderByUserId,
   getCompletedOrdersByUser,
   getCompletedOrdersByItem,
   createOrder,
   updateOrder,
   destroyOrder,
+  totalAmountCalc
 }

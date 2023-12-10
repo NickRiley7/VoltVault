@@ -29,7 +29,9 @@ usersRouter.get("/", requireAdmin, async (req, res, next) => {
 
 usersRouter.get('/account', requireUser, async (req,res,next) => {
   try{
+    // console.log('getting my info account...')
     res.send (req.user)
+    // console.log('finished getting my info account!')
   }
   catch (error) {
     next(error)
