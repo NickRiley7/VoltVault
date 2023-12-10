@@ -12,11 +12,13 @@ import FilterForPhone from "./components/PhoneFilter";
 import ItemDetails from "./components/SingleItemDetail";
 
 import AllUsers from "./components/AllUsers";
+import Cart from "./components/Cart";
 
 // import Orders from './components/Orders';
 
 function App() {
   const [token, setToken] = useState(null);
+  const [cart, setCart] = useState ([])
 
   return (
     <>
@@ -43,6 +45,11 @@ function App() {
             element={<ItemDetails token={token} />}
           />
           <Route path="users" element={<AllUsers token={token} />} />
+          <Route 
+            path="cart/:cartid" element={
+              <Cart 
+                token={token} setToken={setToken}
+                cart={cart} setCart={setCart} />} />
         </Routes>
       </div>
     </>

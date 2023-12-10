@@ -393,7 +393,7 @@ async function createInitialOrders() {
         items: [],
       },
       {
-        userId: 1,
+        userId: 3,
         isOpen: true,
         order_total: 0,
         items: [],
