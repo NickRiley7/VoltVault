@@ -3,6 +3,14 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function FilterForComputer () {
-  const [items, setItems] = useState([]);
-  const [category, setCategory] =useState ([]);
+  const [computerItems, setComputerItems] = useState([]);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    fetchComputerItems();
+  }, 
+  []);
+
+
 }
