@@ -52,30 +52,33 @@ const Login = ({ setToken }) => {
       <div id="loginCard" className="card shadow p-3 mb-5 m-100 bg-body-tertiary rounded">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="exampleInputEmail1" className="form-label mt-4">Email address</label>
+          <div className="form-floating mt-3">
             <input
-              className="form-control w-100"
+              className="form-control shadow"
               aria-describedby="emailHelp"
               type="email"
-              id="email"
+              id="floatingInput"
+              placeholder="name@example.com"
               value={email}
               onChange={handleEmailChange}
               required
             />
+            <label htmlfor="floatingInput">Email address</label>
           </div>
-          <div>
-            <label htmlFor="exampleInputPassword1" className="form-label mt-4">Password</label>
+
+          <div className="form-floating mt-4">
             <input
-              className="form-control"
+              className="form-control shadow"
               type="password"
-              id="password"
+              id="floatingPassword"
+              placeholder="Password"
               value={password}
               onChange={handlePasswordChange}
               required
             />
+            <label htmlFor="floatingPassword">Password</label>
           </div>
-          <button type="submit" className="btn btn-primary mt-2">Login</button>
+          <button type="submit" className="btn btn-primary mt-3">Login</button>
         </form>
         <p>{message}</p>
       </div>
