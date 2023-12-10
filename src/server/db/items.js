@@ -165,14 +165,14 @@ async function destroyItem (id) {
 
 async function attachItemsToOrders(orders) {
   // no side effects]
-  console.log('THIS IS ORDER IN ATTACH ITEMS ORDERS', orders)
+  // console.log('THIS IS ORDER IN ATTACH ITEMS ORDERS', orders)
   const ordersToReturn = [...orders];
-  console.log('THIS IS ORDERS ', ordersToReturn)
+  // console.log('THIS IS ORDERS ', ordersToReturn)
   const binds = orders.map((_, index) => `$${index + 1}`).join(', ');
-  console.log ("THIS IS BINDS", binds)
+  // console.log ("THIS IS BINDS", binds)
   const orderIds = orders.map(order => order.id);
   if (!orderIds?.length) return [];
-  console.log('THIS IS ORDER IDS ', orderIds)
+  // console.log('THIS IS ORDER IDS ', orderIds)
   
   try {
     // get the items, JOIN with order_items (so we can get a orderId), and only those that have those order ids on the order_items join

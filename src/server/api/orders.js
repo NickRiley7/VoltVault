@@ -1,6 +1,6 @@
 const express = require('express')
 const ordersRouter = express.Router()
-const { getAllOrders, getOrdersWithoutItems, getOrdersByUserId, getAllOpenOrders, getOpenOrderByUserId, createOrder, getOrderById, updateOrder, destroyOrder } = require('../db/orders');
+const { getAllOrders, getOrdersWithoutItems, getOrdersByUserId, getAllOpenOrders, getOpenOrderByUserId, createOrder, getOrderById, updateOrder, destroyOrder, totalAmountCalc } = require('../db/orders');
 const { getUserById } = require ('../db/users');
 const { addItemToOrder, getOrderItemById, getOrderItemsByOrder } = require ('../db/order_items')
 const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
@@ -69,6 +69,9 @@ ordersRouter.get ('/open_orders/:userId', async (req, res, next) => {
       // if (!req.user.isadmin) {
       // }
     } else {
+      // const orderId = openOrder.map(order => order.id)
+      // const overallTotalAmount = await totalAmountCalc(orderId[0])
+      // console.log ('THIS IS OVERAL TOTAL AMOUNT', overallTotalAmount)
       console.log (`completed all authorization checks...`)
       res.send(openOrder)
     }
@@ -173,8 +176,12 @@ ordersRouter.patch(
           message: "You must be the same user who created this routine to perform this action"
         });
       } else {
+        const orderAmount = orderToUpdate.map(order => order.order_total)
+        const overallTotalAmount = await totalAmountCalc(orderId)
+
+
         const updatedOrder = await updateOrder({
-          id: orderId, isOpen, order_total, items
+          id: orderId, isOpen, order_total: overallTotalAmount, items
         });
         if(updatedOrder){
           res.send(updatedOrder)

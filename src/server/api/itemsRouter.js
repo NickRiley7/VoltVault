@@ -1,7 +1,7 @@
 const express = require('express')
 const itemRouter = express.Router()
 const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
-const { totalAmountCalc } = require('../db/orders')
+const { getOrderById, totalAmountCalc, updateOrder } = require('../db/orders')
 const {
   getAllItems,
   getItemById,
@@ -28,11 +28,15 @@ itemRouter.get('/', async (req, res, next) => {
 itemRouter.get('/inorder/:orderId', async (req, res, next)=> {
   try {
     const {orderId} = req.params;
+    const orders = await getOrderById(orderId)
     const items = await getAllItemsByOrderId(orderId);
+    const orderAmount = orders.map(order => order.order_total)
 
     const overallTotalAmount = await totalAmountCalc(orderId)
+    console.log ('THIS IS ORDERS TOTAL AMOUNT', orderAmount[0])
     console.log ('THIS IS TOTAL AMOUNT ', overallTotalAmount)
-    res.send(items)
+    const updatedOrder = await updateOrder({order_total: overallTotalAmount})
+    res.send(updatedOrder)
   }
   catch (error){
     console.error ('error in getting all items by order ID')
