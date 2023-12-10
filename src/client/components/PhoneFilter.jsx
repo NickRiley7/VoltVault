@@ -31,11 +31,18 @@ function FilterForPhone() {
         <ul>
           {phoneItems.map((item) => (
             <li key={item.id}> 
+             <h3>{item.name}</h3>
+                <img src={item.img} alt={`Image of ${item.name}`}/>
+              <p>{item.details}</p>
+              <p>Price: ${item.price}</p>
+              <button type="button" onClick={() => navigate(`/items/${item.id}`)}>
+                  Show Item details
+                </button>
             </li>
           ))}
         </ul>
       ) : (
-        <h2>No Phone items found.</h2>
+        <h2>No Phone found.</h2>
       )}
     </>
   );
