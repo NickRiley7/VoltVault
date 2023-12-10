@@ -48,32 +48,37 @@ const Login = ({ setToken }) => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={handleEmailChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-      <p>{message}</p>
+    <div id="loginCard">
+      <div className="card shadow p-3 mb-5 bg-body-tertiary rounded">
+        <h2>Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="exampleInputEmail1" className="form-label mt-4">Email address</label>
+            <input
+              className="form-control"
+              aria-describedby="emailHelp"
+              type="email"
+              id="email"
+              value={email}
+              onChange={handleEmailChange}
+              required
+            />
+          </div>
+          <div>
+            <label htmlFor="exampleInputPassword1" className="form-label mt-4">Password</label>
+            <input
+              className="form-control"
+              type="password"
+              id="password"
+              value={password}
+              onChange={handlePasswordChange}
+              required
+            />
+          </div>
+          <button type="submit" className="btn btn-primary mt-2">Login</button>
+        </form>
+        <p>{message}</p>
+      </div>
     </div>
   );
 };
