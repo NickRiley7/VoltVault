@@ -40,11 +40,6 @@ export default function Navigations({ token }) {
                 Wishlist
               </Link>
             </li>
-            <li className="nav-item">
-              <Link className="nav-link" to="#" target="_blank">
-                Insert text
-              </Link>
-            </li>
             <li className="nav-item dropdown">
               <Link
                 className="nav-link dropdown-toggle"

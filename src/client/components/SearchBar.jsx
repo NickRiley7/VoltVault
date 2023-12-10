@@ -48,7 +48,7 @@ function Searchbar() {
   }, []);
 
   return (
-    <div id="searchBar" className="nav-search-field position-absolute w-50 top-0 start-50 translate-middle-x">
+    <div id="searchBar" className="nav-search-field position-absolute w-50 ps-5 top-0 start-50 translate-middle-x">
       <form className="d-flex" role="search">
         <input
           className="form-control me-2"
