@@ -6,6 +6,8 @@ import Navigations from "./components/Navigation";
 import Register from "./components/Register";
 import AllItems from "./components/Allitems";
 import UserAccount from "./components/UserAccount";
+import FilterForComputer from "./components/computerFilter";
+import FilterForPhone from "./components/PhoneFilter";
 
 import ItemDetails from "./components/SingleItemDetail";
 
@@ -34,6 +36,8 @@ function App() {
           />
           <Route path="/" element={<AllItems token={token} />} />
           <Route path="account" element={<UserAccount token={token} />} />
+          <Route path="/computer" element={<FilterForComputer />} />
+          <Route path="/phones" element={<FilterForPhone />} />
           <Route
             path="/items/:itemid"
             element={<ItemDetails token={token} />}

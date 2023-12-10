@@ -58,18 +58,14 @@ export default function Navigations({ token }) {
               <ul className="dropdown-menu">
                 {/* Links aren't connected yet! */}
                 <li>
-                  <Link className="dropdown-item" to="#">
+                  <Link className="dropdown-item" to="/phones">
                     Phones
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="#">
+                  <Link className="dropdown-item" to="/computer" >
                     Computers
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Something else here
+
                   </Link>
                 </li>
               </ul>
