@@ -204,11 +204,12 @@ async function updateOrder({id, ...fields}) {
 }
 async function destroyOrder(id) {
   try {
+    console.log ('starting to destroy order no. ', id)
     console.log ('THIS IS ID: ', id)
-    // await client.query(`
-    //     DELETE FROM order_items 
-    //     WHERE "orderId" = $1;
-    // `, [id]);
+    await client.query(`
+        DELETE FROM order_items 
+        WHERE "order_id" = $1;
+    `, [id]);
     const {rows: [order]} = await client.query(`
         DELETE FROM orders 
         WHERE id = $1

@@ -156,16 +156,18 @@ ordersRouter.patch(
       const{isOpen, order_total, items} = req.body;
       const {orderId} =req.params;
       const orderToUpdate = await getOrderById(orderId);
+      const orderUserId = orderToUpdate.map(order => order.userId)
       console.log ('THIS IS ORDER ID ', orderId)
       if(!orderToUpdate) {
         next({
           name: 'NotFound',
           message: `No order by ID ${orderId}`
         })
-      } else if (req.user.id !== orderToUpdate.userId) {
+      } else if (!req.user.isadmin && req.user.id !== orderUserId[0]) {
         res.status(403);
-        // console.log ('THIS IS LOGGED-IN USER: ', req.user.id)
-        // console.log ('THIS IS ORDER'S USER: ', orderToUpdate.userId)
+        console.log ('IS ADMIN? ', req.user.isadmin)
+        console.log ('THIS IS LOGGED-IN USER: ', req.user.id)
+        console.log ('THIS IS ORDERS USER: ', orderUserId[0])
         next ({
           name: "WrongUserError",
           message: "You must be the same user who created this routine to perform this action"
@@ -199,13 +201,13 @@ ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
     // console.log('THIS IS ORDER ID ', orderId)
     const orderToUpdate = await getOrderById(orderId);
     // console.log ('THIS IS ORDER TO UPDATE: ', orderToUpdate)
-    if (!orderToUpdate) {
+    if (!orderToUpdate.length) {
       next({
         name: 'NotFound',
         message: `No order by ID ${orderId}`
       })
     }
-    else if (req.user.id !== orderToUpdate.userId) {
+    else if (!req.user.isadmin && req.user.id !== orderToUpdate.userId) {
       res.status(403);
       next({
         name: 'WrongUserError',
@@ -213,9 +215,8 @@ ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
       });
     }
     else {
-      
       const deletedOrder = await destroyOrder(orderId)
-      res.send ({deletedOrder})
+      res.send (deletedOrder)
       console.log ('order deleted ...')
 
     }
