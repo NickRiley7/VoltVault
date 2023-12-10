@@ -7,11 +7,15 @@ const util = require('./util.js');
 
 async function getOrderById(id){
   try {
-    const {rows: [order]} = await client.query(`
-      SELECT * FROM orders
-      WHERE id = $1
+    console.log(`starting getOrderById with the following ID ${id}...`)
+    const {rows: order} = await client.query(`
+      SELECT orders.*, users.username AS "username" 
+      FROM orders
+      JOIN users ON orders."userId" = users.id
+      WHERE orders.id = $1
     `, [id]);
-    return order;
+    console.log ('successfully get an order!')
+    return attachItemsToOrders(order);
   } catch (error) {
     throw error;
   }
@@ -82,9 +86,9 @@ async function getAllOpenOrders () {
         orders.*, users.id AS "userId", users.username, users.firstname, users.lastname, users.address, users.address2, users.city, users.state, users.zip, users.email
       FROM orders
       JOIN users ON orders."userId" = users.id
-      WHERE orders.order_status = "open"
+      WHERE orders."isOpen" = true
     `)
-    console.log ('THIS IS ORDER STATUS', orders.order_status)
+    // console.log ('THIS IS ORDER STATUS', orders."isOpen")
     return attachItemsToOrders(orders)
   }
   catch (error){ 
@@ -96,6 +100,7 @@ async function getAllOpenOrders () {
 async function getOpenOrderByUserId (userId) {
 
   try {
+    console.log ('starting getOpenOrderByUserId function...')
     const user = await getUserById (userId);
     const { rows: orders } = await client.query(`
       SELECT 
@@ -103,7 +108,7 @@ async function getOpenOrderByUserId (userId) {
       FROM orders
       JOIN users ON orders."userId" = users.id
       WHERE orders."userId" = $1
-      AND order_status = "open"
+      AND "isOpen" = true
     `, [user.id])
     return attachItemsToOrders(orders)
   }
@@ -121,7 +126,7 @@ async function getCompletedOrdersByUser({username}) {
     FROM orders
     JOIN users ON orders."userId" = users.id 
     WHERE "userId" = $1
-    AND "order_status" = "completed"
+    AND ""isOpen"" = false
     `, [user.id]);
     return attachItemsToOrders(orders);
   } catch (error) {
@@ -135,7 +140,7 @@ async function getAllCompletedOrders() {
     SELECT orders.*, users.username AS "username"
     FROM orders
     JOIN users ON orders."userId" = users.id
-    WHERE "order_status" = completed
+    WHERE ""isOpen"" = false
     `);
     return attachItemsToOrders(orders);
   } catch (error) {
@@ -150,7 +155,7 @@ async function getCompletedOrdersByItem({id}) {
       FROM orders
       JOIN users ON orders."userId" = users.id
       JOIN order_items ON order_items."orderId" = orders.id
-      WHERE orders."order_status" = completed
+      WHERE orders."isOpen" = false
       AND order_items."itemId" = $1;
     `, [id]);
     return attachItemsToOrders(orders);
@@ -159,13 +164,13 @@ async function getCompletedOrdersByItem({id}) {
   }
 }
 
-async function createOrder({userId, order_status, order_total}) {
+async function createOrder({userId, isOpen, order_total}) {
   try {
     const {rows: orders} = await client.query(`
-        INSERT INTO orders ("userId", "order_status", "order_total")
+        INSERT INTO orders ("userId", "isOpen", "order_total")
         VALUES($1, $2, $3)
         RETURNING *;
-    `, [userId, order_status, order_total]);
+    `, [userId, isOpen, order_total]);
 
     console.log ('THESE ARE THE ORDERS IN CREATE ORDER FUNCTION', orders)
 

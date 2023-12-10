@@ -21,13 +21,60 @@ ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
 // GET All open orders
 ordersRouter.get ('/open_orders', requireAdmin, async (req, res, next) => {
   try{
-    console.log ('Starting to get all open orders...')
+    // console.log ('Starting to get all open orders...')
     const orders = await getAllOpenOrders ()
-    console.log ('Successfully getting all open orders!')
+    // console.log ('Successfully getting all open orders!')
     res.send(orders)
   }
   catch (error) {
     console.error ('ERROR! in getting all open orders')
+    throw error
+  }
+})
+
+//GET open orders by userId
+ordersRouter.get ('/open_orders/:userId', async (req, res, next) => {
+  try{
+    const {userId} = req.params
+    console.log (`starting getting open orders by id ${userId}`)
+    const openOrder = await getOpenOrderByUserId(userId)
+    const openOrderId = openOrder.map (order => order.userId)
+    if (!openOrder) {
+      next({
+        name: 'NotFound',
+        message: `No open orders by this user ID ${userId}`
+      })
+    }
+    else if (!req.user.isadmin && req.user.id !== openOrderId[0]) {
+      res.status(403);
+      next ({
+        name: "WrongUserError",
+        message: "You must be the same user who created this routine to perform this action"
+      });
+
+      // if (req.user.isadmin) {
+      //   console.log (`You are an admin!`)
+      //   res.send(openOrder)
+      // }
+      // else {
+      //   res.status(403);
+      //   console.log ('THIS IS LOGGED-IN USER: ', req.user.id)
+      //   console.log ('THIS IS REQ USER IS ADMIN ', req.user.isadmin)
+      //   next ({
+      //     name: "WrongUserError",
+      //     message: "You must be the same user who created this routine to perform this action"
+      //   });
+      // }
+
+      // if (!req.user.isadmin) {
+      // }
+    } else {
+      console.log (`completed all authorization checks...`)
+      res.send(openOrder)
+    }
+  }
+  catch (error) {
+    console.error ('ERROR! in getting orders by userId!')
     throw error
   }
 })
@@ -37,23 +84,28 @@ ordersRouter.get ('/open_orders', requireAdmin, async (req, res, next) => {
 ordersRouter.get('/:orderId', requireUser, async (req, res, next) => {
   try {
     const {orderId} =req.params;
-    const order = await getOrderById(orderId);
-    console.log ('THIS IS ORDER ID ', orderId)
-    if(!order) {
+    console.log (`starting getting open orders by id ${orderId}`)
+    const orders = await getOrderById(orderId);
+    console.log(`this is the order that we try to get ${orders}`)
+    const OrderId = orders.map (order => order.userId)
+    console.log ('THIS IS LOGGED IN USER ID ', req.user.id)
+    console.log ('THIS IS ORDER ID ', orderId[0])
+    if(!orders.length) {
       next({
         name: 'NotFound',
         message: `No order by ID ${orderId}`
       })
-    } else if (req.user.id !== order.userId) {
+    } else if (!req.user.isadmin && req.user.id !== OrderId[0]) {
       res.status(403);
-      // console.log ('THIS IS LOGGED-IN USER: ', req.user.id)
-      // console.log ('THIS IS ORDER'S USER: ', orderToUpdate.userId)
+      console.log ('THIS IS LOGGED-IN USER: ', req.user.id)
+      console.log ('THIS IS ORDERS USER: ', OrderId[0])
       next ({
         name: "WrongUserError",
         message: "You must be the same user who created this routine to perform this action"
       });
     } else {
-      res.send(order)
+      console.log ('successfully pass all authorization checks!')
+      res.send(orders)
     }
   }
   catch (error){
@@ -98,10 +150,10 @@ ordersRouter.post('/', requireUser, async (req, res, next) => { //should have re
 ordersRouter.patch(
   '/:orderId',
   requireUser,
-  requiredNotSent({requiredParams: ['order_status', 'order_total', 'items'], atLeastOne: true}),
+  requiredNotSent({requiredParams: ['isOpen', 'order_total', 'items'], atLeastOne: true}),
   async (req,res,next) => {
     try {
-      const{order_status, order_total, items} = req.body;
+      const{isOpen, order_total, items} = req.body;
       const {orderId} =req.params;
       const orderToUpdate = await getOrderById(orderId);
       console.log ('THIS IS ORDER ID ', orderId)
@@ -120,7 +172,7 @@ ordersRouter.patch(
         });
       } else {
         const updatedOrder = await updateOrder({
-          id: orderId, order_status, order_total, items
+          id: orderId, isOpen, order_total, items
         });
         if(updatedOrder){
           res.send(updatedOrder)

@@ -64,7 +64,7 @@ async function createTables() {
       id SERIAL PRIMARY KEY,
       "userId" INTEGER REFERENCES users(id),
       order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      order_status VARCHAR(255),
+      "isOpen" BOOL DEFAULT true,
       order_total DECIMAL(10,2)
     )`);
 
@@ -390,13 +390,19 @@ async function createInitialOrders() {
     const ordersToCreate = [
       {
         userId: 1,
-        order_status: "open",
+        isOpen: true,
         order_total: 0,
         items: [],
       },
       {
         userId: 1,
-        order_status: "open",
+        isOpen: true,
+        order_total: 0,
+        items: [],
+      },
+      {
+        userId: 2,
+        isOpen: true,
         order_total: 0,
         items: [],
       },
@@ -422,6 +428,7 @@ async function createInitialOrderItems() {
     const orderItemsToCreate = [
       { order_id: orders[0].id, item_id: items[0].id, quantity: 2 },
       { order_id: orders[0].id, item_id: items[1].id, quantity: 1 },
+      { order_id: orders[2].id, item_id: items[3].id, quantity: 1 },
     ];
     const orderItems = await Promise.all(
       orderItemsToCreate.map(addItemToOrder)
