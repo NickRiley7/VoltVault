@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -48,7 +48,7 @@ function Searchbar() {
   }, []);
 
   return (
-    <div className="nav-search-field position-absolute pt-2 top-0 start-50 translate-middle-x">
+    <div id="searchBar" className="nav-search-field position-absolute w-50 top-0 start-50 translate-middle-x">
       <form className="d-flex" role="search">
         <input
           className="form-control me-2"
@@ -60,7 +60,7 @@ function Searchbar() {
       </form>
 
       {results.length > 0 && (
-        <div id="searchCard" className="card">
+        <div id="searchCard" className="card w-100">
           <div className="card-body">
             {results.map((result) => (
               <p
