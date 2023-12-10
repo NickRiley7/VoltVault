@@ -62,133 +62,177 @@ export default function RegistrationForm({ setToken }) {
   }
 
   return (
-    <div>
-      <h2>Signup</h2>
-      {successMessage && <p>{successMessage}</p>}
-      {error && <p>{error}</p>}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username:{""}
-          <input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </label>
+    <div id="RegisterPage" className="card shadow p-3 mb-5 m-100 bg-body-tertiary rounded">
+      <div id="RegisterCard">
+        <h2>Signup</h2>
+        {successMessage && <p>{successMessage}</p>}
+        {error && <p>{error}</p>}
+        <form className="row g-3" onSubmit={handleSubmit}>
+          <div className="col-md-6 input-group">
+            <label htmlFor="inputUser" class="form-label">
+              Username:{""}
+              <input
+                type="text"
+                className="form-control shadow"
+                id="inputUser"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+            </label>
+          </div>
 
-        <label>
-          First Name:{""}
-          <input
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </label>
+          <div className="col-md-2">
+            <label htmlFor="inputEmail4" className="form-label">
+              Email:{""}
+              <input
+                type="email"
+                className="form-control shadow"
+                id="inputEmail4"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)} />
+            </label>
+          </div>
 
-        <label>
-          Last Name:{""}
-          <input
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </label>
+          <div className="col-md-2">
+            <label htmlFor="inputPassword4" className="form-label">
+              Password:{""}
+              <input
+                className="form-control shadow"
+                id="inputPassword4"
+                type="password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
+              />
+            </label>
+          </div>
 
-        <label>
-          Address:{""}
-          <input value={address} onChange={(e) => setAddress(e.target.value)} />
-        </label>
+          <div className="col-md-2">
+            <label className="form-label">
+              First Name:{""}
+              <input
+                type="text"
+                className="form-control shadow"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+              />
+            </label>
+          </div>
 
-        <label>
-          Address 2:{""}
-          <input
-            value={address2}
-            onChange={(e) => setAddress2(e.target.value)}
-          />
-        </label>
+          <div className="col-md-2">
+            <label className="form-label">
+              Last Name:{""}
+              <input
+                type="text"
+                className="form-control shadow"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </label>
+          </div>
 
-        <label>
-          City:{""}
-          <input value={city} onChange={(e) => setCity(e.target.value)} />
-        </label>
-        <label>
-          State:
-          <select value={state} onChange={(e) => setState(e.target.value)}>
-            <option value="">Select State</option>
-            <option value="AL">AL</option>
-            <option value="AK">AK</option>
-            <option value="AZ">AZ</option>
-            <option value="AR">AR</option>
-            <option value="CA">CA</option>
-            <option value="CO">CO</option>
-            <option value="CT">CT</option>
-            <option value="DE">DE</option>
-            <option value="DC">DC</option>
-            <option value="FL">FL</option>
-            <option value="GA">GA</option>
-            <option value="HI">HI</option>
-            <option value="ID">ID</option>
-            <option value="IL">IL</option>
-            <option value="IN">IN</option>
-            <option value="IA">IA</option>
-            <option value="KS">KA</option>
-            <option value="KY">KY</option>
-            <option value="LA">LA</option>
-            <option value="ME">ME</option>
-            <option value="MD">MD</option>
-            <option value="MA">MA</option>
-            <option value="MI">MI</option>
-            <option value="MN">MN</option>
-            <option value="MS">MS</option>
-            <option value="MO">MO</option>
-            <option value="MT">MT</option>
-            <option value="NE">NE</option>
-            <option value="NV">NV</option>
-            <option value="NH">NH</option>
-            <option value="NJ">NJ</option>
-            <option value="NM">NM</option>
-            <option value="NY">NY</option>
-            <option value="NC">NC</option>
-            <option value="ND">ND</option>
-            <option value="OH">OH</option>
-            <option value="OK">OK</option>
-            <option value="OR">OR</option>
-            <option value="PA">PA</option>
-            <option value="RI">RI</option>
-            <option value="SC">SC</option>
-            <option value="SD">SD</option>
-            <option value="TN">TN</option>
-            <option value="TX">TX</option>
-            <option value="UT">UT</option>
-            <option value="VT">VT</option>
-            <option value="VA">VA</option>
-            <option value="WA">WA</option>
-            <option value="WV">WV</option>
-            <option value="WI">WI</option>
-            <option value="WY">WY</option>
-          </select>
-        </label>
+          <div className="col-12">
+            <label htmlFor="inputAddress" className="form-label">
+              Address:{""}
+              <input type="text" className="form-control shadow" id="inputAddress" placeholder="1234 Main St" value={address} onChange={(e) => setAddress(e.target.value)} />
+            </label>
+          </div>
 
-        <label>
-          Zip:{""}
-          <input value={zip} onChange={(e) => setZip(e.target.value)} />
-        </label>
+          <div className="col-12">
+            <label htmlFor="inputAddress2" className="form-label">
+              Address 2:{""}
+              <input
+                type="text"
+                className="form-control shadow"
+                id="inputAddress2"
+                placeholder="Apartment, studio, or floor"
+                value={address2}
+                onChange={(e) => setAddress2(e.target.value)}
+              />
+            </label>
+          </div>
 
-        <label>
-          Email:{""}
-          <input value={email} onChange={(e) => setEmail(e.target.value)} />
-        </label>
+          <div className="col-md-2">
+            <label htmlFor="inputCity" className="form-label">
+              City:{""}
+              <input type="text" className="form-control shadow" id="inputCity" value={city} onChange={(e) => setCity(e.target.value)} />
+            </label>
+          </div>
 
-        <label>
-          Password:{""}
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </label>
-        <button>Submit</button>
-      </form>
-      <p>{successMessage}</p>
+          <div className="col-md-2">
+            <label htmlFor="inputState" className="form-label">
+              State:
+              <select id="inputState" className="form-select shadow" value={state} onChange={(e) => setState(e.target.value)}>
+                <option selected>Select State</option>
+                <option value="AL">AL</option>
+                <option value="AK">AK</option>
+                <option value="AZ">AZ</option>
+                <option value="AR">AR</option>
+                <option value="CA">CA</option>
+                <option value="CO">CO</option>
+                <option value="CT">CT</option>
+                <option value="DE">DE</option>
+                <option value="DC">DC</option>
+                <option value="FL">FL</option>
+                <option value="GA">GA</option>
+                <option value="HI">HI</option>
+                <option value="ID">ID</option>
+                <option value="IL">IL</option>
+                <option value="IN">IN</option>
+                <option value="IA">IA</option>
+                <option value="KS">KA</option>
+                <option value="KY">KY</option>
+                <option value="LA">LA</option>
+                <option value="ME">ME</option>
+                <option value="MD">MD</option>
+                <option value="MA">MA</option>
+                <option value="MI">MI</option>
+                <option value="MN">MN</option>
+                <option value="MS">MS</option>
+                <option value="MO">MO</option>
+                <option value="MT">MT</option>
+                <option value="NE">NE</option>
+                <option value="NV">NV</option>
+                <option value="NH">NH</option>
+                <option value="NJ">NJ</option>
+                <option value="NM">NM</option>
+                <option value="NY">NY</option>
+                <option value="NC">NC</option>
+                <option value="ND">ND</option>
+                <option value="OH">OH</option>
+                <option value="OK">OK</option>
+                <option value="OR">OR</option>
+                <option value="PA">PA</option>
+                <option value="RI">RI</option>
+                <option value="SC">SC</option>
+                <option value="SD">SD</option>
+                <option value="TN">TN</option>
+                <option value="TX">TX</option>
+                <option value="UT">UT</option>
+                <option value="VT">VT</option>
+                <option value="VA">VA</option>
+                <option value="WA">WA</option>
+                <option value="WV">WV</option>
+                <option value="WI">WI</option>
+                <option value="WY">WY</option>
+              </select>
+            </label>
+          </div>
+
+          <div className="col-md-2">
+            <label htmlFor="inputZip" className="form-label">
+              Zip:{""}
+              <input type="text" className="form-control shadow" id="inputZip" value={zip} onChange={(e) => setZip(e.target.value)} />
+            </label>
+          </div>
+
+          <div className="col-12">
+            <button type="submit" className="btn btn-primary shadow">Submit</button>
+          </div>
+        </form>
+        <p>{successMessage}</p>
+      </div>
     </div>
   );
 }

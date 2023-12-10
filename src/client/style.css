@@ -43,7 +43,7 @@
   padding-top: 13px;
 }
 
-#loginPage {
+#loginPage, #RegisterPage {
   height: 100vh;
   background-color: #BFBFBF;
 }
@@ -51,4 +51,9 @@
 #loginCard {
   height: 21rem;
   width: 50rem;
+}
+
+#RegisterCard {
+  height: 21rem;
+  width: 100rem;
 }
