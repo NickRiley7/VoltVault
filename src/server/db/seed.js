@@ -429,6 +429,7 @@ async function createInitialOrderItems() {
       { order_id: orders[0].id, item_id: items[0].id, quantity: 2 },
       { order_id: orders[0].id, item_id: items[1].id, quantity: 1 },
       { order_id: orders[2].id, item_id: items[3].id, quantity: 1 },
+      { order_id: orders[2].id, item_id: items[4].id, quantity: 1 },
     ];
     const orderItems = await Promise.all(
       orderItemsToCreate.map(addItemToOrder)

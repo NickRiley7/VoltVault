@@ -243,7 +243,7 @@ ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
 // })
 
 // POST new item into an order
-ordersRouter.post ('/:orderId/items', requiredNotSent({requiredParams: [ 'item_id', 'quantity'], atLeastOne: true}), async (req, res, next) => {
+ordersRouter.post ('/:orderId/items', requireUser, requiredNotSent({requiredParams: [ 'item_id', 'quantity'], atLeastOne: true}), async (req, res, next) => {
   try {
     const {item_id, quantity} = req.body;
     console.log ('THIS IS ITEM AND QUANTITY', item_id, quantity)
@@ -251,27 +251,41 @@ ordersRouter.post ('/:orderId/items', requiredNotSent({requiredParams: [ 'item_i
     const {orderId} = req.params;
     console.log ('this is order id in POST', orderId)
     console.log ('this is req.params', req.params) 
-    const foundOrderItems = await getOrderItemsByOrder (orderId);
-    console.log ('THIS IS FOUND ORDER ITEMS', foundOrderItems)
-    const existingOrderItems = foundOrderItems && foundOrderItems.filter(orderItem => orderItem.item_id === item_id);
-    console.log ('THIS IS EXISTING ORDER ITEMS: ', existingOrderItems)
-    if(existingOrderItems && existingOrderItems.length) {
-      console.log ('THIS COMBINATION IS ALREADY EXIST', orderId, item_id)
+    const orderToUpdate = await getOrderById(orderId)
+    const OrderId = orderToUpdate.map (order => order.userId)
+
+    if (!req.user.isadmin && req.user.id !== OrderId[0]){
+      res.status(403);
       next({
-        name: 'OrderItemsExistError',
-        message: `An order_id by that order_id ${orderId}, item_id ${item_id} combination already exists`
-      });
-    } else {
-      console.log ('CREATING ORDER_ITEM...')
-      console.log ('THIS IS ORDER_ID', orderId)
-      const createdOrderItem = await addItemToOrder({ order_id: orderId, item_id, quantity });
-      if(createdOrderItem) {
-        res.send(createdOrderItem);
-      } else {
+        name: "WrongUserError",
+        message: "You must be the same user who created this routine to perform this action"
+      })
+    }
+    else {
+      const foundOrderItems = await getOrderItemsByOrder (orderId);
+      console.log ('THIS IS FOUND ORDER ITEMS', foundOrderItems)
+      const foundOrderItemsFilter = foundOrderItems.filter(orderItem => orderItem.item_id === item_id)
+      console.log ('THIS IS FOUND ORDER ITEMS FILTER', foundOrderItemsFilter) 
+      const existingOrderItems = foundOrderItems && foundOrderItems.filter(orderItem => orderItem.item_id === item_id);
+      console.log ('THIS IS EXISTING ORDER ITEMS: ', existingOrderItems)
+      if(existingOrderItems && existingOrderItems.length) {
+        console.log ('THIS COMBINATION IS ALREADY EXIST', orderId, item_id)
         next({
-          name: 'FailedToCreate',
-          message: `There was an error adding item ${item_id} to order ${orderId}`
-        })
+          name: 'OrderItemsExistError',
+          message: `An order_id by that order_id ${orderId}, item_id ${item_id} combination already exists`
+        });
+      } else {
+        console.log ('CREATING ORDER_ITEM...')
+        console.log ('THIS IS ORDER_ID', orderId)
+        const createdOrderItem = await addItemToOrder({ order_id: orderId, item_id, quantity });
+        if(createdOrderItem) {
+          res.send(createdOrderItem);
+        } else {
+          next({
+            name: 'FailedToCreate',
+            message: `There was an error adding item ${item_id} to order ${orderId}`
+          })
+        }
       }
     }
   } catch (error) {

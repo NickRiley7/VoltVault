@@ -45,8 +45,8 @@ async function getAllOrderItems() {
 
 async function getOrderItemsByOrder(id) {
   try {
-    console.log (`starting getting order items with this id ${id}...`)
-    const {rows : [orderItems]} = await client.query(`
+    // console.log (`starting getting order items with this id ${id}...`)
+    const {rows: orderItems} = await client.query(`
       SELECT * FROM order_items
       WHERE "order_id" = $1
     `, [id]);
