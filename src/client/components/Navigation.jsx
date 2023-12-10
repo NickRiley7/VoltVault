@@ -68,11 +68,6 @@ export default function Navigations({ token }) {
 
                   </Link>
                 </li>
-                <li>
-                  <Link className="dropdown-item" to="#">
-                    Something else here
-                  </Link>
-                </li>
               </ul>
             </li>
           </ul>
