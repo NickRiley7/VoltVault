@@ -12,5 +12,19 @@ function FilterForComputer () {
   }, 
   []);
 
+  async function fetchComputerItems(){
+    let API = "http://localhost:3000/api";
+
+    try {
+      const response = await axios.get (`${API}/items/`);
+      const filteredComputerItems = response.data.filter(
+        (item) => item.category === "computer"
+      );
+      setComputerItems(filteredComputerItems);
+    } catch (err){
+      console.log("error getting the computers")
+    }
+  }
+
 
 }
