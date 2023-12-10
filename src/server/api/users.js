@@ -170,8 +170,9 @@ usersRouter.patch(
           name: "Not Found",
           message: `No user by ID ${userId}`,
         });
-      } else if (req.user.id !== userToUpdate.id) {
+      } else if (!req.user.isadmin && req.user.id !== userToUpdate.id) {
         res.status(403);
+        console.log ('IS ADMIN? ', req.user.isadmin)
         next({
           name: "WrongUser",
           message: "you can only update your own account.",
