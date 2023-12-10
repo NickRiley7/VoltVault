@@ -53,6 +53,7 @@ async function getOrderItemsByOrder(id) {
 
     return orderItems;
   } catch (error) {
+    console.error ('ERROR! in getOrderItemsByOrder')
     throw error;
   }
 }

@@ -226,14 +226,25 @@ ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
   }
 })
 
+// ordersRouter.post ('/:orderId/add_items', requireUser, ({requiredParams: [ 'item_id', 'quantity'], atLeastOne: true}), async (req, res, next) => {
+//   try{
+//     const{item_id, quantity} = req.body
+//   }
+//   catch (error) {
+//     console.error ('ERROR! in posting items into order')
+//   }
+// })
+
 // POST new item into an order
-ordersRouter.post ('/:orderId/items', requiredNotSent({requiredParams: [ 'item_id', 'quantity']}), async (req, res, next) => {
+ordersRouter.post ('/:orderId/items', requiredNotSent({requiredParams: [ 'item_id', 'quantity'], atLeastOne: true}), async (req, res, next) => {
   try {
     const {item_id, quantity} = req.body;
     console.log ('THIS IS ITEM AND QUANTITY', item_id, quantity)
 
     const {orderId} = req.params;
-    const foundOrderItems = await getOrderItemsByOrder ({id: orderId});
+    console.log ('this is order id in POST', orderId)
+    console.log ('this is req.params', req.params) 
+    const foundOrderItems = await getOrderItemsByOrder (orderId);
     console.log ('THIS IS FOUND ORDER ITEMS', foundOrderItems)
     const existingOrderItems = foundOrderItems && foundOrderItems.filter(orderItem => orderItem.item_id === item_id);
     console.log ('THIS IS EXISTING ORDER ITEMS: ', existingOrderItems)

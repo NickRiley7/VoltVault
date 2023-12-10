@@ -40,8 +40,9 @@ async function getAllOrders() {
     FROM orders
     JOIN users ON orders."userId" = users.id 
     `);
-    console.log('THIS IS ORDERS IN GET ALL ORDERS: ', orders)
-    return attachItemsToOrders(orders);
+    const ordersWithItems = await attachItemsToOrders(orders)
+    console.log('THIS IS ORDERS IN GET ALL ORDERS: ', ordersWithItems)
+    return ordersWithItems;
   } catch (error) {
     throw error
   }
