@@ -26,5 +26,23 @@ function FilterForComputer () {
     }
   }
 
+  return (
+    <>
+    <h2>Computers</h2>
+    {computerItems.length ? (
+            <ul>
+            {computerItems.map((item) => (
+              <li key={item.id} >
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <h2>No Computer items found.</h2>
+        )}
+      </>
+    );
+  
 
 }
+
+export default FilterForComputer
