@@ -48,14 +48,14 @@ const Login = ({ setToken }) => {
   };
 
   return (
-    <div id="loginCard">
-      <div className="card shadow p-3 mb-5 bg-body-tertiary rounded">
+    <div id="loginPage">
+      <div id="loginCard" className="card shadow p-3 mb-5 m-100 bg-body-tertiary rounded">
         <h2>Login</h2>
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="exampleInputEmail1" className="form-label mt-4">Email address</label>
             <input
-              className="form-control"
+              className="form-control w-100"
               aria-describedby="emailHelp"
               type="email"
               id="email"
