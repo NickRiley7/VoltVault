@@ -39,6 +39,8 @@ function Searchbar() {
 
   const handleItemClick = (itemId) => {
     navigate(`/items/${itemId}`);
+    setResults([]);
+    setInput("");
   };
 
   useEffect(() => {
