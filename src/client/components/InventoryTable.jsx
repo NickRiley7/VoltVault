@@ -11,13 +11,34 @@ function InventoryTable({ admin, token }) {
   }, []);
 
   async function fetchAllInventory() {
-    let { data } = await axios.get(`${API}/items/inventory`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    setInventory(data);
+    try {
+      let { data } = await axios.get(`${API}/items/inventory`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(data);
+      setInventory(data);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  // HOW TO GET ITEM ID?
+  async function removeItem(id) {
+    try {
+      await axios.delete(`${API}/items/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      fetchAllInventory();
+      console.log(`${API}/items/${id}`);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   if (admin) {
@@ -51,7 +72,14 @@ function InventoryTable({ admin, token }) {
                   </td>
                   {/* ON CLICK -- POP-UP CONFIRMING AND THEN DELETE ITEM. */}
                   <td>
-                    <Link>Delete</Link>
+                    <button
+                      onClick={() => {
+                        console.log(item.id);
+                        removeItem(item.id);
+                      }}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );
