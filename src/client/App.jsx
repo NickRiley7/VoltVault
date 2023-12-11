@@ -23,6 +23,7 @@ function App() {
   const [items, setItems] = useState([]);
   const [totalCart, setTotalCart] = useState(0);
   const [admin, setAdmin] = useState(false);
+  const [quantity, setQuantity] = useState(0)
 
   return (
     <>
@@ -68,6 +69,7 @@ function App() {
             element={<ItemDetails token={token} />}
           />
 
+
           <Route
             path="users"
             element={<AllUsers token={token} admin={admin} />}
@@ -85,6 +87,8 @@ function App() {
                 setItems={setItems}
                 totalCart={totalCart}
                 setTotalCart={setTotalCart}
+                quantity={quantity}
+                setQuantity={setQuantity}
               />
             }
           />

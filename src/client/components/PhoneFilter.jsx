@@ -26,21 +26,23 @@ function FilterForPhone() {
 
   return (
     <>
-      <h2>Phones</h2>
+      <h2 id="phoneTitle" >Phones</h2>
       {phoneItems.length ? (
-        <ul>
+        <div id="phoneFilterCard" className="row w-50 h-50">
           {phoneItems.map((item) => (
-            <li key={item.id}> 
-             <h3>{item.name}</h3>
-                <img src={item.img} alt={`Image of ${item.name}`}/>
-              <p>{item.details}</p>
-              <p>Price: ${item.price}</p>
-              <button type="button" onClick={() => navigate(`/items/${item.id}`)}>
+            <div className="card m-1 mb-3 mx-auto p-2 col-sm-7 col-md-7 col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded" key={item.id}>
+              <div className="card-body">
+                <img className="card-img-top" src={item.img} alt={`Image of ${item.name}`} />
+                <h3 className="card-title">{item.name}</h3>
+                <p className="card-text">{item.details}</p>
+                <p className="card-text">Price: ${item.price}</p>
+                <button className="btn btn-outline-primary" type="button" onClick={() => navigate(`/items/${item.id}`)}>
                   Show Item details
                 </button>
-            </li>
+              </div>
+            </div>
           ))}
-        </ul>
+        </div>
       ) : (
         <h2>No Phone found.</h2>
       )}
