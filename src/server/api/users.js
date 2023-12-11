@@ -26,17 +26,15 @@ usersRouter.get("/", requireAdmin, async (req, res, next) => {
   }
 });
 
-
-usersRouter.get('/account', requireUser, async (req,res,next) => {
-  try{
+usersRouter.get("/account", requireUser, async (req, res, next) => {
+  try {
     // console.log('getting my info account...')
-    res.send (req.user)
+    res.send(req.user);
     // console.log('finished getting my info account!')
+  } catch (error) {
+    next(error);
   }
-  catch (error) {
-    next(error)
-  }
-})
+});
 
 //GET SINGLE USER BY ID
 usersRouter.get("/:id", requireAdmin, async (req, res, next) => {
@@ -77,7 +75,7 @@ usersRouter.post("/login", async (req, res, next) => {
         {
           id: user.id,
           email: user.email,
-          isAdmin: user.isAdmin,
+          isAdmin: user.isadmin,
         },
         process.env.JWT_SECRET,
         {
@@ -101,8 +99,19 @@ usersRouter.post("/login", async (req, res, next) => {
 });
 
 usersRouter.post("/register", async (req, res, next) => {
-  const { username, firstName, lastName, address, address2, city, state, zip, email, password, isAdmin } =
-    req.body;
+  const {
+    username,
+    firstName,
+    lastName,
+    address,
+    address2,
+    city,
+    state,
+    zip,
+    email,
+    password,
+    isAdmin,
+  } = req.body;
 
   try {
     const _user = await getUserByEmail(email);
@@ -150,21 +159,45 @@ usersRouter.post("/register", async (req, res, next) => {
   }
 });
 
-
 usersRouter.patch(
   "/:userId",
   requireUser,
   requiredNotSent({
-    requiredParams: ['username', 'firstName', 'lastName', 'address', 'address2', 'city', 'state', 'zip', 'email', 'password', 'isAdmin'],
-    atLeastOne: true}),
+    requiredParams: [
+      "username",
+      "firstName",
+      "lastName",
+      "address",
+      "address2",
+      "city",
+      "state",
+      "zip",
+      "email",
+      "password",
+      "isAdmin",
+    ],
+    atLeastOne: true,
+  }),
   async (req, res, next) => {
     try {
-      console.log('THIS IS USER ID IN PARAMS ', req.params)
-      const { username, firstName, lastName, address, address2, city, state, zip, email, password, isAdmin } = req.body;
-      const {userId} = req.params;
+      console.log("THIS IS USER ID IN PARAMS ", req.params);
+      const {
+        username,
+        firstName,
+        lastName,
+        address,
+        address2,
+        city,
+        state,
+        zip,
+        email,
+        password,
+        isAdmin,
+      } = req.body;
+      const { userId } = req.params;
       const userToUpdate = await getUserById(userId);
-      console.log ('THIS IS USER TO UPDATE ',userToUpdate)
-      console.log ('THIS IS ADMIN STATUS ', isAdmin)
+      console.log("THIS IS USER TO UPDATE ", userToUpdate);
+      console.log("THIS IS ADMIN STATUS ", isAdmin);
       if (!userToUpdate) {
         next({
           name: "Not Found",
@@ -172,21 +205,32 @@ usersRouter.patch(
         });
       } else if (!req.user.isadmin && req.user.id !== userToUpdate.id) {
         res.status(403);
-        console.log ('IS ADMIN? ', req.user.isadmin)
+        console.log("IS ADMIN? ", req.user.isadmin);
         next({
           name: "WrongUser",
           message: "you can only update your own account.",
         });
       } else {
         const updatedUser = await updateUser({
-          id: userId, username, firstname: firstName, lastname: lastName, address, address2, city, state, zip, email, password, isadmin: isAdmin
+          id: userId,
+          username,
+          firstname: firstName,
+          lastname: lastName,
+          address,
+          address2,
+          city,
+          state,
+          zip,
+          email,
+          password,
+          isadmin: isAdmin,
         });
         if (updatedUser) {
-          console.log ('updating user...')
+          console.log("updating user...");
           res.send(updatedUser);
-          console.log ('finished updating user!')
+          console.log("finished updating user!");
         } else {
-          console.log ('error in updating the user!')
+          console.log("error in updating the user!");
           next({
             name: "FailedToUpdate",
             message: "There was an error updating the user",
@@ -194,7 +238,7 @@ usersRouter.patch(
         }
       }
     } catch (error) {
-      console.error ("ERROR!")
+      console.error("ERROR!");
       next(error);
     }
   }
@@ -203,21 +247,20 @@ usersRouter.patch(
 usersRouter.delete("/:userId", requireAdmin, async (req, res, next) => {
   // no priority. But can be for admin
   try {
-    const {userId} = req.params
+    const { userId } = req.params;
     const userToUpdate = await getUserById(userId);
     if (!userToUpdate) {
       next({
-        name: 'NotFound',
-        message: `No user by ID ${userId}`
-      })
-    }
-    else {
+        name: "NotFound",
+        message: `No user by ID ${userId}`,
+      });
+    } else {
       const deletedUser = await destroyUser(userId);
       res.send(deletedUser);
-      console.log ('user deleted!')
+      console.log("user deleted!");
     }
   } catch (error) {
-    console.error ('ERROR!')
+    console.error("ERROR!");
     next(error);
   }
 });
