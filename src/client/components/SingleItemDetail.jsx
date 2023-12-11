@@ -32,6 +32,16 @@ function ItemDetails() {
     );
   }
 
+  /*
+  POST Request for Add To Cart
+
+  1. Create onClick event handler in button element below;
+  2. Create fetch POST function for new cart (refer to line 122 of api/orders.js);
+  3. However, only do the above if the user have no open cart (or if !cart);
+  4. You may need to pass cart useState from app.jsx;
+  5. If a user have an open cart, then run fetch POST function for new item into cart (refer to line 246 of api/orders.js)
+  */
+
   return (
     <div id="singleItem" className="card mb-3 w-75 mb-3 shadow p-3 mb-5 bg-body-tertiary rounded singleItemDetail">
       <div className="row g-0">

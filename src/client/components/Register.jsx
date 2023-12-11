@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function RegistrationForm({ setToken }) {
+export default function RegistrationForm({ setToken, user, setUser }) {
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -20,6 +20,7 @@ export default function RegistrationForm({ setToken }) {
   }
 
   async function register(e) {
+    e.preventDefault()
     try {
       const response = await fetch("http://localhost:3000/api/users/register", {
         method: "POST",
@@ -41,11 +42,13 @@ export default function RegistrationForm({ setToken }) {
       });
       const result = await response.json();
       console.log("Signup Result:", result);
+      console.log ("Registered User:", result.user)
       if (!response.ok) {
         throw result;
       }
       setToken(result.token);
       setSuccessMessage(result.message);
+      setUser(result.user)
       setUsername("");
       setFirstName("");
       setLastName("");
@@ -67,7 +70,7 @@ export default function RegistrationForm({ setToken }) {
         <h2>Signup</h2>
         {successMessage && <p>{successMessage}</p>}
         {error && <p>{error}</p>}
-        <form className="row g-3" onSubmit={handleSubmit}>
+        <form className="row g-3" onSubmit={register}>
           <div className="col-md-6 input-group">
             <label htmlFor="inputUser" class="form-label">
               Username:{""}

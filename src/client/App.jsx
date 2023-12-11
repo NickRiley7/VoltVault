@@ -12,16 +12,23 @@ import FilterForPhone from "./components/PhoneFilter";
 import ItemDetails from "./components/SingleItemDetail";
 
 import AllUsers from "./components/AllUsers";
+import Cart from "./components/Cart";
 
 // import Orders from './components/Orders';
 
 function App() {
   const [token, setToken] = useState(null);
+  const [cart, setCart] = useState ([])
+  const [user, setUser] = useState ({})
+  const [items, setItems] = useState([])
+  const [totalCart, setTotalCart] = useState (0)
   const [admin, setAdmin] = useState(false);
 
   return (
     <>
-      <Navigations token={token} />
+    
+    <h1>{user.id}</h1>
+      <Navigations token={token} setToken={setToken}/>
       <div className="App">
         {/* <h1>VoltVault</h1> */}
         {/* <img id='comp-img' src='./computer.png'></img> */}
@@ -29,13 +36,11 @@ function App() {
         <Routes>
           <Route
             path="login"
-            element={
-              <Login token={token} setToken={setToken} setAdmin={setAdmin} />
-            }
+            element={<Login token={token} setToken={setToken} user={user} setUser={setUser} setAdmin={setAdmin}/>}
           />
           <Route
             path="register"
-            element={<Register token={token} setToken={setToken} />}
+            element={<Register token={token} setToken={setToken} user={user} setUser={setUser} />}
           />
           <Route path="/" element={<AllItems token={token} />} />
           <Route
@@ -48,10 +53,16 @@ function App() {
             path="/items/:itemid"
             element={<ItemDetails token={token} />}
           />
-          <Route
-            path="users"
-            element={<AllUsers token={token} admin={admin} />}
-          />
+
+          <Route path="users" element={<AllUsers token={token} admin={admin} />} />
+          <Route 
+            path="/cart" element={
+              <Cart 
+                token={token} setToken={setToken}
+                cart={cart} setCart={setCart}
+                user={user} 
+                items={items} setItems={setItems}
+                totalCart={totalCart} setTotalCart={setTotalCart}/>} />
         </Routes>
       </div>
     </>
