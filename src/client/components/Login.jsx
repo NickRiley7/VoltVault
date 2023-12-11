@@ -8,7 +8,6 @@ const Login = ({ token, setToken, setAdmin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
-  const [decoded, setDecoded] = useState({});
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -34,14 +33,13 @@ const Login = ({ token, setToken, setAdmin }) => {
       console.log(result);
       setMessage(result.message);
       setToken(result.token);
+      const decoded = jwtDecode(result.token);
+      setAdmin(decoded.isAdmin);
+
       if (!response.ok) {
         throw result;
       }
-      if (token) {
-        console.log("token consoled.");
-        const decoded = jwtDecode(token);
-        setAdmin(decoded.isAdmin);
-      }
+
       // console.log(decoded);
       setEmail("");
       setPassword("");
