@@ -3,7 +3,7 @@ import Axios from "axios";
 
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ setToken }) => {
+const Login = ({ setToken, user, setUser }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -16,7 +16,9 @@ const Login = ({ setToken }) => {
     setPassword(e.target.value);
   };
 
-  const login = async () => {
+  const login = async (e) => {
+    e.preventDefault()
+
     try {
       const response = await fetch("http://localhost:3000/api/users/login", {
         method: "POST",
@@ -32,6 +34,8 @@ const Login = ({ setToken }) => {
       console.log(result);
       setMessage(result.message);
       setToken(result.token);
+      setUser(result.user)
+      console.log (result.user.id)
       if (!response.ok) {
         throw result;
       }
@@ -51,7 +55,7 @@ const Login = ({ setToken }) => {
     <div id="loginPage">
       <div id="loginCard" className="card shadow p-3 mb-5 m-100 bg-body-tertiary rounded">
         <h2>Login</h2>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={login}>
           <div className="form-floating mt-3">
             <input
               className="form-control shadow"

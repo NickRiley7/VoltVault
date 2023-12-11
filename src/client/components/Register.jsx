@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function RegistrationForm({ setToken }) {
+export default function RegistrationForm({ setToken, user, setUser }) {
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -41,11 +41,13 @@ export default function RegistrationForm({ setToken }) {
       });
       const result = await response.json();
       console.log("Signup Result:", result);
+      console.log ("Registered User:", result.user)
       if (!response.ok) {
         throw result;
       }
       setToken(result.token);
       setSuccessMessage(result.message);
+      setUser(result.user)
       setUsername("");
       setFirstName("");
       setLastName("");

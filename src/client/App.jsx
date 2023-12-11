@@ -19,9 +19,12 @@ import Cart from "./components/Cart";
 function App() {
   const [token, setToken] = useState(null);
   const [cart, setCart] = useState ([])
+  const [user, setUser] = useState ({})
 
   return (
     <>
+    
+    <h1>{user.id}</h1>
       <Navigations token={token} />
       <div className="App">
         {/* <h1>VoltVault</h1> */}
@@ -30,11 +33,11 @@ function App() {
         <Routes>
           <Route
             path="login"
-            element={<Login token={token} setToken={setToken} />}
+            element={<Login token={token} setToken={setToken} user={user} setUser={setUser} />}
           />
           <Route
             path="register"
-            element={<Register token={token} setToken={setToken} />}
+            element={<Register token={token} setToken={setToken} user={user} setUser={setUser} />}
           />
           <Route path="/" element={<AllItems token={token} />} />
           <Route path="account" element={<UserAccount token={token} />} />
@@ -46,10 +49,11 @@ function App() {
           />
           <Route path="users" element={<AllUsers token={token} />} />
           <Route 
-            path="cart/:cartid" element={
+            path="/cart" element={
               <Cart 
                 token={token} setToken={setToken}
-                cart={cart} setCart={setCart} />} />
+                cart={cart} setCart={setCart}
+                user={user} />} />
         </Routes>
       </div>
     </>

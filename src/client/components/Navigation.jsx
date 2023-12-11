@@ -84,12 +84,14 @@ export default function Navigations({ token }) {
           >
             Signup
           </Link>
-          <img
-            id="cart"
-            href="#"
-            className="btn btn-light m-1"
-            src="/src/client/assets/cart icon.png"
-          ></img>
+          <Link to="cart">
+            <img
+              id="cart"
+              href="#"
+              className="btn btn-light m-1"
+              src="/src/client/assets/cart icon.png"
+            ></img>
+          </Link>
         </div>
       </div>
     </nav>
