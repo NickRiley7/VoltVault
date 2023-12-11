@@ -80,7 +80,7 @@ function InventoryTable({ admin, token }) {
                       nested
                     >
                       {(close) => (
-                        <div>
+                        <div class="p-3 bg-warning text-dark">
                           <div>Permanently delete {item.name}?</div>
                           <div>
                             <button
