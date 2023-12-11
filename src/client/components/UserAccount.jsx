@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 let API = "http://localhost:3000/api";
 
-function UserAccount() {
+function UserAccount({ token }) {
   const [firstName, setFirstName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -12,15 +12,22 @@ function UserAccount() {
     // fetchOrders();
   }, []);
 
-  async function fetchUser({ token }) {
-    try {
-      let { data } = await axios.get(`${API}/users/account`);
-      console.log(data);
-      setFirstName(data.firstname);
-      setUsername(data.username);
-      setEmail(data.email);
-    } catch (err) {
-      console.error(err.message);
+  async function fetchUser() {
+    if (token) {
+      try {
+        let { data } = await axios.get(`${API}/users/account`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(data);
+        setFirstName(data.firstname);
+        setUsername(data.username);
+        setEmail(data.email);
+      } catch (err) {
+        console.error(err.message);
+      }
     }
   }
 
