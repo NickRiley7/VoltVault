@@ -14,7 +14,7 @@ NOTES ON CART.JSX
 
  */
 
-function Cart ({token, setToken, cart, setCart, user, items, setItems}) {
+function Cart ({token, setToken, cart, setCart, user, items, setItems, totalCart, setTotalCart}) {
 
 useEffect(() => {
   if (token){
@@ -33,14 +33,37 @@ useEffect(() => {
         }
       })
       let json = await response.json()
+      console.log(json[0])
+      console.log(json[0].items)
       setItems(json[0].items)
-      setCart(json)
+      setCart(json[0])
       console.log (user)
       console.log (json[0].items)
+
+      const totalItemAmount = items.map(item => item.price * item.quantity)
+      console.log(totalItemAmount)
+      const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur, 0)
+      console.log (overallTotalAmount)
+      setTotalCart(overallTotalAmount)
     }
     catch (error){
       console.error('ERROR! in fetchCart', error)
     }
+  }
+
+  async function addItem (orderItemsId) {
+    const response = await fetch(`${API}/order_items/${orderItemsId}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type" : "application/json",
+        "Authorization" : `Bearer ${token}`
+      },
+      body:JSON.stringify({
+        quantity
+        // need to figure out how to PATCH quantity +1 when adding more item
+      })
+    })
   }
 
   if (token) {
@@ -55,12 +78,16 @@ useEffect(() => {
               return (
                 <li key={item.id}>
                   <h3>{item.name}</h3>
+                  <img src={item.img} />
+                  <div>price {item.price}</div>
+                  <div>quantity {item.quantity}</div>
                 </li>
               )
             })
             : 
             <h3>Cart is empty</h3>
         }
+        <h3>TOTAL AMOUNT {totalCart}</h3>
       </>
       // <div>
       //   <h2>Shopping Cart</h2>

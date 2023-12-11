@@ -21,6 +21,7 @@ function App() {
   const [cart, setCart] = useState ([])
   const [user, setUser] = useState ({})
   const [items, setItems] = useState([])
+  const [totalCart, setTotalCart] = useState (0)
 
   return (
     <>
@@ -55,7 +56,8 @@ function App() {
                 token={token} setToken={setToken}
                 cart={cart} setCart={setCart}
                 user={user} 
-                items={items} setItems={setItems}/>} />
+                items={items} setItems={setItems}
+                totalCart={totalCart} setTotalCart={setTotalCart}/>} />
         </Routes>
       </div>
     </>

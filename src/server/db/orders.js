@@ -111,6 +111,8 @@ async function getOpenOrderByUserId (userId) {
       WHERE orders."userId" = $1
       AND "isOpen" = true
     `, [user.id])
+    const ordersWithItems = attachItemsToOrders(orders)
+    
     return attachItemsToOrders(orders)
   }
   catch (error){
