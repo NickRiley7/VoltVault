@@ -45,9 +45,11 @@ function InventoryTable({ admin, token }) {
                   <td>{item.category}</td>
                   <td>{item.price}</td>
                   <td>{item.stock}</td>
+                  {/* ON CLICK -- NAV TO SINGLE ITEM PAGE AND EDIT THERE?  */}
                   <td>
                     <Link>Edit</Link>
                   </td>
+                  {/* ON CLICK -- POP-UP CONFIRMING AND THEN DELETE ITEM. */}
                   <td>
                     <Link>Delete</Link>
                   </td>
@@ -58,9 +60,9 @@ function InventoryTable({ admin, token }) {
         </table>
       </>
     );
+  } else {
+    return <h1>You must have admin rights to view this page.</h1>;
   }
-
-  return <h1>I'M HOOKED UP!</h1>;
 }
 
 export default InventoryTable;
