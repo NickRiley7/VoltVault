@@ -37,7 +37,7 @@ const Login = ({ token, setToken, user, setUser, setAdmin }) => {
       setMessage(result.message);
       setToken(result.token);
       setUser(result.user)
-      console.log (result.user.id)
+      console.log(result.user.id)
       const decoded = jwtDecode(result.token);
       setAdmin(decoded.isAdmin);
       if (!response.ok) {
@@ -58,14 +58,14 @@ const Login = ({ token, setToken, user, setUser, setAdmin }) => {
   };
 
   return (
-    <div className="col-sm-12 col-md-11 col-lg-5" id="loginPage">
+    <div className="col-12 col-sm-11 col-md-11 col-lg-5" id="loginPage">
       <div
         id="loginCard"
         className="card shadow p-3 m-5 m-100 bg-body-tertiary rounded"
       >
         <h2>Login</h2>
         <form onSubmit={login}>
-          <div className="form-floating mt-3 col-sm-5 col-md-7 col-lg-12">
+          <div className="form-floating mt-3 col-5 col-sm-5 col-md-7 col-lg-12">
             <input
               className="form-control shadow"
               aria-describedby="emailHelp"
@@ -79,7 +79,7 @@ const Login = ({ token, setToken, user, setUser, setAdmin }) => {
             <label htmlfor="floatingInput">Email address</label>
           </div>
 
-          <div className="form-floating mt-4 col-sm-5 col-md-7 col-lg-12">
+          <div className="form-floating mt-4 col-5 col-sm-5 col-md-7 col-lg-12">
             <input
               className="form-control shadow"
               type="password"
