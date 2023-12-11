@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 let API = "http://localhost:3000/api";
+import Popup from "reactjs-popup";
 
 function InventoryTable({ admin, token }) {
   const [inventory, setInventory] = useState([]);
@@ -25,7 +26,6 @@ function InventoryTable({ admin, token }) {
     }
   }
 
-  // HOW TO GET ITEM ID?
   async function removeItem(id) {
     try {
       await axios.delete(`${API}/items/${id}`, {
@@ -72,14 +72,37 @@ function InventoryTable({ admin, token }) {
                   </td>
                   {/* ON CLICK -- POP-UP CONFIRMING AND THEN DELETE ITEM. */}
                   <td>
-                    <button
+                    <Popup
+                      trigger={<button>Delete Item</button>}
+                      position="center"
+                      modal
+                      nested
+                    >
+                      {(close) => (
+                        <div>
+                          <div>Permanently delete {item.name}?</div>
+                          <div>
+                            <button
+                              onClick={() => {
+                                removeItem(item.id);
+                              }}
+                            >
+                              Delete Item
+                            </button>
+                            <button onClick={() => close()}>
+                              Return to inventory page
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </Popup>
+                    {/* <button
                       onClick={() => {
-                        console.log(item.id);
                         removeItem(item.id);
                       }}
                     >
                       Delete
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               );
