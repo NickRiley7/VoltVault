@@ -65,7 +65,7 @@ export default function RegistrationForm({ setToken, user, setUser }) {
   }
 
   return (
-    <div id="RegisterPage" className="card shadow p-3 mb-5 m-100 bg-body-tertiary rounded">
+    <div id="RegisterPage" className="card col-md-10 shadow p-3 mb-5 m-100 bg-body-tertiary rounded">
       <div id="RegisterCard">
         <h2>Signup</h2>
         {successMessage && <p>{successMessage}</p>}
@@ -111,7 +111,7 @@ export default function RegistrationForm({ setToken, user, setUser }) {
             </label>
           </div>
 
-          <div className="col-md-2">
+          <div className="col-md-9">
             <label className="form-label">
               First Name:{""}
               <input
@@ -123,7 +123,7 @@ export default function RegistrationForm({ setToken, user, setUser }) {
             </label>
           </div>
 
-          <div className="col-md-2">
+          <div className="col-md-7">
             <label className="form-label">
               Last Name:{""}
               <input
@@ -223,7 +223,7 @@ export default function RegistrationForm({ setToken, user, setUser }) {
             </label>
           </div>
 
-          <div className="col-md-2">
+          <div className="col-md-9">
             <label htmlFor="inputZip" className="form-label">
               Zip:{""}
               <input type="text" className="form-control shadow" id="inputZip" value={zip} onChange={(e) => setZip(e.target.value)} />
