@@ -58,7 +58,7 @@
   width: 100rem;
 }
 
-#allItemsTitle, #phoneTitle {
+#allItemsTitle, #phoneTitle, #computerTitle {
   text-align: center;
   text-decoration: underline;
   margin-bottom: 2%;
