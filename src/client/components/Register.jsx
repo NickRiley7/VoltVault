@@ -20,6 +20,7 @@ export default function RegistrationForm({ setToken, user, setUser }) {
   }
 
   async function register(e) {
+    e.preventDefault()
     try {
       const response = await fetch("http://localhost:3000/api/users/register", {
         method: "POST",
@@ -69,7 +70,7 @@ export default function RegistrationForm({ setToken, user, setUser }) {
         <h2>Signup</h2>
         {successMessage && <p>{successMessage}</p>}
         {error && <p>{error}</p>}
-        <form className="row g-3" onSubmit={handleSubmit}>
+        <form className="row g-3" onSubmit={register}>
           <div className="col-md-6 input-group">
             <label htmlFor="inputUser" class="form-label">
               Username:{""}

@@ -20,12 +20,13 @@ function App() {
   const [token, setToken] = useState(null);
   const [cart, setCart] = useState ([])
   const [user, setUser] = useState ({})
+  const [items, setItems] = useState([])
 
   return (
     <>
     
     <h1>{user.id}</h1>
-      <Navigations token={token} />
+      <Navigations token={token} setToken={setToken}/>
       <div className="App">
         {/* <h1>VoltVault</h1> */}
         {/* <img id='comp-img' src='./computer.png'></img> */}
@@ -53,7 +54,8 @@ function App() {
               <Cart 
                 token={token} setToken={setToken}
                 cart={cart} setCart={setCart}
-                user={user} />} />
+                user={user} 
+                items={items} setItems={setItems}/>} />
         </Routes>
       </div>
     </>

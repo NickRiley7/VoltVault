@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Searchbar from "./SearchBar";
 
-export default function Navigations({ token }) {
+export default function Navigations({ token, setToken }) {
   return (
     <nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
       <div className="container-fluid">
@@ -91,6 +91,15 @@ export default function Navigations({ token }) {
               className="btn btn-light m-1"
               src="/src/client/assets/cart icon.png"
             ></img>
+          </Link>
+          <Link
+            to="/"
+            className="btn btn-outline-primary m-1"
+            tabIndex="-1"
+            role="button"
+            onClick={()=>setToken(null)}
+          >
+            Logout
           </Link>
         </div>
       </div>

@@ -14,7 +14,7 @@ NOTES ON CART.JSX
 
  */
 
-function Cart ({token, setToken, cart, setCart, user}) {
+function Cart ({token, setToken, cart, setCart, user, items, setItems}) {
 
 useEffect(() => {
   if (token){
@@ -33,8 +33,10 @@ useEffect(() => {
         }
       })
       let json = await response.json()
+      setItems(json[0].items)
       setCart(json)
       console.log (user)
+      console.log (json[0].items)
     }
     catch (error){
       console.error('ERROR! in fetchCart', error)
@@ -46,6 +48,19 @@ useEffect(() => {
   
       <>
         <h2>Welcome {user.firstname} {user.lastname} to your cart!</h2>
+
+        {
+          items.length ? 
+            items.map (item => {
+              return (
+                <li key={item.id}>
+                  <h3>{item.name}</h3>
+                </li>
+              )
+            })
+            : 
+            <h3>Cart is empty</h3>
+        }
       </>
       // <div>
       //   <h2>Shopping Cart</h2>
