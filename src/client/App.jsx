@@ -17,6 +17,7 @@ import AllUsers from "./components/AllUsers";
 
 function App() {
   const [token, setToken] = useState(null);
+  const [admin, setAdmin] = useState(false);
 
   return (
     <>
@@ -28,21 +29,29 @@ function App() {
         <Routes>
           <Route
             path="login"
-            element={<Login token={token} setToken={setToken} />}
+            element={
+              <Login token={token} setToken={setToken} setAdmin={setAdmin} />
+            }
           />
           <Route
             path="register"
             element={<Register token={token} setToken={setToken} />}
           />
           <Route path="/" element={<AllItems token={token} />} />
-          <Route path="account" element={<UserAccount token={token} />} />
+          <Route
+            path="account"
+            element={<UserAccount token={token} admin={admin} />}
+          />
           <Route path="/computer" element={<FilterForComputer />} />
           <Route path="/phones" element={<FilterForPhone />} />
           <Route
             path="/items/:itemid"
             element={<ItemDetails token={token} />}
           />
-          <Route path="users" element={<AllUsers token={token} />} />
+          <Route
+            path="users"
+            element={<AllUsers token={token} admin={admin} />}
+          />
         </Routes>
       </div>
     </>
