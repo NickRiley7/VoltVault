@@ -4,7 +4,7 @@ const { getAllOrders } = require ('../db/orders')
 const { getOrderItemsById, getOrderItemsByOrder, updateOrderItem, destroyOrderItems, canEditOrderItem } = require ('../db/order_items')
 const { requireAdmin, requireUser, requiredNotSent } = require ('./utils')
 
-orderItemsRouter.get ('/:orderId', requireUser, async (req,res,next) => {
+orderItemsRouter.get ('/orders/:orderId', requireUser, async (req,res,next) => {
   try{
     const {orderId} = req.params
     console.log (`getting order items with order id ${orderId}`)
@@ -21,6 +21,26 @@ orderItemsRouter.get ('/:orderId', requireUser, async (req,res,next) => {
     }
   } 
   catch (error){
+    throw error
+  }
+})
+
+orderItemsRouter.get ('/:orderItemId', async (req,res,next) => {
+  try{
+    const {orderItemId} = req.params
+    console.log (`getting order items with this id ${orderItemId}`)
+    const orderItem = await getOrderItemsById(orderItemId)
+    if (!orderItem) {
+      console.log ('THIS IS ORDER ITEMS', orderItem)
+      next ({
+        name: 'NotFound',
+        message: `No order items with order id ${orderItemId}`
+      })
+    } else {
+      res.send (orderItem)
+    }
+  }
+  catch (error) {
     throw error
   }
 })
