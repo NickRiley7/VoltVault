@@ -87,6 +87,7 @@ orderItemsRouter.delete('/:orderItemsId', requireUser, async (req, res, next)=> 
     console.log('THIS IS ORDER ID ', orderItemsId)
     const orderItemsToUpdate = await getOrderItemsById(orderItemsId);
     console.log ('THIS IS ORDER ITEMS TO UDPATE', orderItemsToUpdate)
+    console.log ('THIS IS ORDER ITEMS TO UPDATE', orderItemsToUpdate.order_id)
     const orderToUpdateId = orderItemsToUpdate.order_id
     console.log ('THIS IS ORDER ITEMS TO UPDATE: ', orderItemsToUpdate)
     if (!orderItemsToUpdate) {
@@ -95,7 +96,7 @@ orderItemsRouter.delete('/:orderItemsId', requireUser, async (req, res, next)=> 
         message: `No order by ID ${orderItemsId}`
       })
     }
-    else if (orderToUpdateId !== req.user.id) {
+    else if (!await canEditOrderItem(req.params.orderItemsId, req.user.id)) {
       res.status(403);
       console.log ('THIS IS ORDER TO UPDATE ID', orderToUpdateId)
       console.log ('THIS IS REQ USER ID ', req.user.id)
