@@ -30,7 +30,7 @@ function FilterForPhone() {
       {phoneItems.length ? (
         <div id="phoneFilterCard" className="row w-50 h-50">
           {phoneItems.map((item) => (
-            <div className="card m-1 mb-3 mx-auto p-2 col-sm-5 col-md-5 col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded" key={item.id}>
+            <div className="card m-1 mb-3 mx-auto p-2 col-sm-7 col-md-7 col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded" key={item.id}>
               <div className="card-body">
                 <img className="card-img-top" src={item.img} alt={`Image of ${item.name}`} />
                 <h3 className="card-title">{item.name}</h3>
