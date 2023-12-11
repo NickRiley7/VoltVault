@@ -24,13 +24,13 @@ function AllItems() {
 
   return (
     <div>
-      <h2>All Items</h2>
+      <h2 id="allItemsTitle">All Items</h2>
       {items.length ? (
-        <ul>
+        <div id="allItemsCards" className="row w-50 h-50">
           {items.map((item) => (
-            <li
+            <div
               id="cards"
-              className="card m-1 w-75 mb-3 shadow p-3 mb-5 bg-body-tertiary rounded"
+              className="card m-1 mb-3 mx-auto p-2 col-sm-5 col-md-5 col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded"
               key={item.id}
             >
               <div className="card-body">
@@ -60,9 +60,10 @@ function AllItems() {
                   Add item to Cart
                 </button>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
+
       ) : (
         <h2>
           Loading Items ... <br />

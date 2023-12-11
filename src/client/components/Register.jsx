@@ -65,7 +65,7 @@ export default function RegistrationForm({ setToken, user, setUser }) {
   }
 
   return (
-    <div id="RegisterPage" className="card col-md-10 shadow p-3 mb-5 m-100 bg-body-tertiary rounded">
+    <div id="RegisterPage" className="card col-10 col-sm-10 col-md-10 col-lg-10 shadow p-3 mb-5 m-100 bg-body-tertiary rounded">
       <div id="RegisterCard">
         <h2>Signup</h2>
         {successMessage && <p>{successMessage}</p>}

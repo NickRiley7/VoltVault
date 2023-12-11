@@ -120,7 +120,7 @@ ordersRouter.get('/:orderId', requireUser, async (req, res, next) => {
 
 // POST new order
 ordersRouter.post('/', requireUser, async (req, res, next) => { //should have requireUser as parameter later on
-  const { order_total, items } = req.body;
+  const { order_total, items, isOpen } = req.body;
 
   const orderData = {};
   
@@ -128,6 +128,7 @@ ordersRouter.post('/', requireUser, async (req, res, next) => { //should have re
     console.log('posting new order...')
 
     orderData.userId = req.user.id;
+    orderData.isOpen = isOpen
     orderData.order_total = order_total;
     orderData.items = items;
 

@@ -27,7 +27,7 @@ itemRouter.get("/", async (req, res, next) => {
 itemRouter.get("/inventory", requireAdmin, async (req, res, next) => {
   try {
     const items = await getAllItems();
-    console.log("THIS IS ITEMS: ", items);
+    // console.log('THIS IS ITEMS: ', items)
     res.send(items);
   } catch (err) {
     next(err);
