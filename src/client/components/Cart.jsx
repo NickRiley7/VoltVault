@@ -53,7 +53,7 @@ useEffect(() => {
     }
   }
 
-  async function addItem (orderItemsId) {
+  async function addItem (item) {
     // e.prevantDefault()
     // setQuantity(e.target.value)
     try{
@@ -68,7 +68,7 @@ useEffect(() => {
       // setQuantity(orderItem.quantity)
 
 
-      const response = await fetch(`${API}/order_items/${orderItemsId}`,
+      const response = await fetch(`${API}/order_items/${item.orderItemsId}`,
       {
         method: "PATCH",
         headers: {
@@ -76,7 +76,7 @@ useEffect(() => {
           "Authorization" : `Bearer ${token}`
         },
         body:JSON.stringify({
-          quantity: 2
+          quantity: item.quantity+1
           // need to figure out how to PATCH quantity +1 when adding more item
         })
       })
@@ -91,7 +91,7 @@ useEffect(() => {
     }
   }
 
-  async function reduceItem (orderItemsId) {
+  async function reduceItem (item) {
     // e.prevantDefault()
     // setQuantity(e.target.value)
     try{
@@ -106,7 +106,7 @@ useEffect(() => {
       // setQuantity(orderItem.quantity)
 
 
-      const response = await fetch(`${API}/order_items/${orderItemsId}`,
+      const response = await fetch(`${API}/order_items/${item.orderItemsId}`,
       {
         method: "PATCH",
         headers: {
@@ -114,7 +114,7 @@ useEffect(() => {
           "Authorization" : `Bearer ${token}`
         },
         body:JSON.stringify({
-          quantity: 1
+          quantity: item.quantity-1
           // need to figure out how to PATCH quantity +1 when adding more item
         })
       })
@@ -152,8 +152,8 @@ useEffect(() => {
                   <img src={item.img} />
                   <div>price {item.price}</div>
                   <div>quantity {item.quantity}</div>
-                  <button onClick={() => addItem(orderItemsId)}>add item</button>
-                  <button onClick={() => reduceItem(orderItemsId)}>reduce item</button>
+                  <button onClick={() => addItem(item)}>add item</button>
+                  <button onClick={() => reduceItem(item)}>reduce item</button>
                   {/* <div>
                     <input 
                       type="number"
