@@ -1,6 +1,8 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
 let API = 'http://localhost:3000/api'
 /*
  
@@ -14,7 +16,7 @@ NOTES ON CART.JSX
 
  */
 
-function Cart ({token, setToken, cart, setCart, user, items, setItems, totalCart, setTotalCart}) {
+function Cart ({token, setToken, cart, setCart, user, items, setItems, totalCart, setTotalCart, quantity, setQuantity}) {
 
 useEffect(() => {
   if (token){
@@ -52,11 +54,20 @@ useEffect(() => {
   }
 
   async function addItem (orderItemsId) {
+    // e.prevantDefault()
+    // setQuantity(e.target.value)
     try{
-
       // const itemsQuantity = items.map(item => item.quantity)
       // const currentQuantity = 0
       // currentQuantity =+ itemsQuantity
+
+      // const { data: orderItem } = await axios.get (`${API}/order_items/${orderItemsId}`)
+
+      // console.log (orderItem)
+      // console.log (orderItem.quantity)
+      // setQuantity(orderItem.quantity)
+
+
       const response = await fetch(`${API}/order_items/${orderItemsId}`,
       {
         method: "PATCH",
@@ -65,11 +76,52 @@ useEffect(() => {
           "Authorization" : `Bearer ${token}`
         },
         body:JSON.stringify({
-          quantity
+          quantity: 2
           // need to figure out how to PATCH quantity +1 when adding more item
         })
       })
       let json = await response.json()
+      // setQuantity(json.)
+
+      fetchCart()
+      
+
+    } catch (error) {
+      console.error ('error in adding item quantity', error)
+    }
+  }
+
+  async function reduceItem (orderItemsId) {
+    // e.prevantDefault()
+    // setQuantity(e.target.value)
+    try{
+      // const itemsQuantity = items.map(item => item.quantity)
+      // const currentQuantity = 0
+      // currentQuantity =+ itemsQuantity
+
+      // const { data: orderItem } = await axios.get (`${API}/order_items/${orderItemsId}`)
+
+      // console.log (orderItem)
+      // console.log (orderItem.quantity)
+      // setQuantity(orderItem.quantity)
+
+
+      const response = await fetch(`${API}/order_items/${orderItemsId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type" : "application/json",
+          "Authorization" : `Bearer ${token}`
+        },
+        body:JSON.stringify({
+          quantity: 1
+          // need to figure out how to PATCH quantity +1 when adding more item
+        })
+      })
+      let json = await response.json()
+      // setQuantity(json.)
+
+      fetchCart()
       
 
     } catch (error) {
@@ -92,12 +144,26 @@ useEffect(() => {
         {
           items.length ? 
             items.map (item => {
+              // setQuantity(item.quantity)
+              const orderItemsId = item.orderItemsId
               return (
                 <li key={item.id}>
                   <h3>{item.name}</h3>
                   <img src={item.img} />
                   <div>price {item.price}</div>
                   <div>quantity {item.quantity}</div>
+                  <button onClick={() => addItem(orderItemsId)}>add item</button>
+                  <button onClick={() => reduceItem(orderItemsId)}>reduce item</button>
+                  {/* <div>
+                    <input 
+                      type="number"
+                      value={quantity}
+                      onChange={(e)=>setQuantity(item.id, e.target.value)} />
+                      <button type="submit">submit</button>
+                    <form onSubmit={addItem}>
+
+                    </form>
+                  </div> */}
                 </li>
               )
             })
