@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 let API = "http://localhost:3000/api";
+import { Link } from "react-router-dom";
 
-function UserAccount() {
+function UserAccount({ token, admin }) {
   const [firstName, setFirstName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -12,15 +13,22 @@ function UserAccount() {
     // fetchOrders();
   }, []);
 
-  async function fetchUser({ token }) {
-    try {
-      let { data } = await axios.get(`${API}/users/account`);
-      console.log(data);
-      setFirstName(data.firstname);
-      setUsername(data.username);
-      setEmail(data.email);
-    } catch (err) {
-      console.error(err.message);
+  async function fetchUser() {
+    if (token) {
+      try {
+        let { data } = await axios.get(`${API}/users/account`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(data);
+        setFirstName(data.firstname);
+        setUsername(data.username);
+        setEmail(data.email);
+      } catch (err) {
+        console.error(err.message);
+      }
     }
   }
 
@@ -44,13 +52,42 @@ function UserAccount() {
   //   );
   // }
 
-  return (
-    <>
-      <h1>Hi, {firstName}</h1>
-      <h2>Your Username: {username}</h2>
-      <h2>Your Email: {email}</h2>
-    </>
-  );
+  if (!token) {
+    return (
+      <h2>
+        Please <Link to="/login">login</Link> or{" "}
+        <Link t="/register">create an account</Link>.
+      </h2>
+    );
+  } else if (token && admin) {
+    return (
+      <>
+        <h1>Hi, {firstName}</h1>
+        <h2>Your Username: {username}</h2>
+        <h2>Your Email: {email}</h2>
+        <form>
+          <label>
+            {" "}
+            User
+            <input type="radio" name="adminAccess" value="user" />
+          </label>
+          <label>
+            {" "}
+            Admin
+            <input type="radio" name="adminAccess" value="Admin" />
+          </label>
+        </form>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <h1>Hi, {firstName}</h1>
+        <h2>Your Username: {username}</h2>
+        <h2>Your Email: {email}</h2>
+      </>
+    );
+  }
 }
 
 export default UserAccount;

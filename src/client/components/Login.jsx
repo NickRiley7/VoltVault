@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ setToken, user, setUser }) => {
+const Login = ({ token, setToken, user, setUser, setAdmin }) => {
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -36,9 +38,13 @@ const Login = ({ setToken, user, setUser }) => {
       setToken(result.token);
       setUser(result.user)
       console.log (result.user.id)
+      const decoded = jwtDecode(result.token);
+      setAdmin(decoded.isAdmin);
       if (!response.ok) {
         throw result;
       }
+
+      // console.log(decoded);
       setEmail("");
       setPassword("");
     } catch (err) {
@@ -53,7 +59,10 @@ const Login = ({ setToken, user, setUser }) => {
 
   return (
     <div id="loginPage">
-      <div id="loginCard" className="card shadow p-3 mb-5 m-100 bg-body-tertiary rounded">
+      <div
+        id="loginCard"
+        className="card shadow p-3 mb-5 m-100 bg-body-tertiary rounded"
+      >
         <h2>Login</h2>
         <form onSubmit={login}>
           <div className="form-floating mt-3">
@@ -82,7 +91,9 @@ const Login = ({ setToken, user, setUser }) => {
             />
             <label htmlFor="floatingPassword">Password</label>
           </div>
-          <button type="submit" className="btn btn-primary mt-3">Login</button>
+          <button type="submit" className="btn btn-primary mt-3">
+            Login
+          </button>
         </form>
         <p>{message}</p>
       </div>
