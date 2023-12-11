@@ -272,6 +272,11 @@ export default function Navigations({ admin, token, setToken }) {
                       Users
                     </Link>
                   </li>
+                  <li>
+                    <Link className="dropdown-item" to="/inventory">
+                      Inventory
+                    </Link>
+                  </li>
                 </ul>
               </li>
             </ul>
