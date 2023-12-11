@@ -52,7 +52,7 @@ function ItemDetails() {
       <div className="row g-0">
         <div className="col-md-4">
           <img
-            src={`/${item.img}`}
+            src={`${item.img}`}
             className="img-fluid rounded-start"
             alt={`Image of ${item.name}`}
           />
