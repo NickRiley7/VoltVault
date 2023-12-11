@@ -18,17 +18,16 @@ import Cart from "./components/Cart";
 
 function App() {
   const [token, setToken] = useState(null);
-  const [cart, setCart] = useState ([])
-  const [user, setUser] = useState ({})
-  const [items, setItems] = useState([])
-  const [totalCart, setTotalCart] = useState (0)
+  const [cart, setCart] = useState([]);
+  const [user, setUser] = useState({});
+  const [items, setItems] = useState([]);
+  const [totalCart, setTotalCart] = useState(0);
   const [admin, setAdmin] = useState(false);
 
   return (
     <>
-    
-    <h1>{user.id}</h1>
-      <Navigations token={token} setToken={setToken}/>
+      <h1>{user.id}</h1>
+      <Navigations token={token} setToken={setToken} admin={admin} />
       <div className="App">
         {/* <h1>VoltVault</h1> */}
         {/* <img id='comp-img' src='./computer.png'></img> */}
@@ -36,11 +35,26 @@ function App() {
         <Routes>
           <Route
             path="login"
-            element={<Login token={token} setToken={setToken} user={user} setUser={setUser} setAdmin={setAdmin}/>}
+            element={
+              <Login
+                token={token}
+                setToken={setToken}
+                user={user}
+                setUser={setUser}
+                setAdmin={setAdmin}
+              />
+            }
           />
           <Route
             path="register"
-            element={<Register token={token} setToken={setToken} user={user} setUser={setUser} />}
+            element={
+              <Register
+                token={token}
+                setToken={setToken}
+                user={user}
+                setUser={setUser}
+              />
+            }
           />
           <Route path="/" element={<AllItems token={token} />} />
           <Route
@@ -54,15 +68,26 @@ function App() {
             element={<ItemDetails token={token} />}
           />
 
-          <Route path="users" element={<AllUsers token={token} admin={admin} />} />
-          <Route 
-            path="/cart" element={
-              <Cart 
-                token={token} setToken={setToken}
-                cart={cart} setCart={setCart}
-                user={user} 
-                items={items} setItems={setItems}
-                totalCart={totalCart} setTotalCart={setTotalCart}/>} />
+          <Route
+            path="users"
+            element={<AllUsers token={token} admin={admin} />}
+          />
+          <Route
+            path="/cart"
+            element={
+              <Cart
+                token={token}
+                setToken={setToken}
+                cart={cart}
+                setCart={setCart}
+                user={user}
+                items={items}
+                setItems={setItems}
+                totalCart={totalCart}
+                setTotalCart={setTotalCart}
+              />
+            }
+          />
         </Routes>
       </div>
     </>
