@@ -52,19 +52,36 @@ useEffect(() => {
   }
 
   async function addItem (orderItemsId) {
-    const response = await fetch(`${API}/order_items/${orderItemsId}`,
-    {
-      method: "PATCH",
-      headers: {
-        "Content-Type" : "application/json",
-        "Authorization" : `Bearer ${token}`
-      },
-      body:JSON.stringify({
-        quantity
-        // need to figure out how to PATCH quantity +1 when adding more item
+    try{
+
+      // const itemsQuantity = items.map(item => item.quantity)
+      // const currentQuantity = 0
+      // currentQuantity =+ itemsQuantity
+      const response = await fetch(`${API}/order_items/${orderItemsId}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type" : "application/json",
+          "Authorization" : `Bearer ${token}`
+        },
+        body:JSON.stringify({
+          quantity
+          // need to figure out how to PATCH quantity +1 when adding more item
+        })
       })
-    })
+      let json = await response.json()
+      
+
+    } catch (error) {
+      console.error ('error in adding item quantity', error)
+    }
   }
+
+  /*
+    DELETE FUNCTION HERE. We can do something similar to returning book in BOOKBUDDY
+
+    Also need to create the DELETE button
+  */
 
   if (token) {
     return (
