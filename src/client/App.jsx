@@ -13,6 +13,7 @@ import ItemDetails from "./components/SingleItemDetail";
 
 import AllUsers from "./components/AllUsers";
 import Cart from "./components/Cart";
+import InventoryTable from "./components/InventoryTable";
 
 // import Orders from './components/Orders';
 
@@ -68,7 +69,10 @@ function App() {
             path="/items/:itemid"
             element={<ItemDetails token={token} />}
           />
-
+          <Route
+            path="/inventory"
+            element={<InventoryTable admin={admin} token={token} />}
+          />
 
           <Route
             path="users"
