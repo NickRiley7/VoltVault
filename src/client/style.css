@@ -58,13 +58,13 @@
   width: 100rem;
 }
 
-#allItemsTitle {
+#allItemsTitle, #phoneTitle {
   text-align: center;
   text-decoration: underline;
   margin-bottom: 2%;
 }
 
-#allItemsCards {
+#allItemsCards, #phoneFilterCard {
   align-items: center;
   margin-left: auto;
   margin-right: auto;
