@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 let API = "http://localhost:3000/api";
 import Popup from "reactjs-popup";
+import { Navigate } from "react-router-dom";
 
 function InventoryTable({ admin, token }) {
   const [inventory, setInventory] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAllInventory();
@@ -19,7 +21,6 @@ function InventoryTable({ admin, token }) {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data);
       setInventory(data);
     } catch (err) {
       console.error(err);
@@ -35,7 +36,6 @@ function InventoryTable({ admin, token }) {
         },
       });
       fetchAllInventory();
-      console.log(`${API}/items/${id}`);
     } catch (err) {
       console.error(err);
     }
@@ -68,12 +68,13 @@ function InventoryTable({ admin, token }) {
                   <td>{item.stock}</td>
                   {/* ON CLICK -- NAV TO SINGLE ITEM PAGE AND EDIT THERE?  */}
                   <td>
-                    <Link>Edit</Link>
+                    <button onClick={() => navigate(`/items/${item.id}`)}>
+                      Edit
+                    </button>
                   </td>
-                  {/* ON CLICK -- POP-UP CONFIRMING AND THEN DELETE ITEM. */}
                   <td>
                     <Popup
-                      trigger={<button>Delete Item</button>}
+                      trigger={<button>Delete</button>}
                       position="center"
                       modal
                       nested
@@ -89,20 +90,11 @@ function InventoryTable({ admin, token }) {
                             >
                               Delete Item
                             </button>
-                            <button onClick={() => close()}>
-                              Return to inventory page
-                            </button>
+                            <button onClick={() => close()}>Close</button>
                           </div>
                         </div>
                       )}
                     </Popup>
-                    {/* <button
-                      onClick={() => {
-                        removeItem(item.id);
-                      }}
-                    >
-                      Delete
-                    </button> */}
                   </td>
                 </tr>
               );
