@@ -30,7 +30,7 @@ function AllItems() {
           {items.map((item) => (
             <div
               id="cards"
-              className="card m-1 mb-3 mx-auto p-2 col-md-3 col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded"
+              className="card m-1 mb-3 mx-auto p-2 col-sm-5 col-md-5 col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded"
               key={item.id}
             >
               <div className="card-body">
