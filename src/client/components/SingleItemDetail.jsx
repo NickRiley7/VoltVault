@@ -34,6 +34,7 @@ function ItemDetails() {
 
   console.log(item.img);
 
+  
   /*
   POST Request for Add To Cart
 

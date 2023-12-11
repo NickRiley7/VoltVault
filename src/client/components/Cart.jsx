@@ -35,18 +35,24 @@ useEffect(() => {
         }
       })
       let json = await response.json()
-      console.log(json[0])
-      console.log(json[0].items)
-      setItems(json[0].items)
-      setCart(json[0])
-      console.log (user)
-      console.log (json[0].items)
-
-      const totalItemAmount = items.map(item => item.price * item.quantity)
-      console.log(totalItemAmount)
-      const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur, 0)
-      console.log (overallTotalAmount)
-      setTotalCart(overallTotalAmount)
+      console.log (json)
+      if (json.length){
+        console.log(json[0])
+        console.log(json[0].items)
+        setItems(json[0].items)
+        setCart(json[0])
+        console.log (user)
+        console.log (json[0].items)
+  
+        const totalItemAmount = items.map(item => item.price * item.quantity)
+        console.log(totalItemAmount)
+        const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur, 0)
+        console.log (overallTotalAmount)
+        setTotalCart(overallTotalAmount)
+      }
+      else {
+        setItems([])
+      }
     }
     catch (error){
       console.error('ERROR! in fetchCart', error)
