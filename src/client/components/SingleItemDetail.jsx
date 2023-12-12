@@ -61,8 +61,10 @@ function ItemDetails({token, cart, setCart}) {
       })
       const json = await response.json()
       console.log (json)
-      if (json.length){
-        setCart (json[0])
+      if (json.id){
+        console.log('successfully created new cart!')
+        addItemToCart(json)
+        setCart (json)
       } else {
         console.log ('error in POST new cart')
       }
@@ -94,14 +96,18 @@ function ItemDetails({token, cart, setCart}) {
 
   async function handleAddToCart (){
     try{
-      if (!cart.length){
-        await createNewCart()
-        console.log ('created new cart!')
-        addItemToCart(cart)
-        console.log ('added new item to cart!')
-      } else {
+      console.log ('THIS IS CART: ',cart)
+      console.log ('THIS IS NO CART', !cart)
+      if (cart.id){
+        console.log ('adding item to cart...')
         addItemToCart(cart)
         console.log('added new item to cart!')
+      } else {
+        console.log ('creating new cart...')
+        await createNewCart()
+        console.log ('created new cart!')
+        // addItemToCart(cart)
+        console.log ('added new item to cart!')
       }
     }
     catch (error) {

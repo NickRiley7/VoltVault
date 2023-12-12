@@ -36,13 +36,13 @@ useEffect(() => {
       })
       let json = await response.json()
       console.log (json)
-      if (json.length){
-        console.log(json[0])
-        console.log(json[0].items)
-        setItems(json[0].items)
-        setCart(json[0])
+      if (json.id){
+        console.log(json)
+        console.log(json.items)
+        setItems(json.items)
+        setCart(json)
         console.log (user)
-        console.log (json[0].items)
+        console.log (json.items)
   
         const totalItemAmount = items.map(item => item.price * item.quantity)
         console.log(totalItemAmount)
@@ -52,7 +52,7 @@ useEffect(() => {
       }
       else {
         setItems([])
-        setCart([])
+        // setCart({})
       }
     }
     catch (error){
@@ -214,7 +214,7 @@ useEffect(() => {
       // </div>
     );
   }
-  else return <h1>You have not item in your cart</h1>
+  else return <h1>You have no item in your cart</h1>
 };
 
 

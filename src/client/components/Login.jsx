@@ -78,18 +78,21 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
             Authorization: `Bearer ${result.token}`,
           },
         }
-      );
-      let json = await response.json();
-      console.log("THIS IS WHAT IS IN THE CART", json[0]);
-      if (json.length) {
-        setCart(json[0]);
-        console.log(user);
-        console.log(json[0].items);
-      } else {
-        setCart([]);
+      })
+      let json = await response.json()
+      console.log ('THIS IS WHAT IS IN THE CART', json)
+      if (json.id){
+        setCart(json)
+        console.log (user)
+        console.log (json.items)
       }
-    } catch (error) {
-      console.error("ERROR! in fetchCart", error);
+      else {
+        setCart({})
+      }
+    }
+    catch (error){
+      console.error('ERROR! in fetchCart', error)
+
     }
   }
 

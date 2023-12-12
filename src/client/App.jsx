@@ -19,7 +19,7 @@ import InventoryTable from "./components/InventoryTable";
 
 function App() {
   const [token, setToken] = useState(null);
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState({});
   const [user, setUser] = useState({});
   const [items, setItems] = useState([]);
   const [totalCart, setTotalCart] = useState(0);
