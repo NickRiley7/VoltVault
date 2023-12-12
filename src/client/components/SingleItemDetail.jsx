@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-let API = 'http://localhost:3000/api'
+let API = 'http://localhost:3000/api';
 
-function ItemDetails({token, cart, setCart}) {
+function ItemDetails({ token, cart, setCart }) {
   const [item, setItem] = useState(null);
   const { itemid } = useParams();
 
@@ -13,8 +13,6 @@ function ItemDetails({token, cart, setCart}) {
   }, [itemid]);
 
   async function fetchSingleItemDetail() {
-    // let API = "http://localhost:3000/api";
-
     try {
       const response = await axios.get(`${API}/items/${itemid}`);
       setItem(response.data);
@@ -34,86 +32,69 @@ function ItemDetails({token, cart, setCart}) {
     );
   }
 
-  console.log(item.img);
-
-  
-  /*
-  POST Request for Add To Cart
-
-  1. Create onClick event handler in button element below;
-  2. Create fetch POST function for new cart (refer to line 122 of api/orders.js);
-  3. However, only do the above if the user have no open cart (or if !cart);
-  4. You may need to pass cart useState from app.jsx;
-  5. If a user have an open cart, then run fetch POST function for new item into cart (refer to line 246 of api/orders.js)
-  */
-  
-  async function createNewCart () {
+  async function createNewCart() {
     try {
-      const response = await fetch (`${API}/orders`, {
+      const response = await fetch(`${API}/orders`, {
         method: "POST",
         headers: {
-          "Content-Type" : "application/json",
-          "Authorization" : `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          isOpen : true
-        })
-      })
-      const json = await response.json()
-      console.log (json)
-      if (json.id){
-        console.log('successfully created new cart!')
-        addItemToCart(json)
-        setCart (json)
+          isOpen: true,
+        }),
+      });
+      const json = await response.json();
+      console.log(json);
+      if (json.id) {
+        console.log('successfully created new cart!');
+        addItemToCart(json);
+        setCart(json);
       } else {
-        console.log ('error in POST new cart')
+        console.log('error in POST new cart');
       }
     } catch (error) {
-      console.error ('error in creating new cart', error)
+      console.error('error in creating new cart', error);
     }
   }
 
-  async function addItemToCart (cart) {
-
-    try{
-      const response = await fetch (`${API}/orders/${cart.id}/items`, {
+  async function addItemToCart(cart) {
+    try {
+      const response = await fetch(`${API}/orders/${cart.id}/items`, {
         method: "POST",
         headers: {
-          "Content-Type" : "application/json",
-          "Authorization" : `Bearer ${token}`
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          item_id : itemid,
-          quantity : 1
-        })
-      })
-      let json = await response.json()
-      console.log(json)
+          item_id: itemid,
+          quantity: 1,
+        }),
+      });
+      const json = await response.json();
+      console.log(json);
     } catch (error) {
-      console.error ('ERROR ')
+      console.error('ERROR ', error);
     }
   }
 
-  async function handleAddToCart (){
-    try{
-      console.log ('THIS IS CART: ',cart)
-      console.log ('THIS IS NO CART', !cart)
-      if (cart.id){
-        console.log ('adding item to cart...')
-        addItemToCart(cart)
-        console.log('added new item to cart!')
+  async function handleAddToCart() {
+    try {
+      console.log('THIS IS CART: ', cart);
+      console.log('THIS IS NO CART', !cart);
+      if (cart.id) {
+        console.log('adding item to cart...');
+        addItemToCart(cart);
+        console.log('added new item to cart!');
       } else {
-        console.log ('creating new cart...')
-        await createNewCart()
-        console.log ('created new cart!')
-        // addItemToCart(cart)
-        console.log ('added new item to cart!')
+        console.log('creating new cart...');
+        await createNewCart();
+        console.log('created new cart!');
+        console.log('added new item to cart!');
       }
+    } catch (error) {
+      console.error('error in handleAddToCart function', error);
     }
-    catch (error) {
-      console.error ('error in handleAddToCart function', error)
-    }
-    
   }
 
   return (
@@ -142,10 +123,21 @@ function ItemDetails({token, cart, setCart}) {
               </small>
             </p>
             <br />
-            <button onClick={() => handleAddToCart()} type="button" className="btn btn-outline-success">
-              {" "}
-              Add item to Cart
-            </button>
+            {token && (
+              <button
+                onClick={() => handleAddToCart()}
+                type="button"
+                className="btn btn-outline-success"
+              >
+                {" "}
+                Add item to Cart
+              </button>
+            )}
+            {!token && (
+              <p>
+                Please log in to add items to your cart.
+              </p>
+            )}
           </div>
         </div>
       </div>
@@ -154,3 +146,4 @@ function ItemDetails({token, cart, setCart}) {
 }
 
 export default ItemDetails;
+
