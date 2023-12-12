@@ -39,25 +39,20 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
           password,
         }),
       });
-      if (!response.json) {
-        return <h1>DIDN'T WORK</h1>;
-      } else {
-        const result = await response.json();
-        setMessage(result.message);
-        setToken(result.token);
-        setUser(result.user);
-        const decoded = jwtDecode(result.token);
-        setAdmin(decoded.isAdmin);
+      const result = await response.json();
+      setMessage(result.message);
+      setToken(result.token);
+      setUser(result.user);
+      const decoded = jwtDecode(result.token);
+      setAdmin(decoded.isAdmin);
 
-        fetchCart(result);
-        if (!response.ok) {
-          throw result;
-        }
-
-        setEmail("");
-        setPassword("");
-        navigate(`/`);
+      fetchCart(result);
+      if (!response.ok) {
+        throw result;
       }
+      setEmail("");
+      setPassword("");
+      navigate(`/`);
     } catch (err) {
       console.error(`${err.name}: ${err.message}`);
     }
@@ -115,7 +110,7 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
               onChange={handleEmailChange}
               required
             />
-            <label htmlFor="floatingInput">Email address</label>
+            <label htmlfor="floatingInput">Email address</label>
           </div>
 
           <div className="form-floating mt-4 col-5 col-sm-5 col-md-7 col-lg-12">
