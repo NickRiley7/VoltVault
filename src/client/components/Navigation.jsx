@@ -89,8 +89,8 @@ export default function Navigations({ admin, token, setToken, setCart }) {
               <img
                 id="cart"
                 href="#"
-                className="btn btn-light m-1"
-                src="/src/client/assets/cart icon.png"
+                className="btn btn-outline-primary m-1"
+                src="/src/client/assets/vecteezy_shopping-cart.png"
               ></img>
             </Link>
           </div>
@@ -171,14 +171,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
             >
               Account
             </Link>
-            <Link to="cart">
-              <img
-                id="cart"
-                href="#"
-                className="btn btn-light m-1"
-                src="/src/client/assets/cart icon.png"
-              ></img>
-            </Link>
             <Link
               to="/"
               className="btn btn-outline-primary m-1"
@@ -190,6 +182,14 @@ export default function Navigations({ admin, token, setToken, setCart }) {
               }}
             >
               Logout
+            </Link>
+            <Link to="cart">
+              <img
+                id="cart"
+                href="#"
+                className="btn btn-outline-primary m-1"
+                src="/src/client/assets/vecteezy_shopping-cart.png"
+              ></img>
             </Link>
           </div>
         </div>
@@ -292,14 +292,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
             >
               Account
             </Link>
-            <Link to="cart">
-              <img
-                id="cart"
-                href="#"
-                className="btn btn-light m-1"
-                src="/src/client/assets/cart icon.png"
-              ></img>
-            </Link>
             <Link
               to="/"
               className="btn btn-outline-primary m-1"
@@ -311,6 +303,14 @@ export default function Navigations({ admin, token, setToken, setCart }) {
               }}
             >
               Logout
+            </Link>
+            <Link to="cart">
+              <img
+                id="cart"
+                href="#"
+                className="btn btn-outline-primary"
+                src="/src/client/assets/vecteezy_shopping-cart.png"
+              ></img>
             </Link>
           </div>
         </div>
