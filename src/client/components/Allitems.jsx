@@ -55,10 +55,10 @@ function AllItems() {
                   {" "}
                   Show Item details
                 </button>
-                <button type="button" className="btn btn-outline-primary m-1">
+                {/* <button type="button" className="btn btn-outline-primary m-1">
                   {" "}
                   Add item to Cart
-                </button>
+                </button> */}
               </div>
             </div>
           ))}
