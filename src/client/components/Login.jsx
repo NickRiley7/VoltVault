@@ -50,8 +50,6 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
       if (!response.ok) {
         throw result;
       }
-
-      // console.log(decoded);
       setEmail("");
       setPassword("");
       navigate(`/`);
@@ -75,23 +73,21 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${result.token}`
+            Authorization: `Bearer ${result.token}`,
           },
-      })
-      let json = await response.json()
-      console.log ('THIS IS WHAT IS IN THE CART', json)
-      if (json.id){
-        setCart(json)
-        console.log (user)
-        console.log (json.items)
+        }
+      );
+      let json = await response.json();
+      console.log("THIS IS WHAT IS IN THE CART", json);
+      if (json.id) {
+        setCart(json);
+        console.log(user);
+        console.log(json.items);
+      } else {
+        setCart({});
       }
-      else {
-        setCart({})
-      }
-    }
-    catch (error){
-      console.error('ERROR! in fetchCart', error)
-
+    } catch (error) {
+      console.error("ERROR! in fetchCart", error);
     }
   }
 
@@ -114,7 +110,7 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
               onChange={handleEmailChange}
               required
             />
-            <label htmlFor="floatingInput">Email address</label>
+            <label htmlfor="floatingInput">Email address</label>
           </div>
 
           <div className="form-floating mt-4 col-5 col-sm-5 col-md-7 col-lg-12">
