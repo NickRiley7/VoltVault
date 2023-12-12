@@ -128,12 +128,11 @@ function ItemDetails({ token, cart, setCart }) {
               </button>
             )}
             {addedToCart && (
-              <p>Item already added to cart</p>
+              <p style={{ color: 'red', fontWeight: 'bold' }}>Item added to cart</p>
             )}
             {!token && (
-              <p>
-                Please log in to add items to your cart.
-              </p>
+              <p style={{ color: 'red', fontWeight: 'bold' }}>
+                 Please log in to add items to your cart.</p>
             )}
           </div>
         </div>
