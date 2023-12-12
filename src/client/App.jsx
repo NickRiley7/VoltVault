@@ -57,6 +57,7 @@ function App() {
                 setToken={setToken}
                 user={user}
                 setUser={setUser}
+                setCart={setCart}
               />
             }
           />
