@@ -29,7 +29,7 @@ function App() {
   return (
     <>
       <h1>{user.id}</h1>
-      <Navigations token={token} setToken={setToken} admin={admin} />
+      <Navigations token={token} setToken={setToken} admin={admin} setCart={setCart}/>
       <div className="App">
         {/* <h1>VoltVault</h1> */}
         {/* <img id='comp-img' src='./computer.png'></img> */}
@@ -57,6 +57,7 @@ function App() {
                 setToken={setToken}
                 user={user}
                 setUser={setUser}
+                setCart={setCart}
               />
             }
           />

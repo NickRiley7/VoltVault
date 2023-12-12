@@ -61,7 +61,7 @@ useEffect(() => {
   }
 
       const totalItemAmount = items.map(item => item.price * item.quantity)
-      console.log(totalItemAmount)
+      // console.log(totalItemAmount)
       const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur, 0)
       // console.log (overallTotalAmount)
       // console.log(cart.id)

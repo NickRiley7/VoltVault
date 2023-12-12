@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function RegistrationForm({ setToken, user, setUser }) {
+export default function RegistrationForm({ setToken, user, setUser, setCart }) {
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -49,6 +49,7 @@ export default function RegistrationForm({ setToken, user, setUser }) {
       setToken(result.token);
       setSuccessMessage(result.message);
       setUser(result.user)
+      setCart({})
       setUsername("");
       setFirstName("");
       setLastName("");
