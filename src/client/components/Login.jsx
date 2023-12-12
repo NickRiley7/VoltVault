@@ -114,7 +114,7 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
               onChange={handleEmailChange}
               required
             />
-            <label htmlfor="floatingInput">Email address</label>
+            <label htmlFor="floatingInput">Email address</label>
           </div>
 
           <div className="form-floating mt-4 col-5 col-sm-5 col-md-7 col-lg-12">
