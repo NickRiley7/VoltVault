@@ -49,9 +49,14 @@
   background-color: #bfbfbf;
 }
 
-#admin-account-background,
-#account-background {
+#admin-account-info,
+#account-info {
   padding-left: 50%;
+}
+
+#orders-list {
+  padding-right: 90%;
+  margin-top: -4.5in; 
 }
 
 #loginCard {

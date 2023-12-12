@@ -13,6 +13,7 @@ function UserAccount({ token, admin }) {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zip, setZip] = useState("");
+  const [order_id, setOrder_Id] = useState("");
 
   useEffect(() => {
     fetchUser();
@@ -38,6 +39,7 @@ function UserAccount({ token, admin }) {
         setCity(data.city);
         setState(data.state);
         setZip(data.zip);
+        setOrder_Id(data.order_id)
       } catch (err) {
         console.error(err.message);
       }
@@ -99,7 +101,7 @@ function UserAccount({ token, admin }) {
   } else if (token && admin) {
     return (
       <>
-      <div id = "admin-account-background">
+      <div id = "admin-account-info">
         <h1>Hi, {firstName}</h1>
         <h2>Your Username: {username}</h2>
         <h2>Your Email: {email}</h2>
@@ -128,7 +130,8 @@ function UserAccount({ token, admin }) {
   } else {
     return (
       <>
-      <div id = "account-background">
+      <div id = "background"></div>
+      <div id = "account-info">
         <h1>Hi, {firstName}</h1>
         <h2>Your Username: {username}</h2>
         <h2>Your Email: {email}</h2>
@@ -139,6 +142,12 @@ function UserAccount({ token, admin }) {
         <h2>Your City: {city}</h2>
         <h2>Your State: {state}</h2>
         <h2>Your Zipcode: {zip}</h2>
+      </div>
+      <div id = "orders-list">
+        <h2>Order ID: {order_id}</h2>
+        <h2>Item_ID:</h2>
+        <h2>Quantity</h2>
+
       </div>
       </>
     );
