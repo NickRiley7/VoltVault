@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -23,6 +23,8 @@ useEffect(() => {
     fetchCart()
   }
 }, [token])
+
+const navigate = useNavigate()
 
   async function fetchCart() {
     try {
@@ -142,12 +144,13 @@ useEffect(() => {
           "Authorization" : `Bearer ${token}`
         },
         body: JSON.stringify ({
-          isOpen: false
+          isOpen: true
         })
       })
       let json = await response.json()
       console.log (json)
       fetchCart()
+      navigate('/checkout')
     }
     catch (error) {
       console.error ('error in checking out items', error)
