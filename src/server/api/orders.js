@@ -38,14 +38,16 @@ ordersRouter.get ('/open_orders/:userId', async (req, res, next) => {
     const {userId} = req.params
     console.log (`starting getting open orders by id ${userId}`)
     const openOrder = await getOpenOrderByUserId(userId)
-    const openOrderId = openOrder.map (order => order.userId)
+    // const openOrderId = openOrder.map (order => order.userId)
     if (!openOrder) {
+      console.log('THIS IS OPEN ORDER', openOrder)
       next({
         name: 'NotFound',
         message: `No open orders by this user ID ${userId}`
       })
     }
-    else if (!req.user.isadmin && req.user.id !== openOrderId[0]) {
+    // else if (!req.user.isadmin && req.user.id !== openOrderId[0]) {
+    else if (!req.user.isadmin && req.user.id !== openOrder.userId) {
       res.status(403);
       next ({
         name: "WrongUserError", 

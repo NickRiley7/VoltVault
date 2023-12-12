@@ -78,14 +78,14 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
         }
       })
       let json = await response.json()
-      console.log ('THIS IS WHAT IS IN THE CART', json[0])
-      if (json.length){
-        setCart(json[0])
+      console.log ('THIS IS WHAT IS IN THE CART', json)
+      if (json.id){
+        setCart(json)
         console.log (user)
-        console.log (json[0].items)
+        console.log (json.items)
       }
       else {
-        setCart([])
+        setCart({})
       }
     }
     catch (error){

@@ -94,7 +94,9 @@ function ItemDetails({token, cart, setCart}) {
 
   async function handleAddToCart (){
     try{
-      if (!cart.length){
+      console.log ('THIS IS CART: ',cart)
+      console.log ('THIS IS NO CART', !cart)
+      if (!cart){
         await createNewCart()
         console.log ('created new cart!')
         addItemToCart(cart)
