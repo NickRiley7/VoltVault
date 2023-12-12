@@ -279,11 +279,12 @@ ordersRouter.post ('/:orderId/items', requireUser, requiredNotSent({requiredPara
         console.log ('CREATING ORDER_ITEM...')
         console.log ('THIS IS ORDER_ID', orderId)
         const createdOrderItems = await addItemToOrder({ order_id: orderId, item_id, quantity });
-        const createdOrderItem = createdOrderItems.length ? createdOrderItems[0] : null
+        console.log('THIS IS CREATED ORDER ITEMS', createdOrderItems)
+        // const createdOrderItem = createdOrderItems.length ? createdOrderItems[0] : null
         // const orderTotalAmount = await totalAmountCalc(orderId)
         // const updatedOrder = await updateOrder ({id: orderId, isOpen, order_total: orderTotalAmount, items})
-        if(createdOrderItem) {
-          res.send(createdOrderItem);
+        if(createdOrderItems) {
+          res.send(createdOrderItems);
         } else {
           next({
             name: 'FailedToCreate',

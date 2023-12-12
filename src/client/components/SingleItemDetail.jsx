@@ -47,7 +47,66 @@ function ItemDetails({token, cart, setCart}) {
   5. If a user have an open cart, then run fetch POST function for new item into cart (refer to line 246 of api/orders.js)
   */
   
+  async function createNewCart () {
+    try {
+      const response = await fetch (`${API}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type" : "application/json",
+          "Authorization" : `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          isOpen : true
+        })
+      })
+      const json = await response.json()
+      console.log (json)
+      if (json.length){
+        setCart (json[0])
+      } else {
+        console.log ('error in POST new cart')
+      }
+    } catch (error) {
+      console.error ('error in creating new cart', error)
+    }
+  }
+
+  async function addItemToCart (cart) {
+
+    try{
+      const response = await fetch (`${API}/orders/${cart.id}/items`, {
+        method: "POST",
+        headers: {
+          "Content-Type" : "application/json",
+          "Authorization" : `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          item_id : itemid,
+          quantity : 1
+        })
+      })
+      let json = await response.json()
+      console.log(json)
+    } catch (error) {
+      console.error ('ERROR ')
+    }
+  }
+
   async function handleAddToCart (){
+    try{
+      if (!cart.length){
+        await createNewCart()
+        console.log ('created new cart!')
+        addItemToCart(cart)
+        console.log ('added new item to cart!')
+      } else {
+        addItemToCart(cart)
+        console.log('added new item to cart!')
+      }
+    }
+    catch (error) {
+      console.error ('error in handleAddToCart function', error)
+    }
     
   }
 
@@ -77,7 +136,7 @@ function ItemDetails({token, cart, setCart}) {
               </small>
             </p>
             <br />
-            <button type="button" className="btn btn-outline-success">
+            <button onClick={() => handleAddToCart()} type="button" className="btn btn-outline-success">
               {" "}
               Add item to Cart
             </button>

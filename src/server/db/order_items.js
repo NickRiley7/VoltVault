@@ -25,7 +25,7 @@ async function addItemToOrder({
     VALUES($1, $2, $3)
     RETURNING *;
     `, [ order_id, item_id, quantity]);
-
+    console.log ('sucessfully adding this item!', orderItem)
     return orderItem;
   } catch (error) {
     throw error;
