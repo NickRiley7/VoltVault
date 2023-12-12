@@ -83,7 +83,3 @@
 .uidTable:hover {
   cursor: pointer;
 }
-
-popup {
-  background-color: red !important;
-}

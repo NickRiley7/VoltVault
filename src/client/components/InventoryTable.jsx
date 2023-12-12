@@ -27,7 +27,7 @@ function InventoryTable({ admin, token }) {
     }
   }
 
-  async function removeItem(id) {
+  async function destroyItem(id) {
     try {
       await axios.delete(`${API}/items/${id}`, {
         headers: {
@@ -91,7 +91,7 @@ function InventoryTable({ admin, token }) {
                             <div>
                               <button
                                 onClick={() => {
-                                  removeItem(item.id);
+                                  destroyItem(item.id);
                                 }}
                                 className="btn btn-danger p-1"
                               >

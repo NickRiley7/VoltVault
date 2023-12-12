@@ -7,7 +7,7 @@ let API = "http://localhost:3000/api";
 
 function AllUsers({ admin, token }) {
   const [users, setUsers] = useState([]);
-  const Navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchAllUsers();
