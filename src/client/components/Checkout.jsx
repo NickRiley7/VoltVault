@@ -7,6 +7,7 @@ let API = 'http://localhost:3000/api'
 function Checkout ({token, setToken, cart, setCart, user, items, setItems, totalCart, setTotalCart, quantity, setQuantity}){
 
   console.log ('this is token', token)
+  console.log (user)
 
 
   useEffect(() => {
@@ -156,38 +157,42 @@ function Checkout ({token, setToken, cart, setCart, user, items, setItems, total
     
         <>
           <h2>Welcome {user.firstname} {user.lastname} to your checkout!</h2>
-  
-          {
-            items.length ? 
-              items.map (item => {
-                // setQuantity(item.quantity)
-                const orderItemsId = item.orderItemsId
-                return (
-                  <li key={item.id}>
-                    <h3>{item.name}</h3>
-                    <img src={item.img} />
-                    <div>price {item.price}</div>
-                    <div>quantity {item.quantity}</div>
-                    <button onClick={() => addItem(item)}>add item</button>
-                    <button onClick={() => reduceItem(item)}>reduce item</button>
-                    <button onClick={() => deleteItem(item)}>DELETE</button>
-                    {/* <div>
-                      <input 
-                        type="number"
-                        value={quantity}
-                        onChange={(e)=>setQuantity(item.id, e.target.value)} />
-                        <button type="submit">submit</button>
-                      <form onSubmit={addItem}>
-  
-                      </form>
-                    </div> */}
-                  </li>
-                )
-              })
-              : 
-              <h3>Cart is empty</h3>
-          }
-          <h3>TOTAL AMOUNT {overallTotalAmount}</h3>
+          <div className="table-responsive">
+            <table className="table table-striped table-hover table-light">
+              <thead>
+                <tr>
+                  <th scope="col">Item</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  items.map (item => {
+                    return (
+                      <tr key={item.id}>
+                        <td>{item.name}</td>
+                        <td>{item.quantity}</td>
+                        <td>{item.price}</td>
+                      </tr>
+                    )
+                  })
+                }
+                <tr>
+                  <td colSpan={2}>Total Amount</td>
+                  <td>{cart.order_total}</td>
+                </tr>
+              </tbody>
+            </table>
+          
+          </div>
+
+          <h2>SHIPPING INFO</h2>
+          <div>firstname: {user.firstname}</div>
+          <div>lastname: {user.lastname}</div>
+          <div>address: {user.address}, {user.address2 ? user.address2 : ""} {user.city}, {user.state}</div>
+          <div>zip: {user.zip}</div>
+
           <button onClick={() => checkOut(cart)}>Check Out</button>
         </>
         // <div>
