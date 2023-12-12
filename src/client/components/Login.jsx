@@ -40,6 +40,7 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
         }),
       });
       const result = await response.json();
+      console.log(result)
       setMessage(result.message);
       setToken(result.token);
       setUser(result.user);
