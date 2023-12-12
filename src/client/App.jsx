@@ -44,6 +44,8 @@ function App() {
                 user={user}
                 setUser={setUser}
                 setAdmin={setAdmin}
+                cart={cart}
+                setCart={setCart}
               />
             }
           />
@@ -67,7 +69,7 @@ function App() {
           <Route path="/phones" element={<FilterForPhone />} />
           <Route
             path="/items/:itemid"
-            element={<ItemDetails token={token} />}
+            element={<ItemDetails token={token} cart={cart} setCart={setCart} />}
           />
           <Route
             path="/inventory"

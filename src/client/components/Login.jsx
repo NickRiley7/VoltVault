@@ -4,7 +4,9 @@ import { jwtDecode } from "jwt-decode";
 
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ token, setToken, user, setUser, setAdmin }) => {
+let API = 'http://localhost:3000/api'
+
+const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,8 +20,14 @@ const Login = ({ token, setToken, user, setUser, setAdmin }) => {
     setPassword(e.target.value);
   };
 
+  
   const login = async (e) => {
     e.preventDefault()
+    // useEffect(()=>{
+    //   if (token) {
+    //     fetchCart()
+    //   }
+    // }, [token])
 
     try {
       const response = await fetch("http://localhost:3000/api/users/login", {
@@ -33,13 +41,13 @@ const Login = ({ token, setToken, user, setUser, setAdmin }) => {
         }),
       });
       const result = await response.json();
-      console.log(result);
       setMessage(result.message);
       setToken(result.token);
       setUser(result.user)
-      console.log(result.user.id)
       const decoded = jwtDecode(result.token);
       setAdmin(decoded.isAdmin);
+
+      fetchCart(result)
       if (!response.ok) {
         throw result;
       }
@@ -56,6 +64,34 @@ const Login = ({ token, setToken, user, setUser, setAdmin }) => {
     e.preventDefault();
     login();
   };
+
+  async function fetchCart(result) {
+    try {
+      console.log('THIS IS USER ID IN FETCHCART LOGIN', result.user.id)
+      console.log (result.token)
+      let response = await fetch (`${API}/orders/open_orders/${result.user.id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type" : "application/json",
+          "Authorization" : `Bearer ${result.token}`
+        }
+      })
+      let json = await response.json()
+      console.log ('THIS IS WHAT IS IN THE CART', json[0])
+      if (json.length){
+        setCart(json[0])
+        console.log (user)
+        console.log (json[0].items)
+      }
+      else {
+        setCart([])
+      }
+    }
+    catch (error){
+      console.error('ERROR! in fetchCart', error)
+    }
+  }
 
   return (
     <div className="col-12 col-sm-11 col-md-11 col-lg-5" id="loginPage">

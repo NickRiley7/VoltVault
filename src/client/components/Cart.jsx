@@ -52,6 +52,7 @@ useEffect(() => {
       }
       else {
         setItems([])
+        setCart([])
       }
     }
     catch (error){
