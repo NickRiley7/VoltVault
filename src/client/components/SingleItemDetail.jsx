@@ -12,11 +12,11 @@ function ItemDetails({token, cart, setCart}) {
     fetchSingleItemDetail();
   }, [itemid]);
 
-  console.log (cart.items)
-  const itemsInCart = cart.items
-  console.log(itemsInCart)
-  const itemsIdInCart = itemsInCart.map (item => item.id)
-  console.log (itemsIdInCart)
+  // console.log (cart.items)
+  // const itemsInCart = cart.items
+  // console.log(itemsInCart)
+  // const itemsIdInCart = itemsInCart.map (item => item.id)
+  // console.log (itemsIdInCart)
 
   async function fetchSingleItemDetail() {
     // let API = "http://localhost:3000/api";
