@@ -165,7 +165,8 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
                     <tr>
                       <th scope="col">Item</th>
                       <th scope="col">Quantity</th>
-                      <th scope="col">Price</th>
+                      <th scope="col">Price per Unit</th>
+                      <th scope="col">Total Price</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -176,12 +177,13 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
                             <td>{item.name}</td>
                             <td>{item.quantity}</td>
                             <td>{item.price}</td>
+                            <td>{item.price * item.quantity}</td>
                           </tr>
                         )
                       })
                     }
                     <tr>
-                      <td colSpan={2}>Total Amount</td>
+                      <td colSpan={3}>Total Amount</td>
                       <td>{cart.order_total}</td>
                     </tr>
                   </tbody>
