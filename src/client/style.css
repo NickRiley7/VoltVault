@@ -63,7 +63,8 @@
 #allItemsTitle,
 #phoneTitle,
 #computerTitle,
-#userTitle {
+#userTitle,
+#invTitle {
   text-align: center;
   text-decoration: underline;
   margin-bottom: 2%;
