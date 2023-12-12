@@ -179,7 +179,10 @@ async function createOrder({userId, isOpen, order_total}) {
 
     console.log ('THESE ARE THE ORDERS IN CREATE ORDER FUNCTION', orders)
 
-    return attachItemsToOrders(orders);
+    const ordersWithItems = await attachItemsToOrders(orders)
+    console.log ('this is ordersWithItems ', ordersWithItems)
+    return ordersWithItems.length > 0 ? ordersWithItems[0] : null
+    // return attachItemsToOrders(orders);
   } catch (error) {
     throw error;
   }

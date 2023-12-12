@@ -249,16 +249,20 @@ ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
 ordersRouter.post ('/:orderId/items', requireUser, requiredNotSent({requiredParams: [ 'item_id', 'quantity'], atLeastOne: true}), async (req, res, next) => {
   try {
     const {item_id, quantity} = req.body;
-    console.log ('THIS IS ITEM AND QUANTITY', item_id, quantity)
+    // console.log ('THIS IS ITEM AND QUANTITY', item_id, quantity)
 
     const {orderId} = req.params;
-    console.log ('this is order id in POST', orderId)
-    console.log ('this is req.params', req.params) 
+    // console.log ('this is order id in POST', orderId)
+    // console.log ('this is req.params', req.params) 
     const orderToUpdate = await getOrderById(orderId)
+    console.log ('THIS IS ORDER TO UPDATE', orderToUpdate)
     const OrderId = orderToUpdate.map (order => order.userId)
+    console.log ('THIS IS ORDER ID', OrderId)
 
     if (!req.user.isadmin && req.user.id !== OrderId[0]){
       res.status(403);
+      console.log ('THIS IS REQ USER ID ', req.user.id)
+      console.log ('THIS IS ORDER ID 0 ', OrderId[0])
       next({
         name: "WrongUserError",
         message: "You must be the same user who created this routine to perform this action"

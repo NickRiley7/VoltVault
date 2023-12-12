@@ -36,7 +36,7 @@ useEffect(() => {
       })
       let json = await response.json()
       console.log (json)
-      if (json){
+      if (json.id){
         console.log(json)
         console.log(json.items)
         setItems(json.items)
