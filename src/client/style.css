@@ -45,7 +45,8 @@
 
 #loginPage,
 #RegisterPage,
-#userStyle {
+#userStyle,
+#checkoutStyle {
   height: 100vh;
   background-color: #bfbfbf;
 }
@@ -86,6 +87,10 @@
 #allItemsCards {
   width: 50%;
   height: 50%;
+}
+
+#shippingINFO {
+  text-align: center;
 }
 
 /* TABLES */
