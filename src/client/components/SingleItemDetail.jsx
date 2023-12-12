@@ -10,10 +10,28 @@ function ItemDetails({ token, cart, setCart }) {
   const { itemid } = useParams();
 
   const itemsInCart = cart.items || [];
-  const itemsIdInCart = itemsInCart.map(item => item.id);
+
+  const isItemInCart = (cart, itemId) => {
+    const itemsInCart = cart.items || [];
+    const itemsIdInCart = itemsInCart.map(item => item.id);
+    return itemsIdInCart.includes(itemId);
+  };
 
   useEffect(() => {
     fetchSingleItemDetail();
+    checkItemInCart();
+  }, [itemid]);
+
+  const checkItemInCart = () => {
+    const isItemAlreadyInCart = isItemInCart(cart, itemid);
+    setAddedToCart(isItemAlreadyInCart);
+  };
+
+  useEffect(() => {
+    const storedAddedToCart = JSON.parse(localStorage.getItem(`addedToCart_${itemid}`));
+    if (storedAddedToCart !== null) {
+      setAddedToCart(storedAddedToCart);
+    }
   }, [itemid]);
 
   async function fetchSingleItemDetail() {
@@ -70,24 +88,23 @@ function ItemDetails({ token, cart, setCart }) {
     }
   }
 
-  const isItemInCart = (cart, itemId) => {
-    const itemsInCart = cart.items || [];
-    const itemsIdInCart = itemsInCart.map(item => item.id);
-    return itemsIdInCart.includes(itemId);
-  };
-
   async function handleAddToCart() {
     try {
       if (cart.id) {
-        const newItemsInCart = itemsInCart.filter(cartItem => cartItem.id !== itemid);
+        const isItemAlreadyInCart = isItemInCart(cart, itemid);
 
-        if (newItemsInCart.length === itemsInCart.length) {
+        if (!isItemAlreadyInCart) {
+          await addItemToCart(cart);
           setAddedToCart(true);
+          localStorage.setItem(`addedToCart_${itemid}`, JSON.stringify(true));
         } else {
-          addItemToCart(cart);
+          setAddedToCart(true);
+          localStorage.setItem(`addedToCart_${itemid}`, JSON.stringify(true));
         }
       } else {
         await createNewCart();
+        setAddedToCart(true);
+        localStorage.setItem(`addedToCart_${itemid}`, JSON.stringify(true));
       }
     } catch (error) {
       console.error('Error in handleAddToCart function', error);
