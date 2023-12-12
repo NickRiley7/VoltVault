@@ -8,11 +8,9 @@ function ItemDetails({ token, cart, setCart }) {
   const [item, setItem] = useState(null);
   const [addedToCart, setAddedToCart] = useState(false);
   const { itemid } = useParams();
-  console.log(cart.items);
-  const itemsInCart = cart.items;
-  console.log(itemsInCart);
+
+  const itemsInCart = cart.items || [];
   const itemsIdInCart = itemsInCart.map(item => item.id);
-  console.log(itemsIdInCart);
 
   useEffect(() => {
     fetchSingleItemDetail();
@@ -41,16 +39,14 @@ function ItemDetails({ token, cart, setCart }) {
         }),
       });
       const json = await response.json();
-      console.log(json);
       if (json.id) {
-        console.log('successfully created a new cart!');
         addItemToCart(json);
         setCart(json);
       } else {
-        console.log('error in POST new cart');
+        console.error('Error in POST new cart');
       }
     } catch (error) {
-      console.error('error in creating a new cart', error);
+      console.error('Error in creating a new cart', error);
     }
   }
 
@@ -68,37 +64,33 @@ function ItemDetails({ token, cart, setCart }) {
         }),
       });
       const json = await response.json();
-      console.log(json);
       setAddedToCart(true);
     } catch (error) {
       console.error('ERROR ', error);
     }
   }
 
+  const isItemInCart = (cart, itemId) => {
+    const itemsInCart = cart.items || [];
+    const itemsIdInCart = itemsInCart.map(item => item.id);
+    return itemsIdInCart.includes(itemId);
+  };
+
   async function handleAddToCart() {
     try {
-      console.log('THIS IS CART: ', cart);
-      console.log('THIS IS NO CART', !cart);
       if (cart.id) {
-       
         const newItemsInCart = itemsInCart.filter(cartItem => cartItem.id !== itemid);
 
         if (newItemsInCart.length === itemsInCart.length) {
-          console.log('item is already in the cart');
-    
+          setAddedToCart(true);
         } else {
-          console.log('adding item to cart...');
           addItemToCart(cart);
-          console.log('added a new item to cart!');
         }
       } else {
-        console.log('creating a new cart...');
         await createNewCart();
-        console.log('created a new cart!');
-        console.log('added a new item to cart!');
       }
     } catch (error) {
-      console.error('error in handleAddToCart function', error);
+      console.error('Error in handleAddToCart function', error);
     }
   }
 
@@ -130,6 +122,18 @@ function ItemDetails({ token, cart, setCart }) {
               </small>
             </p>
             <br />
+            {addedToCart && token && (
+              <div>
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  disabled
+                >
+                  Item already in Cart
+                </button>
+                <p style={{ color: 'red', fontWeight: 'bold' }}>Item added to the cart</p>
+              </div>
+            )}
             {!addedToCart && token && (
               <button
                 onClick={() => handleAddToCart()}
@@ -140,7 +144,7 @@ function ItemDetails({ token, cart, setCart }) {
                 Add item to Cart
               </button>
             )}
-            {addedToCart && (
+            {addedToCart && !token && (
               <p style={{ color: 'red', fontWeight: 'bold' }}>Item added to the cart</p>
             )}
             {!token && (
