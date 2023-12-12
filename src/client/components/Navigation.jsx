@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Searchbar from "./SearchBar";
 
-export default function Navigations({ admin, token, setToken }) {
+export default function Navigations({ admin, token, setToken, setCart }) {
   // NOT SIGNED IN RENDER
   if (!token) {
     return (
@@ -184,7 +184,10 @@ export default function Navigations({ admin, token, setToken }) {
               className="btn btn-outline-primary m-1"
               tabIndex="-1"
               role="button"
-              onClick={() => setToken(null)}
+              onClick={() => {
+                setToken(null);
+                SpeechRecognitionAlternative
+              }}
             >
               Logout
             </Link>
@@ -302,7 +305,10 @@ export default function Navigations({ admin, token, setToken }) {
               className="btn btn-outline-primary m-1"
               tabIndex="-1"
               role="button"
-              onClick={() => setToken(null)}
+              onClick={() => {
+                setToken(null);
+                setCart({})
+              }}
             >
               Logout
             </Link>
