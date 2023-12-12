@@ -26,7 +26,7 @@ function AllItems() {
     <div>
       <h2 id="allItemsTitle">All Items</h2>
       {items.length ? (
-        <div id="allItemsCards" className="row w-50 h-50">
+        <div id="allItemsCards" className="row">
           {items.map((item) => (
             <div
               id="cards"
