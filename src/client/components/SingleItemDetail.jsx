@@ -6,6 +6,7 @@ let API = 'http://localhost:3000/api';
 
 function ItemDetails({ token, cart, setCart }) {
   const [item, setItem] = useState(null);
+  const [addedToCart, setAddedToCart] = useState(false);
   const { itemid } = useParams();
 
   useEffect(() => {
@@ -20,16 +21,6 @@ function ItemDetails({ token, cart, setCart }) {
       console.error(err);
       setItem(null);
     }
-  }
-
-  if (!item) {
-    return (
-      <p>
-        Loading... <br />
-        <br />A wizard is never late, nor is he early, he arrives precisely when
-        he means to. 🧙‍♂️
-      </p>
-    );
   }
 
   async function createNewCart() {
@@ -73,6 +64,7 @@ function ItemDetails({ token, cart, setCart }) {
       });
       const json = await response.json();
       console.log(json);
+      setAddedToCart(true);
     } catch (error) {
       console.error('ERROR ', error);
     }
@@ -104,26 +96,28 @@ function ItemDetails({ token, cart, setCart }) {
     >
       <div className="row g-0">
         <div className="col-md-4">
-          <img
-            src={`${item.img}`}
-            className="img-fluid rounded-start"
-            alt={`Image of ${item.name}`}
-          />
+          {item && item.img && (
+            <img
+              src={`${item.img}`}
+              className="img-fluid rounded-start"
+              alt={`Image of ${item.name}`}
+            />
+          )}
         </div>
         <div className="col-md-8">
           <div className="card-body">
-            <h2 className="card-title pb-2">{item.name} details </h2>
-            <p>{item.details}</p>
+            <h2 className="card-title pb-2">{item?.name} details </h2>
+            <p>{item?.details}</p>
             <p className="card-text">
-              <small className="text-body-secondary">Stock: {item.stock}</small>
+              <small className="text-body-secondary">Stock: {item?.stock}</small>
             </p>
             <p className="card-text">
               <small className="text-body-secondary">
-                Price: ${item.price}
+                Price: ${item?.price}
               </small>
             </p>
             <br />
-            {token && (
+            {!addedToCart && token && (
               <button
                 onClick={() => handleAddToCart()}
                 type="button"
@@ -132,6 +126,9 @@ function ItemDetails({ token, cart, setCart }) {
                 {" "}
                 Add item to Cart
               </button>
+            )}
+            {addedToCart && (
+              <p>Item already added to cart</p>
             )}
             {!token && (
               <p>
@@ -146,4 +143,3 @@ function ItemDetails({ token, cart, setCart }) {
 }
 
 export default ItemDetails;
-
