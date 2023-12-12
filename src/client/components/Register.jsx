@@ -73,7 +73,7 @@ export default function RegistrationForm({ setToken, user, setUser, setCart }) {
         {error && <p>{error}</p>}
         <form className="row g-3" onSubmit={register}>
           <div className="col-md-6 input-group">
-            <label htmlFor="inputUser" class="form-label">
+            <label htmlFor="inputUser" className="form-label">
               Username:{""}
               <input
                 type="text"
