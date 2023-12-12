@@ -73,3 +73,19 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+/*for styling itemCards on main page */
+#allItemsCards {
+  width: 50%;
+  height: 50%;
+}
+
+/* TABLES */
+
+.uidTable {
+  color: blue !important;
+}
+
+.uidTable:hover {
+  cursor: pointer;
+}
