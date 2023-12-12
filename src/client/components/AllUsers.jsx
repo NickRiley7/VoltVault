@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Popup from "reactjs-popup";
 
 let API = "http://localhost:3000/api";
 
@@ -22,6 +23,21 @@ function AllUsers({ admin, token }) {
 
     setUsers(data.users);
   }
+
+  async function destroyUser(id) {
+    try {
+      await axios.delete(`${API}/users/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      fetchAllUsers();
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   if (admin) {
     return (
       <>
@@ -41,6 +57,8 @@ function AllUsers({ admin, token }) {
                 <th scope="col">State</th>
                 <th scope="col">Zip</th>
                 <th scope="col">User Role</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
@@ -65,6 +83,48 @@ function AllUsers({ admin, token }) {
                     <td>{user.state}</td>
                     <td>{user.zip}</td>
                     <td>{user.isadmin ? "Admin" : "User"}</td>
+                    <td>
+                      <button
+                        onClick={() => navigate(`/users/${user.id}`)}
+                        className="btn btn-primary s-1"
+                      >
+                        Edit
+                      </button>
+                    </td>
+                    <td>
+                      <Popup
+                        trigger={
+                          <button className="btn btn-danger s-1">Delete</button>
+                        }
+                        position="center"
+                        modal
+                        nested
+                      >
+                        {(close) => (
+                          <div className="p-3 bg-light rounded border border-dark">
+                            <div>
+                              Permanently delete {user.username}'s account?
+                            </div>
+                            <div>
+                              <button
+                                onClick={() => {
+                                  destroyUser(user.id);
+                                }}
+                                className="btn btn-danger p-1"
+                              >
+                                Delete User
+                              </button>
+                              <button
+                                onClick={() => close()}
+                                className="btn btn-light p-1"
+                              >
+                                Close
+                              </button>
+                            </div>
+                          </div>
+                        )}
+                      </Popup>
+                    </td>
                   </tr>
                 );
               })}
