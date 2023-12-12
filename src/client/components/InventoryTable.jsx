@@ -45,62 +45,75 @@ function InventoryTable({ admin, token }) {
     return (
       <>
         <h1>Inventory</h1>
-        <table>
-          <thead>
-            <tr>
-              <td>ID</td>
-              <td>Name</td>
-              <td>Category</td>
-              <td>Price</td>
-              <td>Stock</td>
-              <td></td>
-              <td></td>
-            </tr>
-          </thead>
-          <tbody>
-            {inventory.map((item) => {
-              return (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.category}</td>
-                  <td>{item.price}</td>
-                  <td>{item.stock}</td>
-                  {/* ON CLICK -- NAV TO SINGLE ITEM PAGE AND EDIT THERE?  */}
-                  <td>
-                    <button onClick={() => navigate(`/items/${item.id}`)}>
-                      Edit
-                    </button>
-                  </td>
-                  <td>
-                    <Popup
-                      trigger={<button>Delete</button>}
-                      position="center"
-                      modal
-                      nested
-                    >
-                      {(close) => (
-                        <div class="p-3 bg-warning text-dark">
-                          <div>Permanently delete {item.name}?</div>
-                          <div>
-                            <button
-                              onClick={() => {
-                                removeItem(item.id);
-                              }}
-                            >
-                              Delete Item
-                            </button>
-                            <button onClick={() => close()}>Close</button>
+        <div className="table-responsive">
+          <table className="table table-striped table-hover table-light">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Price</th>
+                <th scope="col">Stock</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {inventory.map((item) => {
+                return (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td>{item.category}</td>
+                    <td>{item.price}</td>
+                    <td>{item.stock}</td>
+                    {/* ON CLICK -- NAV TO SINGLE ITEM PAGE AND EDIT THERE?  */}
+                    <td>
+                      <button
+                        onClick={() => navigate(`/items/${item.id}`)}
+                        className="btn btn-primary s-1"
+                      >
+                        Edit
+                      </button>
+                    </td>
+                    <td>
+                      <Popup
+                        trigger={
+                          <button className="btn btn-danger s-1">Delete</button>
+                        }
+                        position="center"
+                        modal
+                        nested
+                      >
+                        {(close) => (
+                          <div className="p-3 bg-light rounded border border-dark">
+                            <div>Permanently delete {item.name}?</div>
+                            <div>
+                              <button
+                                onClick={() => {
+                                  removeItem(item.id);
+                                }}
+                                className="btn btn-danger p-1"
+                              >
+                                Delete Item
+                              </button>
+                              <button
+                                onClick={() => close()}
+                                className="btn btn-light p-1"
+                              >
+                                Close
+                              </button>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </Popup>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                        )}
+                      </Popup>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       </>
     );
   } else {
