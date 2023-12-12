@@ -14,6 +14,7 @@ import ItemDetails from "./components/SingleItemDetail";
 import AllUsers from "./components/AllUsers";
 import Cart from "./components/Cart";
 import InventoryTable from "./components/InventoryTable";
+import Checkout from "./components/Checkout";
 
 // import Orders from './components/Orders';
 
@@ -91,6 +92,24 @@ function App() {
             path="/cart"
             element={
               <Cart
+                token={token}
+                setToken={setToken}
+                cart={cart}
+                setCart={setCart}
+                user={user}
+                items={items}
+                setItems={setItems}
+                totalCart={totalCart}
+                setTotalCart={setTotalCart}
+                quantity={quantity}
+                setQuantity={setQuantity}
+              />
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <Checkout
                 token={token}
                 setToken={setToken}
                 cart={cart}
