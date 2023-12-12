@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-function ItemDetails() {
+let API = 'http://localhost:3000/api'
+
+function ItemDetails({token, cart, setCart}) {
   const [item, setItem] = useState(null);
   const { itemid } = useParams();
 
@@ -11,7 +13,7 @@ function ItemDetails() {
   }, [itemid]);
 
   async function fetchSingleItemDetail() {
-    let API = "http://localhost:3000/api";
+    // let API = "http://localhost:3000/api";
 
     try {
       const response = await axios.get(`${API}/items/${itemid}`);
@@ -44,6 +46,10 @@ function ItemDetails() {
   4. You may need to pass cart useState from app.jsx;
   5. If a user have an open cart, then run fetch POST function for new item into cart (refer to line 246 of api/orders.js)
   */
+  
+  async function handleAddToCart (){
+    
+  }
 
   return (
     <div
