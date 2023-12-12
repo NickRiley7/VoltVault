@@ -73,13 +73,3 @@
   margin-left: auto;
   margin-right: auto;
 }
-
-/* TABLES */
-
-.uidTable {
-  color: blue !important;
-}
-
-.uidTable:hover {
-  cursor: pointer;
-}

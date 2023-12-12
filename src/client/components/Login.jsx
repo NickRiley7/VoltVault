@@ -39,22 +39,25 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
           password,
         }),
       });
-      const result = await response.json();
-      setMessage(result.message);
-      setToken(result.token);
-      setUser(result.user);
-      const decoded = jwtDecode(result.token);
-      setAdmin(decoded.isAdmin);
+      if (!response.json) {
+        return <h1>DIDN'T WORK</h1>;
+      } else {
+        const result = await response.json();
+        setMessage(result.message);
+        setToken(result.token);
+        setUser(result.user);
+        const decoded = jwtDecode(result.token);
+        setAdmin(decoded.isAdmin);
 
-      fetchCart(result);
-      if (!response.ok) {
-        throw result;
+        fetchCart(result);
+        if (!response.ok) {
+          throw result;
+        }
+
+        setEmail("");
+        setPassword("");
+        navigate(`/`);
       }
-
-      // console.log(decoded);
-      setEmail("");
-      setPassword("");
-      navigate(`/`);
     } catch (err) {
       console.error(`${err.name}: ${err.message}`);
     }
@@ -75,23 +78,21 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${result.token}`
+            Authorization: `Bearer ${result.token}`,
           },
-      })
-      let json = await response.json()
-      console.log ('THIS IS WHAT IS IN THE CART', json)
-      if (json.id){
-        setCart(json)
-        console.log (user)
-        console.log (json.items)
+        }
+      );
+      let json = await response.json();
+      console.log("THIS IS WHAT IS IN THE CART", json);
+      if (json.id) {
+        setCart(json);
+        console.log(user);
+        console.log(json.items);
+      } else {
+        setCart({});
       }
-      else {
-        setCart({})
-      }
-    }
-    catch (error){
-      console.error('ERROR! in fetchCart', error)
-
+    } catch (error) {
+      console.error("ERROR! in fetchCart", error);
     }
   }
 

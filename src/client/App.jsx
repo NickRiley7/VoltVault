@@ -24,12 +24,16 @@ function App() {
   const [items, setItems] = useState([]);
   const [totalCart, setTotalCart] = useState(0);
   const [admin, setAdmin] = useState(false);
-  const [quantity, setQuantity] = useState(0)
+  const [quantity, setQuantity] = useState(0);
 
   return (
     <>
-      <h1>{user.id}</h1>
-      <Navigations token={token} setToken={setToken} admin={admin} setCart={setCart}/>
+      <Navigations
+        token={token}
+        setToken={setToken}
+        admin={admin}
+        setCart={setCart}
+      />
       <div className="App">
         {/* <h1>VoltVault</h1> */}
         {/* <img id='comp-img' src='./computer.png'></img> */}
@@ -70,7 +74,9 @@ function App() {
           <Route path="/phones" element={<FilterForPhone />} />
           <Route
             path="/items/:itemid"
-            element={<ItemDetails token={token} cart={cart} setCart={setCart} />}
+            element={
+              <ItemDetails token={token} cart={cart} setCart={setCart} />
+            }
           />
           <Route
             path="/inventory"
