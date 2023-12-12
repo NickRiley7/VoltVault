@@ -4,13 +4,13 @@ import { jwtDecode } from "jwt-decode";
 
 import { useNavigate } from "react-router-dom";
 
-let API = 'http://localhost:3000/api'
+let API = "http://localhost:3000/api";
 
 const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -20,9 +20,8 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
     setPassword(e.target.value);
   };
 
-  
   const login = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     // useEffect(()=>{
     //   if (token) {
     //     fetchCart()
@@ -43,11 +42,11 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
       const result = await response.json();
       setMessage(result.message);
       setToken(result.token);
-      setUser(result.user)
+      setUser(result.user);
       const decoded = jwtDecode(result.token);
       setAdmin(decoded.isAdmin);
 
-      fetchCart(result)
+      fetchCart(result);
       if (!response.ok) {
         throw result;
       }
@@ -55,6 +54,7 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
       // console.log(decoded);
       setEmail("");
       setPassword("");
+      navigate(`/`);
     } catch (err) {
       console.error(`${err.name}: ${err.message}`);
     }
@@ -67,15 +67,16 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
 
   async function fetchCart(result) {
     try {
-      console.log('THIS IS USER ID IN FETCHCART LOGIN', result.user.id)
-      console.log (result.token)
-      let response = await fetch (`${API}/orders/open_orders/${result.user.id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type" : "application/json",
-          "Authorization" : `Bearer ${result.token}`
-        }
+      console.log("THIS IS USER ID IN FETCHCART LOGIN", result.user.id);
+      console.log(result.token);
+      let response = await fetch(
+        `${API}/orders/open_orders/${result.user.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${result.token}`,
+          },
       })
       let json = await response.json()
       console.log ('THIS IS WHAT IS IN THE CART', json)
@@ -90,6 +91,7 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
     }
     catch (error){
       console.error('ERROR! in fetchCart', error)
+
     }
   }
 
