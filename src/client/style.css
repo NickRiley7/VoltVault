@@ -44,7 +44,8 @@
 }
 
 #loginPage,
-#RegisterPage {
+#RegisterPage,
+#userStyle {
   height: 100vh;
   background-color: #bfbfbf;
 }
@@ -61,7 +62,8 @@
 
 #allItemsTitle,
 #phoneTitle,
-#computerTitle {
+#computerTitle,
+#userTitle {
   text-align: center;
   text-decoration: underline;
   margin-bottom: 2%;
