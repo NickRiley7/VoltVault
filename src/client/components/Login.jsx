@@ -75,7 +75,7 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${result.token}`,
+            Authorization: `Bearer ${result.token}`
           },
       })
       let json = await response.json()
