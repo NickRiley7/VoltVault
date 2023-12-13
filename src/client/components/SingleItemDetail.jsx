@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 const API = 'http://localhost:3000/api';
 
@@ -9,6 +9,7 @@ function ItemDetails({ token, cart, setCart }) {
   const [isInCart, setIsInCart] = useState(false);
 
   const { itemid } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchSingleItemDetail();
@@ -40,6 +41,8 @@ function ItemDetails({ token, cart, setCart }) {
           await removeItemFromCart();
           setIsInCart(false);
         }
+
+        navigate("/cart");
       }
     } catch (error) {
       console.error('Error in handleAddToCart function', error);
