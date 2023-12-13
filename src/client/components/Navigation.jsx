@@ -59,7 +59,7 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                 </li>
               </ul>
             </li>
-            {admin && (
+            {admin && token && (
               <li className="nav-item dropdown">
                 <Link
                   className="nav-link dropdown-toggle"
@@ -130,7 +130,10 @@ export default function Navigations({ admin, token, setToken, setCart }) {
             </ul>
           </div>
 
-          <SearchBar category={category} handleCategoryChange={handleCategoryChange} />
+          <SearchBar
+            category={category}
+            handleCategoryChange={handleCategoryChange}
+          />
 
           {!token ? (
             <>
@@ -176,15 +179,17 @@ export default function Navigations({ admin, token, setToken, setCart }) {
             </>
           )}
 
-          <Link to="cart">
-            <img
-              id="cart"
-              href="#"
-              className="btn btn-outline-primary m-1"
-              src="/src/client/assets/vecteezy_shopping-cart.png"
-              alt="Cart"
-            />
-          </Link>
+          {admin && (
+            <Link to="cart">
+              <img
+                id="cart"
+                href="#"
+                className="btn btn-outline-primary m-1"
+                src="/src/client/assets/vecteezy_shopping-cart.png"
+                alt="Cart"
+              />
+            </Link>
+          )}
         </div>
       </div>
     </nav>
