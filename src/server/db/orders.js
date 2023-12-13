@@ -123,16 +123,19 @@ async function getOpenOrderByUserId (userId) {
   }
 }
 
-async function getCompletedOrdersByUser({username}) {
+async function getCompletedOrdersByUserId(userId) {
   try {
-    const user = await getUserByUsername(username);
+    const user = await getUserById(userId);
     const { rows: orders } = await client.query(`
-    SELECT orders.*, users.username AS "username"
+    SELECT 
+      orders.*, users.id AS "userId", users.username, users.firstname, users.lastname, users.address, users.address2, users.city, users.state, users.zip, users.email
     FROM orders
-    JOIN users ON orders."userId" = users.id 
-    WHERE "userId" = $1
-    AND ""isOpen"" = false
+    JOIN users ON orders."userId" = users.id
+    WHERE orders."userId" = $1
+    AND "isOpen" = false
     `, [user.id]);
+    const ordersWithItems = attachItemsToOrders(orders)
+    console.log (ordersWithItems)
     return attachItemsToOrders(orders);
   } catch (error) {
     throw error
@@ -255,7 +258,7 @@ module.exports = {
   getOrdersByUserId,
   getAllOpenOrders,
   getOpenOrderByUserId,
-  getCompletedOrdersByUser,
+  getCompletedOrdersByUserId,
   getCompletedOrdersByItem,
   createOrder,
   updateOrder,

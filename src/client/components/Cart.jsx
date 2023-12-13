@@ -16,40 +16,40 @@ NOTES ON CART.JSX
 
  */
 
-function Cart ({token, setToken, cart, setCart, user, items, setItems, totalCart, setTotalCart, quantity, setQuantity}) {
+function Cart({ token, setToken, cart, setCart, user, items, setItems, totalCart, setTotalCart, quantity, setQuantity }) {
 
-useEffect(() => {
-  if (token){
-    fetchCart()
-  }
-}, [token])
+  useEffect(() => {
+    if (token) {
+      fetchCart()
+    }
+  }, [token])
 
-const navigate = useNavigate()
+  const navigate = useNavigate()
 
   async function fetchCart() {
     try {
-      let response = await fetch (`${API}/orders/open_orders/${user.id}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type" : "application/json",
-          "Authorization" : `Bearer ${token}`
-        }
-      })
+      let response = await fetch(`${API}/orders/open_orders/${user.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        })
       let json = await response.json()
-      console.log (json)
-      if (json.id){
+      console.log(json)
+      if (json.id) {
         console.log(json)
         console.log(json.items)
         setItems(json.items)
         setCart(json)
-        console.log (user)
-        console.log (json.items)
-  
+        console.log(user)
+        console.log(json.items)
+
         const totalItemAmount = items.map(item => item.price * item.quantity)
         console.log(totalItemAmount)
         const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur, 0)
-        console.log (overallTotalAmount)
+        console.log(overallTotalAmount)
         setTotalCart(overallTotalAmount)
       }
       else {
@@ -57,103 +57,103 @@ const navigate = useNavigate()
         setCart({})
       }
     }
-    catch (error){
+    catch (error) {
       console.error('ERROR! in fetchCart', error)
     }
   }
 
-      const totalItemAmount = items.map(item => item.price * item.quantity)
-      // console.log(totalItemAmount)
-      const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur, 0)
-      // console.log (overallTotalAmount)
-      // console.log(cart.id)
+  const totalItemAmount = items.map(item => item.price * item.quantity)
+  // console.log(totalItemAmount)
+  const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur, 0)
+  // console.log (overallTotalAmount)
+  // console.log(cart.id)
 
-  async function addItem (item) {
-    try{
+  async function addItem(item) {
+    try {
       const response = await fetch(`${API}/order_items/${item.orderItemsId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type" : "application/json",
-          "Authorization" : `Bearer ${token}`
-        },
-        body:JSON.stringify({
-          quantity: item.quantity+1
-          // need to figure out how to PATCH quantity +1 when adding more item
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            quantity: item.quantity + 1
+            // need to figure out how to PATCH quantity +1 when adding more item
+          })
         })
-      })
       let json = await response.json()
       // setQuantity(json.)
 
       fetchCart()
-      
+
 
     } catch (error) {
-      console.error ('error in adding item quantity', error)
+      console.error('error in adding item quantity', error)
     }
   }
 
-  async function reduceItem (item) {
-    try{
+  async function reduceItem(item) {
+    try {
       const response = await fetch(`${API}/order_items/${item.orderItemsId}`,
-      {
-        method: "PATCH",
-        headers: {
-          "Content-Type" : "application/json",
-          "Authorization" : `Bearer ${token}`
-        },
-        body:JSON.stringify({
-          quantity: item.quantity-1
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            quantity: item.quantity <= 1 ?  1 : item.quantity - 1
+          })
         })
-      })
       let json = await response.json()
 
       fetchCart()
-      
+
 
     } catch (error) {
-      console.error ('error in adding item quantity', error)
+      console.error('error in adding item quantity', error)
     }
   }
 
-  async function deleteItem (item) {
-    try{
+  async function deleteItem(item) {
+    try {
       const response = await fetch(`${API}/order_items/${item.orderItemsId}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type" : "application/json",
-          "Authorization" : `Bearer ${token}`
-        }
-      })
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+        })
       let json = await response.json()
 
       fetchCart()
-      
+
     } catch (error) {
-      console.error ('error in deleting item in cart', error)
+      console.error('error in deleting item in cart', error)
     }
   }
 
   async function checkOut(cart) {
     try {
-      const response = await fetch (`${API}/orders/${cart.id}`, {
+      const response = await fetch(`${API}/orders/${cart.id}`, {
         method: "PATCH",
         headers: {
-          "Content-Type" : "application/json",
-          "Authorization" : `Bearer ${token}`
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
-        body: JSON.stringify ({
+        body: JSON.stringify({
           isOpen: true
         })
       })
       let json = await response.json()
-      console.log (json)
+      console.log(json)
       fetchCart()
       navigate('/checkout')
     }
     catch (error) {
-      console.error ('error in checking out items', error)
+      console.error('error in checking out items', error)
     }
   }
 
@@ -165,25 +165,29 @@ const navigate = useNavigate()
 
   if (token) {
     return (
-  
-      <>
-        <h2>Welcome {user.firstname} {user.lastname} to your cart!</h2>
 
-        {
-          items.length ? 
-            items.map (item => {
-              // setQuantity(item.quantity)
-              const orderItemsId = item.orderItemsId
-              return (
-                <li key={item.id}>
-                  <h3>{item.name}</h3>
-                  <img src={item.img} />
-                  <div>price {item.price}</div>
-                  <div>quantity {item.quantity}</div>
-                  <button onClick={() => addItem(item)}>add item</button>
-                  <button onClick={() => reduceItem(item)}>reduce item</button>
-                  <button onClick={() => deleteItem(item)}>DELETE</button>
-                  {/* <div>
+      <>
+        <h2 className="mt-5 mb-4">Welcome {user.firstname} {user.lastname} to your cart!</h2>
+
+          {
+            items.length ?
+              items.map(item => {
+                // setQuantity(item.quantity)
+                const orderItemsId = item.orderItemsId
+                return (
+                  <div>
+                    <div className="card m-1 mb-3 mx-auto p-2 col-12 col-sm-12 col-md-12 col-lg-12 shadow p-3 mb-5 bg-body-tertiary rounded" key={item.id}>
+                      <div className="card-body">
+                        <img className="card-img-top" src={item.img} />
+                        <h3 className="card-title">{item.name}</h3>
+                        <div className="text-body-secondary">price {item.price}</div>
+                        <div className="text-body-secondary">quantity {item.quantity}</div>
+                        <button type="button" className="btn btn-success" onClick={() => addItem(item)}>add item</button>
+                        <button type="button" className="btn btn-danger m-1" onClick={() => reduceItem(item)}>reduce item</button>
+                        <button type="button" className="btn btn-danger" onClick={() => deleteItem(item)}>DELETE</button>
+                      </div>
+
+                      {/* <div>
                     <input 
                       type="number"
                       value={quantity}
@@ -193,14 +197,15 @@ const navigate = useNavigate()
 
                     </form>
                   </div> */}
-                </li>
-              )
-            })
-            : 
-            <h3>Cart is empty</h3>
-        }
-        <h3>TOTAL AMOUNT {overallTotalAmount}</h3>
-        <button onClick={() => checkOut(cart)}>Check Out</button>
+                    </div >
+                  </div>
+                )
+              })
+              :
+              <h3 className="card-title">Cart is empty</h3>
+          }
+          <h3 className="card-title mb-3">TOTAL AMOUNT {overallTotalAmount}</h3>
+          <button type="button" className="btn btn-primary mb-5" onClick={() => checkOut(cart)}>Check Out</button>
       </>
       // <div>
       //   <h2>Shopping Cart</h2>

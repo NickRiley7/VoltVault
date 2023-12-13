@@ -45,11 +45,10 @@
 
 #loginPage,
 #RegisterPage,
-#background {
+#userStyle,
+#checkoutStyle {
   height: 100vh;
   background-color: #bfbfbf;
-  
-
 }
 
 #admin-account-info,
@@ -74,7 +73,9 @@
 
 #allItemsTitle,
 #phoneTitle,
-#computerTitle {
+#computerTitle,
+#userTitle,
+#invTitle {
   text-align: center;
   text-decoration: underline;
   margin-bottom: 2%;
@@ -91,6 +92,10 @@
 #allItemsCards {
   width: 50%;
   height: 50%;
+}
+
+#shippingINFO {
+  text-align: center;
 }
 
 /* TABLES */

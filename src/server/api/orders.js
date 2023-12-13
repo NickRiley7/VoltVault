@@ -1,6 +1,6 @@
 const express = require('express')
 const ordersRouter = express.Router()
-const { getAllOrders, getOrdersWithoutItems, getOrdersByUserId, getAllOpenOrders, getOpenOrderByUserId, createOrder, getOrderById, updateOrder, destroyOrder, totalAmountCalc } = require('../db/orders');
+const { getAllOrders, getOrdersWithoutItems, getOrdersByUserId, getAllOpenOrders, getOpenOrderByUserId, getCompletedOrdersByUserId, createOrder, getOrderById, updateOrder, destroyOrder, totalAmountCalc } = require('../db/orders');
 const { getUserById } = require ('../db/users');
 const { addItemToOrder, getOrderItemById, getOrderItemsByOrder } = require ('../db/order_items')
 const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
@@ -53,33 +53,48 @@ ordersRouter.get ('/open_orders/:userId', async (req, res, next) => {
         name: "WrongUserError", 
         message: "You must be the same user who created this routine to perform this action"
       });
-
-      // if (req.user.isadmin) {
-      //   console.log (`You are an admin!`)
-      //   res.send(openOrder)
-      // }
-      // else {
-      //   res.status(403);
-      //   console.log ('THIS IS LOGGED-IN USER: ', req.user.id)
-      //   console.log ('THIS IS REQ USER IS ADMIN ', req.user.isadmin)
-      //   next ({
-      //     name: "WrongUserError",
-      //     message: "You must be the same user who created this routine to perform this action"
-      //   });
-      // }
-
-      // if (!req.user.isadmin) {
-      // }
     } else {
-      // const orderId = openOrder.map(order => order.id)
-      // const overallTotalAmount = await totalAmountCalc(orderId[0])
-      // console.log ('THIS IS OVERAL TOTAL AMOUNT', overallTotalAmount)
       console.log (`completed all authorization checks...`)
       res.send(openOrder)
     }
   }
   catch (error) {
     console.error ('ERROR! in getting orders by userId!')
+    throw error
+  }
+})
+
+//GET completed orders by userId
+ordersRouter.get ('/complete_orders/:userId', async (req, res, next) => {
+  try{
+    const {userId} = req.params
+    console.log (`starting getting open orders by id ${userId}`)
+    const completedOrders = await getCompletedOrdersByUserId(userId)
+    console.log ('THIS IS COMPLETED ORDERS,', completedOrders)
+    // const openOrderId = openOrder.map (order => order.userId)
+    if (!completedOrders) {
+      console.log('THIS IS COMPLETED ORDERS', completedOrders)
+      next({
+        name: 'NotFound',
+        message: `No open orders by this user ID ${userId}`
+      })
+    }
+    // else if (!req.user.isadmin && req.user.id !== openOrderId[0]) {
+    else if (!req.user.isadmin && req.user.id !== completedOrders[0].userId) {
+      res.status(403);
+      console.log ('THIS IS REQ USER ID ', req.user.id)
+      console.log ('THIS IS COMPLETED ORDERS USER ID ', completedOrders[0].userId)
+      next ({
+        name: "WrongUserError", 
+        message: "You must be the same user who created this routine to perform this action"
+      });
+    } else {
+      console.log (`completed all authorization checks...`)
+      res.send(completedOrders)
+    }
+  }
+  catch (error) {
+    console.error ('ERROR! in getting complete orders by userId!')
     throw error
   }
 })
