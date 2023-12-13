@@ -66,6 +66,10 @@
   margin-top: -1in;
 }
 
+#submitButton {
+  margin-top: 2.5rem;
+}
+
 #loginCard {
   height: 21rem;
   width: 50rem;
