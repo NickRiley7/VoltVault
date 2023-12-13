@@ -12,7 +12,6 @@ function requireUser(req, res, next) {
 }
 
 function requireAdmin(req, res, next) {
-  // console.log ('THIS IS REQ.USER', req.user)
   if (!req.user || !req.user.isadmin ) {
     res.status(401);
     next({
@@ -24,15 +23,9 @@ function requireAdmin(req, res, next) {
     next();
   }
 }
-// require admin here
-
-// function requireAdmin (req,res,next) {
-//    // if the user is an admin,
-// }
 
 const requiredNotSent = ({ requiredParams, atLeastOne = false }) => {
   return (req, res, next) => {
-    // for operations that need at least one param. Not all required.
     if(atLeastOne) {
       let numParamsFound = 0;
       for(let param of requiredParams) {
@@ -49,7 +42,6 @@ const requiredNotSent = ({ requiredParams, atLeastOne = false }) => {
         next();
       }
     } else {
-      // figure out which ones are not defined, and return them
       const notSent = [];
       for(let param of requiredParams) {
         if(req.body[param] === undefined) {

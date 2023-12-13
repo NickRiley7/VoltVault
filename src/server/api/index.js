@@ -7,7 +7,6 @@ const {JWT_SECRET = 'password'} = process.env;
 const volleyball = require('volleyball')
 apiRouter.use(volleyball)
 
-// TO BE COMPLETED - set `req.user` if possible, using token sent in the request header
 apiRouter.use(async (req, res, next) => {
   const prefix = 'Bearer ';
   const auth = req.header('Authorization');
@@ -16,21 +15,16 @@ apiRouter.use(async (req, res, next) => {
     next();
   } 
   else if (auth.startsWith(prefix)) {
-    // TODO - Get JUST the token out of 'auth'
     const token = auth.slice(prefix.length);
     
     try {
       const parsedToken = jwt.verify(token, JWT_SECRET);
-      // console.log('this is parsedToken: ', parsedToken)
 
       const id = parsedToken && parsedToken.id
-      // console.log ('this is JWTSECRET ID: ', id)
       if (id) {
         req.user = await getUserById(id)
-        // console.log('THIS IS REQ.USER: ', req.user)
         next()
       }
-      // TODO - Call 'jwt.verify()' to see if the token is valid. If it is, use it to get the user's 'id'. Look up the user with their 'id' and set 'req.user'
 
     } catch (error) {
       next(error);

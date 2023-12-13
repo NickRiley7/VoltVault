@@ -1,18 +1,16 @@
 const express = require('express')
 const ordersRouter = express.Router()
-const { getAllOrders, getOrdersWithoutItems, getOrdersByUserId, getAllOpenOrders, getOpenOrderByUserId, getCompletedOrdersByUserId, createOrder, getOrderById, updateOrder, destroyOrder, totalAmountCalc } = require('../db/orders');
-const { getUserById } = require ('../db/users');
-const { addItemToOrder, getOrderItemById, getOrderItemsByOrder } = require ('../db/order_items')
+const { getAllOrders, getAllOpenOrders, getOpenOrderByUserId, getCompletedOrdersByUserId, createOrder, getOrderById, updateOrder, destroyOrder, totalAmountCalc } = require('../db/orders');
+// const { getUserById } = require ('../db/users');
+const { addItemToOrder, getOrderItemsByOrder } = require ('../db/order_items')
 const { requireUser, requiredNotSent, requireAdmin } = require('./utils')
 
 // GET All Orders
 ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
   try {
-    // const orders = await getOrdersWithoutItems()
-    const orders = await getAllOrders(); //change to getOrdersWithOutItems if getAllOrders still not working
+    const orders = await getAllOrders();
     console.log ('successfully getting all orders')
     res.send(orders);
-    console.log ('this is the user:', req.user.isadmin )
   } catch (error) {
     next(error)
   }
@@ -21,9 +19,7 @@ ordersRouter.get('/', requireAdmin, async (req, res, next) => { //admin
 // GET All open orders
 ordersRouter.get ('/open_orders', requireAdmin, async (req, res, next) => {
   try{
-    // console.log ('Starting to get all open orders...')
     const orders = await getAllOpenOrders ()
-    // console.log ('Successfully getting all open orders!')
     res.send(orders)
   }
   catch (error) {
@@ -38,15 +34,12 @@ ordersRouter.get ('/open_orders/:userId', async (req, res, next) => {
     const {userId} = req.params
     console.log (`starting getting open orders by id ${userId}`)
     const openOrder = await getOpenOrderByUserId(userId)
-    // const openOrderId = openOrder.map (order => order.userId)
     if (!openOrder) {
-      console.log('THIS IS OPEN ORDER', openOrder)
       next({
         name: 'NotFound',
         message: `No open orders by this user ID ${userId}`
       })
     }
-    // else if (!req.user.isadmin && req.user.id !== openOrderId[0]) {
     else if (!req.user.isadmin && req.user.id !== openOrder.userId) {
       res.status(403);
       next ({
@@ -70,16 +63,12 @@ ordersRouter.get ('/complete_orders/:userId', async (req, res, next) => {
     const {userId} = req.params
     console.log (`starting getting open orders by id ${userId}`)
     const completedOrders = await getCompletedOrdersByUserId(userId)
-    console.log ('THIS IS COMPLETED ORDERS,', completedOrders)
-    // const openOrderId = openOrder.map (order => order.userId)
     if (!completedOrders.length) {
-      console.log('THIS IS COMPLETED ORDERS', completedOrders)
       next({
         name: 'NotFound',
         message: `No open orders by this user ID ${userId}`
       })
     }
-    // else if (!req.user.isadmin && req.user.id !== openOrderId[0]) {
     else if (!req.user.isadmin && req.user.id !== completedOrders[0].userId) {
       res.status(403);
       console.log ('THIS IS REQ USER ID ', req.user.id)
@@ -106,10 +95,7 @@ ordersRouter.get('/:orderId', requireUser, async (req, res, next) => {
     const {orderId} =req.params;
     console.log (`starting getting open orders by id ${orderId}`)
     const orders = await getOrderById(orderId);
-    console.log(`this is the order that we try to get ${orders}`)
     const OrderId = orders.map (order => order.userId)
-    console.log ('THIS IS LOGGED IN USER ID ', req.user.id)
-    console.log ('THIS IS ORDER ID ', orderId[0])
     if(!orders.length) {
       next({
         name: 'NotFound',
@@ -136,7 +122,7 @@ ordersRouter.get('/:orderId', requireUser, async (req, res, next) => {
 
 
 // POST new order
-ordersRouter.post('/', requireUser, async (req, res, next) => { //should have requireUser as parameter later on
+ordersRouter.post('/', requireUser, async (req, res, next) => {
   const { order_total, items, isOpen } = req.body;
 
   const orderData = {};
@@ -178,7 +164,6 @@ ordersRouter.patch(
       const {orderId} =req.params;
       const orderToUpdate = await getOrderById(orderId);
       const orderUserId = orderToUpdate.map(order => order.userId)
-      console.log ('THIS IS ORDER ID ', orderId)
       if(!orderToUpdate) {
         next({
           name: 'NotFound',
@@ -186,7 +171,6 @@ ordersRouter.patch(
         })
       } else if (!req.user.isadmin && req.user.id !== orderUserId[0]) {
         res.status(403);
-        console.log ('IS ADMIN? ', req.user.isadmin)
         console.log ('THIS IS LOGGED-IN USER: ', req.user.id)
         console.log ('THIS IS ORDERS USER: ', orderUserId[0])
         next ({
@@ -223,9 +207,7 @@ ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
   try {
     console.log ('deleting order...')
     const {orderId} = req.params;
-    // console.log('THIS IS ORDER ID ', orderId)
     const orderToUpdate = await getOrderById(orderId);
-    // console.log ('THIS IS ORDER TO UPDATE: ', orderToUpdate)
     if (!orderToUpdate.length) {
       next({
         name: 'NotFound',
@@ -251,28 +233,14 @@ ordersRouter.delete('/:orderId', requireUser, async (req, res, next)=> {
   }
 })
 
-// ordersRouter.post ('/:orderId/add_items', requireUser, ({requiredParams: [ 'item_id', 'quantity'], atLeastOne: true}), async (req, res, next) => {
-//   try{
-//     const{item_id, quantity} = req.body
-//   }
-//   catch (error) {
-//     console.error ('ERROR! in posting items into order')
-//   }
-// })
-
 // POST new item into an order
 ordersRouter.post ('/:orderId/items', requireUser, requiredNotSent({requiredParams: [ 'item_id', 'quantity'], atLeastOne: true}), async (req, res, next) => {
   try {
     const {item_id, quantity} = req.body;
-    // console.log ('THIS IS ITEM AND QUANTITY', item_id, quantity)
 
     const {orderId} = req.params;
-    // console.log ('this is order id in POST', orderId)
-    // console.log ('this is req.params', req.params) 
     const orderToUpdate = await getOrderById(orderId)
-    console.log ('THIS IS ORDER TO UPDATE', orderToUpdate)
     const OrderId = orderToUpdate.map (order => order.userId)
-    console.log ('THIS IS ORDER ID', OrderId)
 
     if (!req.user.isadmin && req.user.id !== OrderId[0]){
       res.status(403);
@@ -285,25 +253,16 @@ ordersRouter.post ('/:orderId/items', requireUser, requiredNotSent({requiredPara
     }
     else {
       const foundOrderItems = await getOrderItemsByOrder (orderId);
-      console.log ('THIS IS FOUND ORDER ITEMS', foundOrderItems)
       const foundOrderItemsFilter = foundOrderItems.filter(orderItem => orderItem.item_id === item_id)
-      console.log ('THIS IS FOUND ORDER ITEMS FILTER', foundOrderItemsFilter) 
       const existingOrderItems = foundOrderItems && foundOrderItems.filter(orderItem => orderItem.item_id === item_id);
-      console.log ('THIS IS EXISTING ORDER ITEMS: ', existingOrderItems)
       if(existingOrderItems && existingOrderItems.length) {
-        console.log ('THIS COMBINATION IS ALREADY EXIST', orderId, item_id)
         next({
           name: 'OrderItemsExistError',
           message: `An order_id by that order_id ${orderId}, item_id ${item_id} combination already exists`
         });
       } else {
         console.log ('CREATING ORDER_ITEM...')
-        console.log ('THIS IS ORDER_ID', orderId)
         const createdOrderItems = await addItemToOrder({ order_id: orderId, item_id, quantity });
-        console.log('THIS IS CREATED ORDER ITEMS', createdOrderItems)
-        // const createdOrderItem = createdOrderItems.length ? createdOrderItems[0] : null
-        // const orderTotalAmount = await totalAmountCalc(orderId)
-        // const updatedOrder = await updateOrder ({id: orderId, isOpen, order_total: orderTotalAmount, items})
         if(createdOrderItems) {
           res.send(createdOrderItems);
         } else {

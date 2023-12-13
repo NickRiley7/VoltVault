@@ -3,16 +3,13 @@ const { addItemToOrder } = require("./order_items.js");
 const {
   createOrder,
   getOrdersWithoutItems,
-  getAllOrders,
 } = require("./orders");
 const { getAllItems, createItem } = require("./items");
 const { createUser } = require("./users.js");
 const { mergeAlias } = require("vite");
-// const { v4: uuidv4 } = require('uuid');
 
 async function dropTables() {
   console.log("Dropping All Tables...");
-  // drop all tables, in the correct order
   try {
     await client.query(`
     DROP TABLE IF EXISTS order_items;
@@ -77,7 +74,6 @@ async function createTables() {
     )`);
   } catch (err) {
     console.error(err);
-    // throw error;
   }
 }
 
@@ -459,7 +455,6 @@ async function createInitialOrderItems() {
     const orderItems = await Promise.all(
       orderItemsToCreate.map(addItemToOrder)
     );
-    // console.log("order_items created: ", orderItems);
     console.log("Finished creating order_items!");
   } catch (err) {
     console.error(err);
