@@ -187,28 +187,17 @@ function Cart({ token, setToken, cart, setCart, user, items, setItems, totalCart
                         <button type="button" className="btn btn-danger m-1" onClick={() => reduceItem(item)}>reduce item</button>
                         <button type="button" className="btn btn-danger" onClick={() => deleteItem(item)}>DELETE</button>
                       </div>
-
-                      {/* <div>
-                    <input 
-                      type="number"
-                      value={quantity}
-                      onChange={(e)=>setQuantity(item.id, e.target.value)} />
-                      <button type="submit">submit</button>
-                    <form onSubmit={addItem}>
-
-                    </form>
-                  </div> */}
-                    </div >
+                    </div>
+                    <div id="totalAmount">
+                      <h3 className="card-title mb-3">TOTAL AMOUNT {overallTotalAmount}</h3>
+                      <button type="button" className="btn btn-primary mb-5" onClick={() => checkOut(cart)}>Check Out</button>
+                    </div>
                   </div>
                 )
               })
               :
               <h3 id="cartEmpty" className="card-title">Cart is empty</h3>
           }
-          <div id="totalAmount">
-            <h3 className="card-title mb-3">TOTAL AMOUNT {overallTotalAmount}</h3>
-            <button type="button" className="btn btn-primary mb-5" onClick={() => checkOut(cart)}>Check Out</button>
-          </div>
         </div>
       </>
       // <div>
