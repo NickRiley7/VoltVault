@@ -23,14 +23,14 @@ function AllItems() {
   }
 
   return (
-    <div>
+    <div className="mt-5">
       <h2 id="allItemsTitle">All Items</h2>
       {items.length ? (
         <div id="allItemsCards" className="row">
           {items.map((item) => (
             <div
               id="cards"
-              className="card m-1 mb-3 mx-auto p-2 col-sm-5 col-md-5 col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded"
+              className="card m-1 mb-3 mx-auto p-2 col-12 col-sm-12 col-md-12 col-lg-5 shadow p-3 mb-5 bg-body-tertiary rounded"
               key={item.id}
             >
               <div className="card-body">
