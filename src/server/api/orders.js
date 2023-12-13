@@ -72,7 +72,7 @@ ordersRouter.get ('/complete_orders/:userId', async (req, res, next) => {
     const completedOrders = await getCompletedOrdersByUserId(userId)
     console.log ('THIS IS COMPLETED ORDERS,', completedOrders)
     // const openOrderId = openOrder.map (order => order.userId)
-    if (!completedOrders) {
+    if (!completedOrders.length) {
       console.log('THIS IS COMPLETED ORDERS', completedOrders)
       next({
         name: 'NotFound',
