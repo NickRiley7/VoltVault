@@ -62,29 +62,46 @@ export default function Navigations({ admin, token, setToken, setCart }) {
             </ul>
 
             
-            <div className="btn-group me-2">
+
+            <div className="dropdown me-2">
               <button
+                className="btn btn-outline-primary btn-sm dropdown-toggle"
                 type="button"
-                className={`btn btn-outline-primary btn-sm ${category === 'phone' ? 'active' : ''}`}
-                onClick={() => setCategory('phone')}
+                id="categoryDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
               >
-                <span className="badge bg-primary"></span>
+                {category ? category : "Select Category"}
               </button>
-              <button
-                type="button"
-                className={`btn btn-outline-primary btn-sm ${category === 'computer' ? 'active' : ''}`}
-                onClick={() => setCategory('computer')}
-              >
-                <span className="badge bg-primary"></span>
-              </button>
-              <button
-                type="button"
-                className={`btn btn-outline-primary btn-sm ${category === null ? 'active' : ''}`}
-                onClick={() => setCategory(null)}
-              >
-                <span className="badge bg-primary"></span>
-              </button>
+              <ul className="dropdown-menu" aria-labelledby="categoryDropdown">
+                <li>
+                  <button
+                    className={`dropdown-item ${category === 'phone' ? 'active' : ''}`}
+                    onClick={() => handleCategoryChange('phone')}
+                  >
+                    Phone
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className={`dropdown-item ${category === 'computer' ? 'active' : ''}`}
+                    onClick={() => handleCategoryChange('computer')}
+                  >
+                    Computer
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className={`dropdown-item ${category === null ? 'active' : ''}`}
+                    onClick={() => handleCategoryChange(null)}
+                  >
+                    None
+                  </button>
+                </li>
+              </ul>
             </div>
+
+            
 
             <Searchbar category={category} />
 
