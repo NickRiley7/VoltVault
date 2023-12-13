@@ -15,7 +15,6 @@ import AllUsers from "./components/AllUsers";
 import Cart from "./components/Cart";
 import InventoryTable from "./components/InventoryTable";
 import Checkout from "./components/Checkout";
-import InventoryTable2 from "./components/COPY2_INV_TBL";
 
 // import Orders from './components/Orders';
 
