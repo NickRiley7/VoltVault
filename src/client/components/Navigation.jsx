@@ -65,24 +65,24 @@ export default function Navigations({ admin, token, setToken, setCart }) {
             <div className="btn-group me-2">
               <button
                 type="button"
-                className={`btn btn-outline-primary ${category === 'phone' ? 'active' : ''}`}
+                className={`btn btn-outline-primary btn-sm ${category === 'phone' ? 'active' : ''}`}
                 onClick={() => setCategory('phone')}
               >
-                Phone
+                <span className="badge bg-primary"></span>
               </button>
               <button
                 type="button"
-                className={`btn btn-outline-primary ${category === 'computer' ? 'active' : ''}`}
+                className={`btn btn-outline-primary btn-sm ${category === 'computer' ? 'active' : ''}`}
                 onClick={() => setCategory('computer')}
               >
-                Computer
+                <span className="badge bg-primary"></span>
               </button>
               <button
                 type="button"
-                className={`btn btn-outline-primary ${category === null ? 'active' : ''}`}
+                className={`btn btn-outline-primary btn-sm ${category === null ? 'active' : ''}`}
                 onClick={() => setCategory(null)}
               >
-                None
+                <span className="badge bg-primary"></span>
               </button>
             </div>
 
