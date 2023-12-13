@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 let API = "http://localhost:3000/api";
 import Popup from "reactjs-popup";
-import { Navigate } from "react-router-dom";
 
 function InventoryTable({ admin, token }) {
   const [inventory, setInventory] = useState([]);
-  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState();
+  const [stock, setStock] = useState();
 
   useEffect(() => {
     fetchAllInventory();
@@ -24,6 +25,29 @@ function InventoryTable({ admin, token }) {
       setInventory(data);
     } catch (err) {
       console.error(err);
+    }
+  }
+
+  async function editItem(id) {
+    try {
+      const { data } = await axios.patch(
+        `${API}/items/${id}`,
+        { name, description, price, stock },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      fetchAllInventory();
+      setName("");
+      setDescription("");
+      setPrice("");
+      setStock("");
+      console.log("PATCH SENT: ", data);
+    } catch (err) {
+      console.error(err.message);
     }
   }
 
@@ -70,17 +94,91 @@ function InventoryTable({ admin, token }) {
                       <td>{item.stock}</td>
                       {/* ON CLICK -- NAV TO SINGLE ITEM PAGE AND EDIT THERE?  */}
                       <td>
-                        <button
-                          onClick={() => navigate(`/items/${item.id}`)}
-                          className="btn btn-primary s-1"
+                        <Popup
+                          trigger={
+                            <button className="btn btn-primary s-1">
+                              Edit
+                            </button>
+                          }
+                          position="center"
+                          modal
+                          nested
                         >
-                          Edit
-                        </button>
+                          {(close) => (
+                            <div className="p-3 bg-light rounded border border-dark">
+                              <form
+                                id="itemEditPopUp"
+                                onSubmit={(e) => {
+                                  e.preventDefault();
+                                  editItem(item.id);
+                                  close();
+                                }}
+                              >
+                                <label>
+                                  Item Name
+                                  <input
+                                    type="text"
+                                    placeholder={item.name}
+                                    value={name}
+                                    onChange={(e) => setName(e.target.value)}
+                                  />
+                                </label>
+                                <label>
+                                  Item Description
+                                  <textarea
+                                    placeholder={item.description}
+                                    value={description}
+                                    onChange={(e) =>
+                                      setDescription(e.target.value)
+                                    }
+                                  />
+                                </label>
+                                <label>
+                                  Price
+                                  <input
+                                    type="number"
+                                    min="0.01"
+                                    step="0.01"
+                                    placeholder={item.price}
+                                    value={price}
+                                    onChange={(e) => setPrice(e.target.value)}
+                                  />
+                                </label>
+                                <label>
+                                  Stock
+                                  <input
+                                    type="number"
+                                    min="0"
+                                    step="1"
+                                    placeholder={item.stock}
+                                    value={stock}
+                                    onChange={(e) => setStock(e.target.value)}
+                                  />
+                                </label>
+                                <button
+                                  type="submit"
+                                  className="btn btn-success"
+                                >
+                                  Submit Changes
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => close()}
+                                  className="btn btn-outline-primary"
+                                >
+                                  Close
+                                </button>
+                              </form>
+                            </div>
+                          )}
+                        </Popup>
                       </td>
                       <td>
                         <Popup
                           trigger={
-                            <button className="btn btn-danger s-1">Delete</button>
+                            <button className="btn btn-danger s-1">
+                              Delete
+                            </button>
                           }
                           position="center"
                           modal
