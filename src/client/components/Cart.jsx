@@ -222,7 +222,7 @@ function Cart({ token, setToken, cart, setCart, user, items, setItems, totalCart
       // </div>
     );
   }
-  else return <h1>You have no item in your cart</h1>
+  else return <div id="noItemCart" className="mt-5"><h1>You have no item in your cart</h1></div>
 };
 
 
