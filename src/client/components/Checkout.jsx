@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 let API = 'http://localhost:3000/api'
@@ -15,6 +16,8 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
       fetchCart()
     }
   }, [token])
+
+  const navigate = useNavigate()
 
   async function fetchCart() {
     try {
@@ -146,6 +149,15 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
     }
   }
 
+  async function handleCheckOut() {
+    try {
+      checkOut(cart)
+      navigate('/thankyou')
+    } catch (error) {
+      console.error ('error in handling checkout button ', error)
+    }
+  }
+
   /*
     DELETE FUNCTION HERE. We can do something similar to returning book in BOOKBUDDY
  
@@ -198,7 +210,7 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
               <div className="text-body-secondary">address: {user.address}, {user.address2 ? user.address2 : ""} {user.city}, {user.state}</div>
               <div className="text-body-secondary">zip: {user.zip}</div>
 
-              <button type="button" className="btn btn-outline-primary" onClick={() => checkOut(cart)}>Check Out</button>
+              <button type="button" className="btn btn-outline-primary" onClick={() => handleCheckOut()}>Check Out</button>
             </div>
           </div>
 
