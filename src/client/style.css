@@ -47,7 +47,8 @@
 #RegisterPage,
 #userStyle,
 #checkoutStyle,
-#noItemCart {
+#noItemCart,
+#cartPage {
   height: 100vh;
   background-color: #bfbfbf;
 }
@@ -91,6 +92,10 @@
 }
 
 #shippingINFO {
+  text-align: center;
+}
+
+#cartEmpty, #totalAmount {
   text-align: center;
 }
 
