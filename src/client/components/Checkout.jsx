@@ -44,7 +44,6 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
         const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur, 0)
         console.log(overallTotalAmount)
         setTotalCart(overallTotalAmount)
-        navigate('/thankyou')
       }
       else {
         setItems([])
@@ -150,6 +149,15 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
     }
   }
 
+  async function handleCheckOut() {
+    try {
+      checkOut(cart)
+      navigate('/thankyou')
+    } catch (error) {
+      console.error ('error in handling checkout button ', error)
+    }
+  }
+
   /*
     DELETE FUNCTION HERE. We can do something similar to returning book in BOOKBUDDY
  
@@ -202,7 +210,7 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
               <div className="text-body-secondary">address: {user.address}, {user.address2 ? user.address2 : ""} {user.city}, {user.state}</div>
               <div className="text-body-secondary">zip: {user.zip}</div>
 
-              <button type="button" className="btn btn-outline-primary" onClick={() => checkOut(cart)}>Check Out</button>
+              <button type="button" className="btn btn-outline-primary" onClick={() => handleCheckOut()}>Check Out</button>
             </div>
           </div>
 
