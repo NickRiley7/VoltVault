@@ -103,7 +103,7 @@ function Cart({ token, setToken, cart, setCart, user, items, setItems, totalCart
             "Authorization": `Bearer ${token}`
           },
           body: JSON.stringify({
-            quantity: item.quantity <= 1 ?  1 : item.quantity - 1
+            quantity: item.quantity <= 1 ? 1 : item.quantity - 1
           })
         })
       let json = await response.json()
@@ -167,7 +167,8 @@ function Cart({ token, setToken, cart, setCart, user, items, setItems, totalCart
     return (
 
       <>
-        <h2 className="mt-5 mb-4">Welcome {user.firstname} {user.lastname} to your cart!</h2>
+        <div id="cartPage" >
+          <h2 className="mt-5 mb-4">Welcome {user.firstname} {user.lastname} to your cart!</h2>
 
           {
             items.length ?
@@ -202,10 +203,13 @@ function Cart({ token, setToken, cart, setCart, user, items, setItems, totalCart
                 )
               })
               :
-              <h3 className="card-title">Cart is empty</h3>
+              <h3 id="cartEmpty" className="card-title">Cart is empty</h3>
           }
-          <h3 className="card-title mb-3">TOTAL AMOUNT {overallTotalAmount}</h3>
-          <button type="button" className="btn btn-primary mb-5" onClick={() => checkOut(cart)}>Check Out</button>
+          <div id="totalAmount">
+            <h3 className="card-title mb-3">TOTAL AMOUNT {overallTotalAmount}</h3>
+            <button type="button" className="btn btn-primary mb-5" onClick={() => checkOut(cart)}>Check Out</button>
+          </div>
+        </div>
       </>
       // <div>
       //   <h2>Shopping Cart</h2>
@@ -222,7 +226,7 @@ function Cart({ token, setToken, cart, setCart, user, items, setItems, totalCart
       // </div>
     );
   }
-  else return <h1>You have no item in your cart</h1>
+  else return <div id="noItemCart" className="mt-5"><h1>You have no item in your cart</h1></div>
 };
 
 
