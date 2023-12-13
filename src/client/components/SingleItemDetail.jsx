@@ -6,9 +6,9 @@ const API = 'http://localhost:3000/api';
 
 function ItemDetails({ token, cart, setCart }) {
   const [item, setItem] = useState(null);
-  const [buttonColor, setButtonColor] = useState('btn-outline-success');
+  const [isInCart, setIsInCart] = useState(false);
+
   const { itemid } = useParams();
-  const isInCart = cart.items && cart.items.some(item => item.id === parseInt(itemid));
 
   useEffect(() => {
     fetchSingleItemDetail();
@@ -18,24 +18,27 @@ function ItemDetails({ token, cart, setCart }) {
     try {
       const response = await axios.get(`${API}/items/${itemid}`);
       setItem(response.data);
+      setIsInCart(cart.items && cart.items.some(item => item.id === parseInt(itemid)));
     } catch (err) {
       console.error(err);
       setItem(null);
+      setIsInCart(false);
     }
   }
 
   async function handleAddToCart() {
     try {
-      if (cart.id) {
-        if (!isInCart) {
+      if (!isInCart) {
+        if (cart.id) {
           await addItemToCart(cart);
         } else {
-          await removeItemFromCart();
+          await createNewCart();
         }
+        setIsInCart(true);
       } else {
-        await createNewCart();
+        await removeItemFromCart();
+        setIsInCart(false);
       }
-      setButtonColor('btn-danger'); 
     } catch (error) {
       console.error('Error in handleAddToCart function', error);
     }
@@ -97,7 +100,7 @@ function ItemDetails({ token, cart, setCart }) {
           },
         });
         const json = await response.json();
-       
+        
       }
     } catch (error) {
       console.error('ERROR ', error);
@@ -126,8 +129,9 @@ function ItemDetails({ token, cart, setCart }) {
             {token && (
               <button
                 type="button"
-                className={`btn ${buttonColor}`}
+                className={`btn ${isInCart ? 'btn-danger' : 'btn-outline-success'}`}
                 onClick={() => handleAddToCart()}
+                disabled={isInCart}
               >
                 {isInCart ? 'Item already in Cart' : 'Add item to Cart'}
               </button>
