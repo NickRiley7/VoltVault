@@ -49,7 +49,8 @@
 #checkoutStyle,
 #noItemCart,
 #cartPage,
-#background {
+#background,
+#thankYouPage {
   height: 100vh;
   background-color: #bfbfbf;
 }
