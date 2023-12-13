@@ -5,10 +5,8 @@ import axios from "axios";
 
 let API = 'http://localhost:3000/api'
 
-function Checkout({ token, setToken, cart, setCart, user, items, setItems, totalCart, setTotalCart, quantity, setQuantity }) {
+function Checkout({ token, cart, setCart, user, items, setItems, totalCart, setTotalCart, quantity, setQuantity }) {
 
-  console.log('this is token', token)
-  console.log(user)
 
 
   useEffect(() => {
@@ -30,19 +28,12 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
           }
         })
       let json = await response.json()
-      console.log(json)
       if (json.id) {
-        console.log(json)
-        console.log(json.items)
         setItems(json.items)
         setCart(json)
-        console.log(user)
-        console.log(json.items)
 
         const totalItemAmount = items.map(item => item.price * item.quantity)
-        console.log(totalItemAmount)
         const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur, 0)
-        console.log(overallTotalAmount)
         setTotalCart(overallTotalAmount)
       }
       else {
@@ -56,77 +47,7 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
   }
 
   const totalItemAmount = items.map(item => item.price * item.quantity)
-  // console.log(totalItemAmount)
   const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur, 0)
-  // console.log (overallTotalAmount)
-  // console.log(cart.id)
-
-  async function addItem(item) {
-    try {
-      const response = await fetch(`${API}/order_items/${item.orderItemsId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            quantity: item.quantity + 1
-            // need to figure out how to PATCH quantity +1 when adding more item
-          })
-        })
-      let json = await response.json()
-      // setQuantity(json.)
-
-      fetchCart()
-
-
-    } catch (error) {
-      console.error('error in adding item quantity', error)
-    }
-  }
-
-  async function reduceItem(item) {
-    try {
-      const response = await fetch(`${API}/order_items/${item.orderItemsId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          },
-          body: JSON.stringify({
-            quantity: item.quantity - 1
-          })
-        })
-      let json = await response.json()
-
-      fetchCart()
-
-
-    } catch (error) {
-      console.error('error in adding item quantity', error)
-    }
-  }
-
-  async function deleteItem(item) {
-    try {
-      const response = await fetch(`${API}/order_items/${item.orderItemsId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
-          }
-        })
-      let json = await response.json()
-
-      fetchCart()
-
-    } catch (error) {
-      console.error('error in deleting item in cart', error)
-    }
-  }
 
   async function checkOut(cart) {
     try {
@@ -157,12 +78,6 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
       console.error ('error in handling checkout button ', error)
     }
   }
-
-  /*
-    DELETE FUNCTION HERE. We can do something similar to returning book in BOOKBUDDY
- 
-    Also need to create the DELETE button
-  */
 
   if (token) {
     return (
@@ -216,19 +131,6 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
 
         </>
       </div>
-      // <div>
-      //   <h2>Shopping Cart</h2>
-      //   <ul>
-      //     {cart.map((item) => (
-      //       <li key={item.id}>
-      //         {item.name} - ${item.price.toFixed(2)}
-      //       </li>
-      //     ))}
-      //   </ul>
-      //   <p>
-      //     Total: ${cart.reduce((total, item) => total + item.price, 0).toFixed(2)}
-      //   </p>
-      // </div>
     );
   }
   else return <h1>You have no item in your cart</h1>

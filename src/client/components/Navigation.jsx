@@ -23,6 +23,7 @@ export default function Navigations({ admin, token, setToken, setCart }) {
           VoltVault
         </Link>
 
+
         <button
           className="navbar-toggler"
           type="button"

@@ -22,11 +22,6 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
 
   const login = async (e) => {
     e.preventDefault();
-    // useEffect(()=>{
-    //   if (token) {
-    //     fetchCart()
-    //   }
-    // }, [token])
 
     try {
       const response = await fetch("http://localhost:3000/api/users/login", {
@@ -40,7 +35,6 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
         }),
       });
       const result = await response.json();
-      console.log(result)
       setMessage(result.message);
       setToken(result.token);
       setUser(result.user);
@@ -66,8 +60,6 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
 
   async function fetchCart(result) {
     try {
-      console.log("THIS IS USER ID IN FETCHCART LOGIN", result.user.id);
-      console.log(result.token);
       let response = await fetch(
         `${API}/orders/open_orders/${result.user.id}`,
         {
@@ -79,11 +71,8 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
         }
       );
       let json = await response.json();
-      console.log("THIS IS WHAT IS IN THE CART", json);
       if (json.id) {
         setCart(json);
-        console.log(user);
-        console.log(json.items);
       } else {
         setCart({});
       }
