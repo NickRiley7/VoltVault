@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import SearchBar from "./SearchBar";
 
@@ -19,7 +19,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
             width="40"
             height="35"
             className="d-inline-block align-text-top"
-            href="/"
           />
           VoltVault
         </Link>
@@ -60,9 +59,33 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                 </li>
               </ul>
             </li>
+            {admin && (
+              <li className="nav-item dropdown">
+                <Link
+                  className="nav-link dropdown-toggle"
+                  to="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Admin Tools
+                </Link>
+                <ul className="dropdown-menu">
+                  <li>
+                    <Link className="dropdown-item" to="/users">
+                      Users
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/inventory">
+                      Inventory
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+            )}
           </ul>
 
-          
           <div className="dropdown me-2">
             <button
               className="btn btn-outline-primary btn-sm dropdown-toggle"
@@ -107,11 +130,9 @@ export default function Navigations({ admin, token, setToken, setCart }) {
             </ul>
           </div>
 
-          
           <SearchBar category={category} handleCategoryChange={handleCategoryChange} />
 
-         
-          {!token && (
+          {!token ? (
             <>
               <Link
                 to="login"
@@ -130,10 +151,7 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                 Signup
               </Link>
             </>
-          )}
-
-          
-          {token && (
+          ) : (
             <>
               <Link
                 to="account"
@@ -158,7 +176,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
             </>
           )}
 
-          
           <Link to="cart">
             <img
               id="cart"
@@ -166,7 +183,7 @@ export default function Navigations({ admin, token, setToken, setCart }) {
               className="btn btn-outline-primary m-1"
               src="/src/client/assets/vecteezy_shopping-cart.png"
               alt="Cart"
-            ></img>
+            />
           </Link>
         </div>
       </div>
