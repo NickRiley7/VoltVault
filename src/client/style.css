@@ -44,9 +44,12 @@
 }
 
 #loginPage,
-#RegisterPage {
+#RegisterPage,
+#background {
   height: 100vh;
   background-color: #bfbfbf;
+  
+
 }
 
 #admin-account-info,

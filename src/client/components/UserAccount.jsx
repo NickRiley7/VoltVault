@@ -129,8 +129,8 @@ function UserAccount({ token, admin }) {
     );
   } else {
     return (
-      <>
-      <div id = "background"></div>
+      
+      <div id = "background">
       <div id = "account-info">
         <h1>Hi, {firstName}</h1>
         <h2>Your Username: {username}</h2>
@@ -143,13 +143,14 @@ function UserAccount({ token, admin }) {
         <h2>Your State: {state}</h2>
         <h2>Your Zipcode: {zip}</h2>
       </div>
-      <div id = "orders-list">
+      <div id = "orders-list" className = "card">
         <h2>Order ID: {order_id}</h2>
         <h2>Item_ID:</h2>
         <h2>Quantity</h2>
 
       </div>
-      </>
+      </div>
+      
     );
   }
 }
