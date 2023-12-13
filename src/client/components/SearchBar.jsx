@@ -6,7 +6,7 @@ function Searchbar() {
   const [items, setItems] = useState([]);
   const [results, setResults] = useState([]);
   const [input, setInput] = useState("");
-  const [category, setCategory] = useState(""); // New state for category
+  const [category, setCategory] = useState(null); 
   const [hoveredItemId, setHoveredItemId] = useState(null);
   const navigate = useNavigate();
 
@@ -23,12 +23,12 @@ function Searchbar() {
 
   const handleChange = (value) => {
     setInput(value);
-    fetchData(value, category); // Pass category as well
+    fetchData(value, category);
   };
 
   const handleCategoryChange = (newCategory) => {
-    setCategory(newCategory);
-    fetchData(input, newCategory); // Refetch data when category changes
+    setCategory(category === newCategory ? null : newCategory);
+    fetchData(input, category === newCategory ? null : newCategory);
   };
 
   const fetchData = (value, categoryFilter) => {
@@ -37,7 +37,8 @@ function Searchbar() {
     } else {
       const filteredResults = items.filter((item) => {
         const nameMatch = item && item.name && item.name.toLowerCase().includes(value.toLowerCase());
-        const categoryMatch = !categoryFilter || (item && item.category && item.category.toLowerCase() === categoryFilter.toLowerCase());
+        const categoryMatch =
+          categoryFilter === null || (item && item.category && item.category.toLowerCase() === categoryFilter.toLowerCase());
 
         return nameMatch && categoryMatch;
       });
@@ -50,7 +51,7 @@ function Searchbar() {
     navigate(`/items/${itemId}`);
     setResults([]);
     setInput("");
-    setCategory(""); // Reset category when navigating to an item
+    setCategory(null); 
   };
 
   useEffect(() => {
@@ -88,6 +89,16 @@ function Searchbar() {
             onChange={() => handleCategoryChange("computer")}
           />
           Computer
+        </label>
+        
+        <label>
+          <input
+            type="radio"
+            value="none"
+            checked={category === null}
+            onChange={() => handleCategoryChange(null)}
+          />
+          None
         </label>
       </div>
 
