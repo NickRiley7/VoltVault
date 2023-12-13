@@ -5,6 +5,10 @@ import Searchbar from "./SearchBar";
 export default function Navigations({ admin, token, setToken, setCart }) {
   
   const [category, setCategory] = useState(null);
+  const handleCategoryChange = (selectedCategory) => {
+    setCategory(selectedCategory);
+  };
+
 
   // NOT SIGNED IN RENDER
   if (!token) {
@@ -187,8 +191,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                 </ul>
               </li>
             </ul>
-
-            {/* Category Selection Buttons */}
             <div className="btn-group me-2">
               <button
                 type="button"
