@@ -46,7 +46,8 @@
 #loginPage,
 #RegisterPage,
 #userStyle,
-#checkoutStyle {
+#checkoutStyle,
+#background {
   height: 100vh;
   background-color: #bfbfbf;
 }
