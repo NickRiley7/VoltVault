@@ -183,6 +183,7 @@ function UserAccount({ token, admin, user }) {
         <h2>Your State: {state}</h2>
         <h2>Your Zipcode: {zip}</h2>
       </div>
+      <div id = "order-history"> 
       {
           ordersHistory.length ? 
             ordersHistory.map (order => { 
@@ -197,6 +198,7 @@ function UserAccount({ token, admin, user }) {
             :
             <h2>no order history</h2>
         }
+     </div>
      </div> 
     );
   }

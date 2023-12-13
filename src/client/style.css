@@ -48,7 +48,8 @@
 #userStyle,
 #checkoutStyle,
 #noItemCart,
-#cartPage {
+#cartPage,
+#background {
   height: 100vh;
   background-color: #bfbfbf;
 }
@@ -58,9 +59,11 @@
   padding-left: 50%;
 }
 
-#orders-list {
-  padding-right: 90%;
-  margin-top: -4.5in; 
+#order-history {
+  display: flex;
+  margin-top: -8in;
+  margin-left: -5in;
+  
 }
 
 #loginCard {
