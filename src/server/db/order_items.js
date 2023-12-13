@@ -45,7 +45,7 @@ async function getAllOrderItems() {
 
 async function getOrderItemsByOrder(id) {
   try {
-    // console.log (`starting getting order items with this id ${id}...`)
+    console.log (`starting getting order items with this id ${id}...`)
     const {rows: orderItems} = await client.query(`
       SELECT * FROM order_items
       WHERE "order_id" = $1
@@ -58,27 +58,6 @@ async function getOrderItemsByOrder(id) {
   }
 }
 
-async function updateOrder({id, ...fields}) {
-  try {
-    const toUpdate = {}
-    for(let column in fields) {
-      if(fields[column] !== undefined) toUpdate[column] = fields[column];
-    }
-    let order;
-    if (util.dbFields(fields).insert.length > 0) {
-      const {rows} = await client.query(`
-          UPDATE orders 
-          SET ${ util.dbFields(toUpdate).insert }
-          WHERE id=${ id }
-          RETURNING *;
-      `, Object.values(toUpdate));
-      order = rows[0];
-      return order;
-    }
-  } catch (error) {
-    throw error;
-  }
-}
 async function updateOrderItem ({id, ...fields}) {
   try {
     const toUpdate = {}

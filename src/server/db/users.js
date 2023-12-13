@@ -40,7 +40,6 @@ async function createUser({
         isAdmin,
       ]
     );
-    console.log(user);
     return user;
   } catch (err) {
     throw err;
@@ -118,11 +117,8 @@ async function getUserByUsername(username) {
   }
 }
 
-// GET USER BY ID
 async function getUserById(id) {
   try {
-    // console.log ('Getting User by ID ....')
-    // console.log ('THIS IS ID ', id)
     const {rows: [user]} = await db.query(`
       SELECT * FROM users
       WHERE id = $1
@@ -131,7 +127,6 @@ async function getUserById(id) {
     if (!user) return null;
     delete user.password;
 
-    // console.log ('finished getting user by id!')
     return user;
   } catch (error) {
     console.error ('ERROR IN GETTING ID BY USER')
@@ -168,9 +163,6 @@ async function updateUser({ id, ...fields }) {
   }
 }
 
-//UPDATE - what order user removed from items?
-// what to do w/ placed orders that already have a user that is to be deleted?
-//
 async function destroyUser(id) {
   try {
     const {

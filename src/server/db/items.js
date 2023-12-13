@@ -2,14 +2,10 @@ const { query } = require('express');
 const client = require('./client')
 const util = require ('./util.js');
 
-// const express = require('express');
-// const import { v4 as uuidv4 } from 'uuid';
-
 
 async function getItemById(id) {
   try {
     console.log ('GETTING ITEM BY ID...')
-    console.log ('THIS IS ID FROM THE FUNCTION: ', id)
     const result = await client.query (
       `SELECT * FROM items
       WHERE id = $1`,
@@ -124,26 +120,6 @@ async function updateItem({id, ...fields}){
   }
 }
 
-// async function updateItem(itemId, updatedField) {
-//   const {name, price, details, img, category, stock } = updatedField;
-//   const query = `
-//   UPDATE items
-//   SET name = $1, price = $2, details = $3, img = $4, category = $5, stock = $6
-//   WHERE id = $7
-//   RETURNING *;
-//    `;
-//    const values = [name, price, details, img, category, stock, itemId];
-//    try {
-//     const result = await client.query(query, values );
-//     return result.rows[0];
-//    } catch (err){
-//     console.log("Err updating" );
-//     throw err
-//    }
-// }
-
-// I find this way of doing the create item function is easier to understand what is going on
-
 async function destroyItem (id) {
   try {
     console.log (`starting to destroy item with ID ${id}`)
@@ -164,18 +140,12 @@ async function destroyItem (id) {
 }
 
 async function attachItemsToOrders(orders) {
-  // no side effects]
-  // console.log('THIS IS ORDER IN ATTACH ITEMS ORDERS', orders)
   const ordersToReturn = [...orders];
-  // console.log('THIS IS ORDERS ', ordersToReturn)
   const binds = orders.map((_, index) => `$${index + 1}`).join(', ');
-  // console.log ("THIS IS BINDS", binds)
   const orderIds = orders.map(order => order.id);
   if (!orderIds?.length) return [];
-  // console.log('THIS IS ORDER IDS ', orderIds)
   
   try {
-    // get the items, JOIN with order_items (so we can get a orderId), and only those that have those order ids on the order_items join
     const { rows: items } = await client.query(`
       SELECT items.*, order_items.quantity, order_items.id AS "orderItemsId", order_items.order_id
       FROM items 
@@ -183,11 +153,8 @@ async function attachItemsToOrders(orders) {
       WHERE order_items.order_id IN (${ binds });
     `, orderIds);
 
-    // loop over the orders
     for(const order of ordersToReturn) {
-      // filter the items to only include those that have this orderId
       const itemsToAdd = items.filter(item => item.order_id === order.id);
-      // attach the items to each single order
       order.items = itemsToAdd;
     }
     return ordersToReturn;

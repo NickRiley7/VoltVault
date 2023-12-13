@@ -2,7 +2,6 @@ const client = require('./client')
 const { getUserById } = require('./users')
 const { attachItemsToOrders } = require('./items')
 const { getAllItemsByOrderId } = require('./items.js')
-// const { getUserByUsername } = require('./users')
 const util = require('./util.js');
 
 async function getOrderById(id){
@@ -89,7 +88,6 @@ async function getAllOpenOrders () {
       JOIN users ON orders."userId" = users.id
       WHERE orders."isOpen" = true
     `)
-    // console.log ('THIS IS ORDER STATUS', orders."isOpen")
     return attachItemsToOrders(orders)
   }
   catch (error){ 
@@ -115,7 +113,6 @@ async function getOpenOrderByUserId (userId) {
     console.log ('this is ordersWithItems ', ordersWithItems)
     return ordersWithItems.length > 0 ? ordersWithItems[0] : null
     
-    // return attachItemsToOrders(orders)
   }
   catch (error){
     console.error ('ERROR! in getting open order by user id!')
@@ -185,7 +182,6 @@ async function createOrder({userId, isOpen, order_total}) {
     const ordersWithItems = await attachItemsToOrders(orders)
     console.log ('this is ordersWithItems ', ordersWithItems)
     return ordersWithItems.length > 0 ? ordersWithItems[0] : null
-    // return attachItemsToOrders(orders);
   } catch (error) {
     throw error;
   }
