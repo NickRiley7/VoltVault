@@ -93,14 +93,14 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
   }
 
   return (
-    <div className="col-12 col-sm-11 col-md-11 col-lg-5" id="loginPage">
+    <div className="col-12 col-sm-12 col-md-11 col-lg-5" id="loginPage">
       <div
         id="loginCard"
         className="card shadow p-3 m-5 m-100 bg-body-tertiary rounded"
       >
         <h2>Login</h2>
         <form onSubmit={login}>
-          <div className="form-floating mt-3 col-5 col-sm-5 col-md-7 col-lg-12">
+          <div className="form-floating mt-3 col-5 col-sm-9 col-md-10 col-lg-12">
             <input
               className="form-control shadow"
               aria-describedby="emailHelp"
@@ -114,7 +114,7 @@ const Login = ({ token, setToken, user, setUser, setAdmin, cart, setCart }) => {
             <label htmlfor="floatingInput">Email address</label>
           </div>
 
-          <div className="form-floating mt-4 col-5 col-sm-5 col-md-7 col-lg-12">
+          <div className="form-floating mt-4 col-5 col-sm-9 col-md-10 col-lg-12">
             <input
               className="form-control shadow"
               type="password"
