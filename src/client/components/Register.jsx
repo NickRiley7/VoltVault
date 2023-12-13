@@ -66,13 +66,13 @@ export default function RegistrationForm({ setToken, user, setUser, setCart }) {
   }
 
   return (
-    <div id="RegisterPage" className="card col-10 col-sm-10 col-md-10 col-lg-10 shadow p-3 mb-5 m-100 bg-body-tertiary rounded">
+    <div id="RegisterPage" className="card col-10 col-sm-10 col-md-10 col-lg-11 shadow p-3 mb-5 mt-5 m-100 bg-body-tertiary rounded">
       <div id="RegisterCard">
         <h2>Signup</h2>
         {successMessage && <p>{successMessage}</p>}
         {error && <p>{error}</p>}
         <form className="row g-3" onSubmit={register}>
-          <div className="col-md-6 input-group">
+          <div className="col-12 col-sm-1 col-md-1 col-lg-2 input-group">
             <label htmlFor="inputUser" className="form-label">
               Username:{""}
               <input
@@ -85,7 +85,7 @@ export default function RegistrationForm({ setToken, user, setUser, setCart }) {
             </label>
           </div>
 
-          <div className="col-md-2">
+          <div className="col-12 col-sm-10 col-md-2 col-lg-2">
             <label htmlFor="inputEmail4" className="form-label">
               Email:{""}
               <input
@@ -97,7 +97,7 @@ export default function RegistrationForm({ setToken, user, setUser, setCart }) {
             </label>
           </div>
 
-          <div className="col-md-2">
+          <div className="col-12 col-sm-10 col-md-10 col-lg-10">
             <label htmlFor="inputPassword4" className="form-label">
               Password:{""}
               <input
@@ -112,7 +112,7 @@ export default function RegistrationForm({ setToken, user, setUser, setCart }) {
             </label>
           </div>
 
-          <div className="col-md-9">
+          <div className="col-12 col-sm-10 col-md-2 col-lg-2">
             <label className="form-label">
               First Name:{""}
               <input
@@ -124,7 +124,7 @@ export default function RegistrationForm({ setToken, user, setUser, setCart }) {
             </label>
           </div>
 
-          <div className="col-md-7">
+          <div className="col-12 col-sm-10 col-md-10 col-lg-10">
             <label className="form-label">
               Last Name:{""}
               <input
@@ -136,35 +136,35 @@ export default function RegistrationForm({ setToken, user, setUser, setCart }) {
             </label>
           </div>
 
-          <div className="col-12">
+          <div className="col-12 col-sm-10 col-md-2 col-lg-2">
             <label htmlFor="inputAddress" className="form-label">
               Address:{""}
               <input type="text" className="form-control shadow" id="inputAddress" placeholder="1234 Main St" value={address} onChange={(e) => setAddress(e.target.value)} />
             </label>
           </div>
 
-          <div className="col-12">
+          <div className="col-12 col-sm-10 col-md-10 col-lg-10">
             <label htmlFor="inputAddress2" className="form-label">
               Address 2:{""}
               <input
                 type="text"
                 className="form-control shadow"
                 id="inputAddress2"
-                placeholder="Apartment, studio, or floor"
+                placeholder="Apartment, studio, floor"
                 value={address2}
                 onChange={(e) => setAddress2(e.target.value)}
               />
             </label>
           </div>
 
-          <div className="col-md-2">
+          <div className="col-12 col-sm-10 col-md-2 col-lg-2">
             <label htmlFor="inputCity" className="form-label">
               City:{""}
               <input type="text" className="form-control shadow" id="inputCity" value={city} onChange={(e) => setCity(e.target.value)} />
             </label>
           </div>
 
-          <div className="col-md-2">
+          <div className="col-12 col-sm-3 col-md-10 col-lg-2">
             <label htmlFor="inputState" className="form-label">
               State:
               <select id="inputState" className="form-select shadow" value={state} onChange={(e) => setState(e.target.value)}>
@@ -224,14 +224,14 @@ export default function RegistrationForm({ setToken, user, setUser, setCart }) {
             </label>
           </div>
 
-          <div className="col-md-9">
+          <div className="col-2 col-sm-10 col-md-10 col-lg-12">
             <label htmlFor="inputZip" className="form-label">
               Zip:{""}
               <input type="text" className="form-control shadow" id="inputZip" value={zip} onChange={(e) => setZip(e.target.value)} />
             </label>
           </div>
 
-          <div className="col-12">
+          <div className="col-2 col-sm-10 col-md-10 col-lg-2" id="submitButton">
             <button type="submit" className="btn btn-primary shadow">Submit</button>
           </div>
         </form>
