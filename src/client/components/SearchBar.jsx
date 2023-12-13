@@ -2,11 +2,10 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Searchbar() {
+function SearchBar({ category }) {
   const [items, setItems] = useState([]);
   const [results, setResults] = useState([]);
   const [input, setInput] = useState("");
-  const [category, setCategory] = useState(null); 
   const [hoveredItemId, setHoveredItemId] = useState(null);
   const navigate = useNavigate();
 
@@ -26,19 +25,20 @@ function Searchbar() {
     fetchData(value, category);
   };
 
-  const handleCategoryChange = (newCategory) => {
-    setCategory(category === newCategory ? null : newCategory);
-    fetchData(input, category === newCategory ? null : newCategory);
-  };
-
   const fetchData = (value, categoryFilter) => {
     if (value === "") {
       setResults([]);
     } else {
       const filteredResults = items.filter((item) => {
-        const nameMatch = item && item.name && item.name.toLowerCase().includes(value.toLowerCase());
+        const nameMatch =
+          item &&
+          item.name &&
+          item.name.toLowerCase().includes(value.toLowerCase());
         const categoryMatch =
-          categoryFilter === null || (item && item.category && item.category.toLowerCase() === categoryFilter.toLowerCase());
+          categoryFilter === null ||
+          (item &&
+            item.category &&
+            item.category.toLowerCase() === categoryFilter.toLowerCase());
 
         return nameMatch && categoryMatch;
       });
@@ -51,7 +51,6 @@ function Searchbar() {
     navigate(`/items/${itemId}`);
     setResults([]);
     setInput("");
-    setCategory(null); 
   };
 
   useEffect(() => {
@@ -69,38 +68,6 @@ function Searchbar() {
           onChange={(e) => handleChange(e.target.value)}
         />
       </form>
-
-      <div>
-        <label>
-          <input
-            type="radio"
-            value="phone"
-            checked={category === "phone"}
-            onChange={() => handleCategoryChange("phone")}
-          />
-          Phone
-        </label>
-
-        <label>
-          <input
-            type="radio"
-            value="computer"
-            checked={category === "computer"}
-            onChange={() => handleCategoryChange("computer")}
-          />
-          Computer
-        </label>
-        
-        <label>
-          <input
-            type="radio"
-            value="none"
-            checked={category === null}
-            onChange={() => handleCategoryChange(null)}
-          />
-          None
-        </label>
-      </div>
 
       {results.length > 0 && (
         <div id="searchCard" className="card w-100">
@@ -125,4 +92,4 @@ function Searchbar() {
   );
 }
 
-export default Searchbar;
+export default SearchBar;
