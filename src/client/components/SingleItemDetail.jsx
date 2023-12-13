@@ -1,117 +1,166 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 
-function Searchbar() {
-  const [items, setItems] = useState([]);
-  const [results, setResults] = useState([]);
-  const [input, setInput] = useState("");
-  const [category, setCategory] = useState(""); 
-  const [hoveredItemId, setHoveredItemId] = useState(null);
+const API = 'http://localhost:3000/api';
+
+function ItemDetails({ token, cart, setCart }) {
+  const [item, setItem] = useState(null);
+  const [isInCart, setIsInCart] = useState(false);
+
+  const { itemid } = useParams();
   const navigate = useNavigate();
 
-  const fetchItems = async () => {
-    let API = "http://localhost:3000/api";
-
-    try {
-      const response = await axios.get(`${API}/items/`);
-      setItems(response.data);
-    } catch (err) {
-      console.error(err.message);
-    }
-  };
-
-  const handleChange = (value) => {
-    setInput(value);
-    fetchData(value, category); 
-  };
-
-  const handleCategoryChange = (newCategory) => {
-    setCategory(newCategory);
-    fetchData(input, newCategory); 
-  };
-
-  const fetchData = (value, categoryFilter) => {
-    if (value === "") {
-      setResults([]);
-    } else {
-      const filteredResults = items.filter((item) => {
-        const nameMatch = item && item.name && item.name.toLowerCase().includes(value.toLowerCase());
-        const categoryMatch = !categoryFilter || (item && item.category && item.category.toLowerCase() === categoryFilter.toLowerCase());
-
-        return nameMatch && categoryMatch;
-      });
-
-      setResults(filteredResults);
-    }
-  };
-
-  const handleItemClick = (itemId) => {
-    navigate(`/items/${itemId}`);
-    setResults([]);
-    setInput("");
-    setCategory(""); 
-  };
-
   useEffect(() => {
-    fetchItems();
-  }, []);
+    fetchSingleItemDetail();
+  }, [itemid, cart]);
+
+  // console.log (cart.items)
+  // const itemsInCart = cart.items
+  // console.log(itemsInCart)
+  // const itemsIdInCart = itemsInCart.map (item => item.id)
+  // console.log (itemsIdInCart)
+
+  async function fetchSingleItemDetail() {
+    try {
+      const response = await axios.get(`${API}/items/${itemid}`);
+      setItem(response.data);
+      setIsInCart(cart.items && cart.items.some(item => item.id === parseInt(itemid)));
+    } catch (err) {
+      console.error(err);
+      setItem(null);
+      setIsInCart(false);
+    }
+  }
+
+  async function handleAddToCart() {
+    try {
+      if (token) {
+        if (!isInCart) {
+          if (cart.id) {
+            await addItemToCart(cart);
+          } else {
+            await createNewCart();
+          }
+          setIsInCart(true);
+        } else {
+          await removeItemFromCart();
+          setIsInCart(false);
+        }
+
+        navigate("/cart");
+      }
+    } catch (error) {
+      console.error('Error in handleAddToCart function', error);
+    }
+  }
+
+  async function createNewCart() {
+    try {
+      const response = await fetch(`${API}/orders`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          isOpen: true,
+        }),
+      });
+      const json = await response.json();
+      if (json.id) {
+        addItemToCart(json);
+        setCart(json);
+      } else {
+        console.error('Error in POST new cart');
+      }
+    } catch (error) {
+      console.error('Error in creating a new cart', error);
+    }
+  }
+
+  async function addItemToCart(cart) {
+    try {
+      const response = await fetch(`${API}/orders/${cart.id}/items`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          item_id: itemid,
+          quantity: 1,
+        }),
+      });
+      const json = await response.json();
+     
+    } catch (error) {
+      console.error('ERROR ', error);
+    }
+  }
+
+  async function removeItemFromCart() {
+    try {
+      const itemInCart = cart.items.find(item => item.id === parseInt(itemid));
+      if (itemInCart) {
+        const response = await fetch(`${API}/orders/${cart.id}/items/${itemInCart.orderItemsId}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const json = await response.json();
+        
+      }
+    } catch (error) {
+      console.error('ERROR ', error);
+    }
+  }
 
   return (
-    <div id="searchBar" className="nav-search-field position-absolute w-50 ps-5 top-0 start-50 translate-middle-x">
-      <form className="d-flex" role="search">
-        <input
-          className="form-control me-2"
-          type="search"
-          placeholder="Search..."
-          value={input}
-          onChange={(e) => handleChange(e.target.value)}
-        />
-      </form>
-
-      <div>
-        <label>
-          <input
-            type="radio"
-            value="phone"
-            checked={category === "phone"}
-            onChange={() => handleCategoryChange("phone")}
-          />
-          Phone
-        </label>
-
-        <label>
-          <input
-            type="radio"
-            value="computer"
-            checked={category === "computer"}
-            onChange={() => handleCategoryChange("computer")}
-          />
-          Computer
-        </label>
-      </div>
-
-      {results.length > 0 && (
-        <div id="searchCard" className="card w-100">
+    <div id="singleItem" className="card mb-3 w-75 mb-3 shadow p-3 mb-5 bg-body-tertiary rounded singleItemDetail">
+      <div className="row g-0">
+        <div className="col-md-4">
+          {item && item.img && (
+            <img src={`${item.img}`} className="img-fluid rounded-start" alt={`Image of ${item.name}`} />
+          )}
+        </div>
+        <div className="col-md-8">
           <div className="card-body">
-            {results.map((result) => (
-              <p
-                className={`card-text search-result-item p-2 mb-1 rounded cursor-pointer ${
-                  hoveredItemId === result.id ? "bg-primary" : ""
-                }`}
-                key={result.id}
-                onClick={() => handleItemClick(result.id)}
-                onMouseEnter={() => setHoveredItemId(result.id)}
-                onMouseLeave={() => setHoveredItemId(null)}
+            <h2 className="card-title pb-2">{item?.name} details</h2>
+            <p>{item?.details}</p>
+            <p className="card-text">
+              <small className="text-body-secondary">Stock: {item?.stock}</small>
+            </p>
+            <p className="card-text">
+              <small className="text-body-secondary"> Price: ${item?.price}</small>
+            </p>
+            <br />
+            {token && (
+              <button
+                type="button"
+                className={`btn ${isInCart ? 'btn-danger' : 'btn-outline-success'}`}
+                onClick={() => handleAddToCart()}
+                disabled={!token || isInCart}
               >
-                {result.name}
-              </p>
-            ))}
+                {isInCart ? 'Item already in Cart' : 'Add item to Cart'}
+              </button>
+            )}
+            {!token && (
+              <button
+                type="button"
+                className="btn btn-danger"
+                disabled
+              >
+                Please log in to add items to your cart.
+              </button>
+            )}
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
-export default Searchbar;
+export default ItemDetails;

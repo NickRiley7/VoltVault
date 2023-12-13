@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -6,6 +6,7 @@ function Searchbar() {
   const [items, setItems] = useState([]);
   const [results, setResults] = useState([]);
   const [input, setInput] = useState("");
+  const [category, setCategory] = useState(""); // New state for category
   const [hoveredItemId, setHoveredItemId] = useState(null);
   const navigate = useNavigate();
 
@@ -22,15 +23,23 @@ function Searchbar() {
 
   const handleChange = (value) => {
     setInput(value);
-    fetchData(value);
+    fetchData(value, category); // Pass category as well
   };
 
-  const fetchData = (value) => {
+  const handleCategoryChange = (newCategory) => {
+    setCategory(newCategory);
+    fetchData(input, newCategory); // Refetch data when category changes
+  };
+
+  const fetchData = (value, categoryFilter) => {
     if (value === "") {
       setResults([]);
     } else {
       const filteredResults = items.filter((item) => {
-        return item && item.name && item.name.toLowerCase().includes(value.toLowerCase());
+        const nameMatch = item && item.name && item.name.toLowerCase().includes(value.toLowerCase());
+        const categoryMatch = !categoryFilter || (item && item.category && item.category.toLowerCase() === categoryFilter.toLowerCase());
+
+        return nameMatch && categoryMatch;
       });
 
       setResults(filteredResults);
@@ -41,6 +50,7 @@ function Searchbar() {
     navigate(`/items/${itemId}`);
     setResults([]);
     setInput("");
+    setCategory(""); // Reset category when navigating to an item
   };
 
   useEffect(() => {
@@ -59,6 +69,28 @@ function Searchbar() {
         />
       </form>
 
+      <div>
+        <label>
+          <input
+            type="radio"
+            value="phone"
+            checked={category === "phone"}
+            onChange={() => handleCategoryChange("phone")}
+          />
+          Phone
+        </label>
+
+        <label>
+          <input
+            type="radio"
+            value="computer"
+            checked={category === "computer"}
+            onChange={() => handleCategoryChange("computer")}
+          />
+          Computer
+        </label>
+      </div>
+
       {results.length > 0 && (
         <div id="searchCard" className="card w-100">
           <div className="card-body">
@@ -67,7 +99,11 @@ function Searchbar() {
                 className={`card-text search-result-item p-2 mb-1 rounded cursor-pointer ${
                   hoveredItemId === result.id ? "bg-primary" : ""
                 }`}
-                key={result.id} onClick={() => handleItemClick(result.id)} onMouseEnter={() => setHoveredItemId(result.id)} onMouseLeave={() => setHoveredItemId(null)}>
+                key={result.id}
+                onClick={() => handleItemClick(result.id)}
+                onMouseEnter={() => setHoveredItemId(result.id)}
+                onMouseLeave={() => setHoveredItemId(null)}
+              >
                 {result.name}
               </p>
             ))}
