@@ -1,7 +1,15 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import Searchbar from "./SearchBar";
 
 export default function Navigations({ admin, token, setToken, setCart }) {
+  
+  const [category, setCategory] = useState(null);
+  const handleCategoryChange = (selectedCategory) => {
+    setCategory(selectedCategory);
+  };
+
+
   // NOT SIGNED IN RENDER
   if (!token) {
     return (
@@ -32,16 +40,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {/* <li className="nav-item">
-                <Link
-                  className="nav-link active"
-                  aria-current="page"
-                  target="_blank"
-                  href="#"
-                >
-                  Wishlist
-                </Link>
-              </li> */}
               <li className="nav-item dropdown">
                 <Link
                   className="nav-link dropdown-toggle"
@@ -53,7 +51,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                   Shop
                 </Link>
                 <ul className="dropdown-menu">
-                  {/* Links aren't connected yet! */}
                   <li>
                     <Link className="dropdown-item" to="/phones">
                       Phones
@@ -67,7 +64,50 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                 </ul>
               </li>
             </ul>
-            <Searchbar />
+
+            
+
+            <div className="dropdown me-2">
+              <button
+                className="btn btn-outline-primary btn-sm dropdown-toggle"
+                type="button"
+                id="categoryDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {category ? category : "Select Category"}
+              </button>
+              <ul className="dropdown-menu" aria-labelledby="categoryDropdown">
+                <li>
+                  <button
+                    className={`dropdown-item ${category === 'phone' ? 'active' : ''}`}
+                    onClick={() => handleCategoryChange('phone')}
+                  >
+                    Phone
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className={`dropdown-item ${category === 'computer' ? 'active' : ''}`}
+                    onClick={() => handleCategoryChange('computer')}
+                  >
+                    Computer
+                  </button>
+                </li>
+                <li>
+                  <button
+                    className={`dropdown-item ${category === null ? 'active' : ''}`}
+                    onClick={() => handleCategoryChange(null)}
+                  >
+                    None
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            
+
+            <Searchbar category={category} />
 
             <Link
               to="login"
@@ -91,13 +131,13 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                 href="#"
                 className="btn btn-outline-primary m-1"
                 src="/src/client/assets/vecteezy_shopping-cart.png"
+                alt="Cart"
               ></img>
             </Link>
           </div>
         </div>
       </nav>
     );
-    // SIGNED IN USER RENDER
   } else if (!admin) {
     return (
       <nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
@@ -127,16 +167,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {/* <li className="nav-item">
-              <Link
-                className="nav-link active"
-                aria-current="page"
-                target="_blank"
-                href="#"
-              >
-                Wishlist
-              </Link>
-            </li> */}
               <li className="nav-item dropdown">
                 <Link
                   className="nav-link dropdown-toggle"
@@ -148,7 +178,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                   Shop
                 </Link>
                 <ul className="dropdown-menu">
-                  {/* Links aren't connected yet! */}
                   <li>
                     <Link className="dropdown-item" to="/phones">
                       Phones
@@ -162,7 +191,32 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                 </ul>
               </li>
             </ul>
-            <Searchbar />
+            <div className="btn-group me-2">
+              <button
+                type="button"
+                className={`btn btn-outline-primary ${category === 'phone' ? 'active' : ''}`}
+                onClick={() => setCategory('phone')}
+              >
+                Phone
+              </button>
+              <button
+                type="button"
+                className={`btn btn-outline-primary ${category === 'computer' ? 'active' : ''}`}
+                onClick={() => setCategory('computer')}
+              >
+                Computer
+              </button>
+              <button
+                type="button"
+                className={`btn btn-outline-primary ${category === null ? 'active' : ''}`}
+                onClick={() => setCategory(null)}
+              >
+                None
+              </button>
+            </div>
+
+            <Searchbar category={category} />
+
             <Link
               to="account"
               className="btn btn-outline-primary"
@@ -178,7 +232,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
               role="button"
               onClick={() => {
                 setToken(null);
-                SpeechRecognitionAlternative
               }}
             >
               Logout
@@ -189,13 +242,13 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                 href="#"
                 className="btn btn-outline-primary m-1"
                 src="/src/client/assets/vecteezy_shopping-cart.png"
+                alt="Cart"
               ></img>
             </Link>
           </div>
         </div>
       </nav>
     );
-    // SIGNED IN ADMIN RENDER
   } else if (admin) {
     return (
       <nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
@@ -225,16 +278,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              {/* <li className="nav-item">
-              <Link
-                className="nav-link active"
-                aria-current="page"
-                target="_blank"
-                href="#"
-              >
-                Wishlist
-              </Link>
-            </li> */}
               <li className="nav-item dropdown">
                 <Link
                   className="nav-link dropdown-toggle"
@@ -246,7 +289,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                   Shop
                 </Link>
                 <ul className="dropdown-menu">
-                  {/* Links aren't connected yet! */}
                   <li>
                     <Link className="dropdown-item" to="/phones">
                       Phones
@@ -283,7 +325,9 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                 </ul>
               </li>
             </ul>
-            <Searchbar />
+
+            <Searchbar category={category} />
+
             <Link
               to="account"
               className="btn btn-outline-primary"
@@ -299,7 +343,7 @@ export default function Navigations({ admin, token, setToken, setCart }) {
               role="button"
               onClick={() => {
                 setToken(null);
-                setCart({})
+                setCart({});
               }}
             >
               Logout
@@ -310,6 +354,7 @@ export default function Navigations({ admin, token, setToken, setCart }) {
                 href="#"
                 className="btn btn-outline-primary"
                 src="/src/client/assets/vecteezy_shopping-cart.png"
+                alt="Cart"
               ></img>
             </Link>
           </div>

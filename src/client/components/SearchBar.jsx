@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function Searchbar() {
+function SearchBar({ category }) {
   const [items, setItems] = useState([]);
   const [results, setResults] = useState([]);
   const [input, setInput] = useState("");
@@ -22,15 +22,25 @@ function Searchbar() {
 
   const handleChange = (value) => {
     setInput(value);
-    fetchData(value);
+    fetchData(value, category);
   };
 
-  const fetchData = (value) => {
+  const fetchData = (value, categoryFilter) => {
     if (value === "") {
       setResults([]);
     } else {
       const filteredResults = items.filter((item) => {
-        return item && item.name && item.name.toLowerCase().includes(value.toLowerCase());
+        const nameMatch =
+          item &&
+          item.name &&
+          item.name.toLowerCase().includes(value.toLowerCase());
+        const categoryMatch =
+          categoryFilter === null ||
+          (item &&
+            item.category &&
+            item.category.toLowerCase() === categoryFilter.toLowerCase());
+
+        return nameMatch && categoryMatch;
       });
 
       setResults(filteredResults);
@@ -67,7 +77,11 @@ function Searchbar() {
                 className={`card-text search-result-item p-2 mb-1 rounded cursor-pointer ${
                   hoveredItemId === result.id ? "bg-primary" : ""
                 }`}
-                key={result.id} onClick={() => handleItemClick(result.id)} onMouseEnter={() => setHoveredItemId(result.id)} onMouseLeave={() => setHoveredItemId(null)}>
+                key={result.id}
+                onClick={() => handleItemClick(result.id)}
+                onMouseEnter={() => setHoveredItemId(result.id)}
+                onMouseLeave={() => setHoveredItemId(null)}
+              >
                 {result.name}
               </p>
             ))}
@@ -78,4 +92,4 @@ function Searchbar() {
   );
 }
 
-export default Searchbar;
+export default SearchBar;
