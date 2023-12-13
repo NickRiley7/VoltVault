@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-// import ItemDetails from "./singleItemDetail";
 import { useNavigate } from "react-router-dom";
 
 function AllItems() {
@@ -45,7 +44,6 @@ function AllItems() {
                 <p className="card-text">
                   Available in Stock: {item.stock > 0 ? "Yes" : "No"}
                 </p>
-                {/* <p>{item.stock}</p> */}
 
                 <button
                   type="button"
@@ -55,10 +53,6 @@ function AllItems() {
                   {" "}
                   Show Item details
                 </button>
-                {/* <button type="button" className="btn btn-outline-primary m-1">
-                  {" "}
-                  Add item to Cart
-                </button> */}
               </div>
             </div>
           ))}

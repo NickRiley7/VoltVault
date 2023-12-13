@@ -45,7 +45,6 @@ function InventoryTable({ admin, token }) {
       setDescription("");
       setPrice("");
       setStock("");
-      console.log("PATCH SENT: ", data);
     } catch (err) {
       console.error(err.message);
     }
@@ -92,7 +91,6 @@ function InventoryTable({ admin, token }) {
                       <td>{item.category}</td>
                       <td>{item.price}</td>
                       <td>{item.stock}</td>
-                      {/* ON CLICK -- NAV TO SINGLE ITEM PAGE AND EDIT THERE?  */}
                       <td>
                         <Popup
                           trigger={

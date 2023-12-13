@@ -15,12 +15,6 @@ function ItemDetails({ token, cart, setCart }) {
     fetchSingleItemDetail();
   }, [itemid, cart]);
 
-  // console.log (cart.items)
-  // const itemsInCart = cart.items
-  // console.log(itemsInCart)
-  // const itemsIdInCart = itemsInCart.map (item => item.id)
-  // console.log (itemsIdInCart)
-
   async function fetchSingleItemDetail() {
     try {
       const response = await axios.get(`${API}/items/${itemid}`);

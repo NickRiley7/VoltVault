@@ -41,8 +41,6 @@ export default function RegistrationForm({ setToken, user, setUser, setCart }) {
         }),
       });
       const result = await response.json();
-      console.log("Signup Result:", result);
-      console.log ("Registered User:", result.user)
       if (!response.ok) {
         throw result;
       }

@@ -66,7 +66,6 @@ function AllUsers({ admin, token }) {
                 {users.map((user) => {
                   return (
                     <tr key={user.id}>
-                      {/* USER ID NEEDS TO BE SET TO UNDERLINE/COLOR DIFFERENT TO INDICATE LINK */}
                       <td
                         onClick={() => Navigate(`/users/${user.id}`)}
                         scope="row"

@@ -10,7 +10,6 @@ export default function Navigations({ admin, token, setToken, setCart }) {
   };
 
 
-  // NOT SIGNED IN RENDER
   if (!token) {
     return (
       <nav className="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
