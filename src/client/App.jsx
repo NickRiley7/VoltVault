@@ -84,10 +84,6 @@ function App() {
             element={<InventoryTable admin={admin} token={token} />}
           />
           <Route
-            path="/inventory/edit"
-            element={<InventoryTable2 admin={admin} token={token} />}
-          />
-          <Route
             path="users"
             element={<AllUsers token={token} admin={admin} />}
           />
