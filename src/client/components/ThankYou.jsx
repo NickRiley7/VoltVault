@@ -3,7 +3,9 @@ import React from "react";
 function ThankYou() {
 
   return (
-    <h3> THANK YOU FOR YOUR ORDER</h3>
+    <div id="thankYouPage">
+      <h3 className="mt-3"> THANK YOU FOR YOUR ORDER</h3>
+    </div>
   )
 }
 
