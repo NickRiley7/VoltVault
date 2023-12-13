@@ -40,6 +40,7 @@ function UserAccount({ token, admin, user }) {
         setCity(data.city);
         setState(data.state);
         setZip(data.zip);
+        setOrder_Id(data.order_id)
       } catch (err) {
         console.error(err.message);
       }
@@ -126,7 +127,7 @@ function UserAccount({ token, admin, user }) {
   } else if (token && admin) {
     return (
       <>
-      <div id = "admin-account-background">
+      <div id = "admin-account-info">
         <h1>Hi, {firstName}</h1>
         <h2>Your Username: {username}</h2>
         <h2>Your Email: {email}</h2>
@@ -168,8 +169,9 @@ function UserAccount({ token, admin, user }) {
     );
   } else {
     return (
-      <>
-      <div id = "account-background">
+      
+      <div id = "background">
+      <div id = "account-info">
         <h1>Hi, {firstName}</h1>
         <h2>Your Username: {username}</h2>
         <h2>Your Email: {email}</h2>
@@ -181,6 +183,7 @@ function UserAccount({ token, admin, user }) {
         <h2>Your State: {state}</h2>
         <h2>Your Zipcode: {zip}</h2>
       </div>
+      <div id = "order-history"> 
       {
           ordersHistory.length ? 
             ordersHistory.map (order => { 
@@ -195,7 +198,8 @@ function UserAccount({ token, admin, user }) {
             :
             <h2>no order history</h2>
         }
-      </>
+     </div>
+     </div> 
     );
   }
 }

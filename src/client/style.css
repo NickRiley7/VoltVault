@@ -48,14 +48,22 @@
 #userStyle,
 #checkoutStyle,
 #noItemCart,
-#cartPage {
+#cartPage,
+#background {
   height: 100vh;
   background-color: #bfbfbf;
 }
 
-#admin-account-background,
-#account-background {
+#admin-account-info,
+#account-info {
   padding-left: 50%;
+}
+
+#order-history {
+  display: flex;
+  margin-top: -8in;
+  margin-left: -5in;
+  
 }
 
 #loginCard {
