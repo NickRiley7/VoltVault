@@ -132,7 +132,6 @@ async function getCompletedOrdersByUserId(userId) {
     AND "isOpen" = false
     `, [user.id]);
     const ordersWithItems = attachItemsToOrders(orders)
-    console.log (ordersWithItems)
     return attachItemsToOrders(orders);
   } catch (error) {
     throw error
