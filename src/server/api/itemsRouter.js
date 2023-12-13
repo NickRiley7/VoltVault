@@ -5,19 +5,16 @@ const { getOrderById, totalAmountCalc, updateOrder } = require("../db/orders");
 const {
   getAllItems,
   getItemById,
-  getItemByName,
   getAllItemsByCategory,
   createItem,
   destroyItem,
   updateItem,
   getAllItemsByOrderId,
 } = require("../db/items");
-// const { updateItem } = require('../db/items');
 
 itemRouter.get("/", async (req, res, next) => {
   try {
     const items = await getAllItems();
-    console.log("THIS IS ITEMS: ", items);
     res.send(items);
   } catch (err) {
     next(err);
@@ -27,7 +24,6 @@ itemRouter.get("/", async (req, res, next) => {
 itemRouter.get("/inventory", requireAdmin, async (req, res, next) => {
   try {
     const items = await getAllItems();
-    // console.log('THIS IS ITEMS: ', items)
     res.send(items);
   } catch (err) {
     next(err);
@@ -42,8 +38,6 @@ itemRouter.get("/inorder/:orderId", async (req, res, next) => {
     const orderAmount = orders.map((order) => order.order_total);
 
     const overallTotalAmount = await totalAmountCalc(orderId);
-    console.log("THIS IS ORDERS TOTAL AMOUNT", orderAmount[0]);
-    console.log("THIS IS TOTAL AMOUNT ", overallTotalAmount);
     const updatedOrder = await updateOrder({ order_total: overallTotalAmount });
     res.send(updatedOrder);
   } catch (error) {
@@ -69,7 +63,6 @@ itemRouter.get("/category/:category", async (req, res, next) => {
     const { category } = req.params;
     console.log(`getting items with ${category} category`);
     const items = await getAllItemsByCategory(category);
-    console.log(`displaying items with ${category} category: ${items}`);
 
     if (!items) {
       next({
@@ -86,16 +79,6 @@ itemRouter.get("/category/:category", async (req, res, next) => {
   }
 });
 
-itemRouter.get("/name/:name", async (req, res, next) => {
-  //we might need this for search bar
-  try {
-    const { name } = req.params;
-    const item = await getItemByName(name);
-    res.json(item);
-  } catch (err) {
-    next(err);
-  }
-});
 
 itemRouter.post("/", requireAdmin, async (req, res, next) => {
   //admin only access
@@ -121,7 +104,6 @@ itemRouter.post("/", requireAdmin, async (req, res, next) => {
   }
 });
 
-// ===== TO CONTINUE WORKING ON PATCH ITEM ENDPOINT =======
 
 itemRouter.patch(
   "/:itemId",
@@ -152,9 +134,7 @@ itemRouter.patch(
           stock,
         });
         if (updatedItem) {
-          console.log(`start patching the following item ${itemToUpdate}`);
           res.send(updatedItem);
-          console.log("item finished updated!", updatedItem);
         } else {
           console.log("error in updating the item!");
           next({
@@ -170,15 +150,6 @@ itemRouter.patch(
   }
 );
 
-// ====================================================
-
-// itemRouter.patch('/items/:id', requireUser, async (req, res, next) => {
-//   try {
-//     const {id} =req.params;
-//     const
-//   }
-// }
-// );
 
 itemRouter.delete("/:itemId", requireAdmin, async (req, res, next) => {
   try {

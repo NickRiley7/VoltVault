@@ -28,9 +28,7 @@ usersRouter.get("/", requireAdmin, async (req, res, next) => {
 
 usersRouter.get("/account", requireUser, async (req, res, next) => {
   try {
-    // console.log('getting my info account...')
     res.send(req.user);
-    // console.log('finished getting my info account!')
   } catch (error) {
     next(error);
   }
@@ -38,7 +36,6 @@ usersRouter.get("/account", requireUser, async (req, res, next) => {
 
 //GET SINGLE USER BY ID
 usersRouter.get("/:id", requireAdmin, async (req, res, next) => {
-  //requireAdmin
   try {
     const user = await getUserById(req.params.id);
     res.send(user);
@@ -46,18 +43,6 @@ usersRouter.get("/:id", requireAdmin, async (req, res, next) => {
     console.error(error.message);
   }
 });
-
-// (/me) endpoint
-
-// GET USER BY EMAIL -- needed? can pull all users & filter?
-// usersRouter.get("/:email", async (req, res, next) => {
-//   try {
-//     const user = await getUserByEmail(req.params.email);
-//     res.send(user);
-//   } catch (error) {
-//     console.error(error.message);
-//   }
-// });
 
 // LOGIN
 usersRouter.post("/login", async (req, res, next) => {
@@ -182,7 +167,6 @@ usersRouter.patch(
   }),
   async (req, res, next) => {
     try {
-      console.log("THIS IS USER ID IN PARAMS ", req.params);
       const {
         username,
         firstName,
@@ -198,8 +182,6 @@ usersRouter.patch(
       } = req.body;
       const { userId } = req.params;
       const userToUpdate = await getUserById(userId);
-      console.log("THIS IS USER TO UPDATE ", userToUpdate);
-      console.log("THIS IS ADMIN STATUS ", isAdmin);
       if (!userToUpdate) {
         next({
           name: "Not Found",
@@ -207,7 +189,6 @@ usersRouter.patch(
         });
       } else if (!req.user.isadmin && req.user.id !== userToUpdate.id) {
         res.status(403);
-        console.log("IS ADMIN? ", req.user.isadmin);
         next({
           name: "WrongUser",
           message: "you can only update your own account.",
@@ -247,7 +228,6 @@ usersRouter.patch(
 );
 
 usersRouter.delete("/:userId", requireAdmin, async (req, res, next) => {
-  // no priority. But can be for admin
   try {
     const { userId } = req.params;
     const userToUpdate = await getUserById(userId);

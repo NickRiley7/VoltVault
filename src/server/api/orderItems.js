@@ -1,6 +1,6 @@
 const express = require('express')
 const orderItemsRouter = express.Router()
-const { getAllOrders } = require ('../db/orders')
+// const { getAllOrders } = require ('../db/orders')
 const { getOrderItemsById, getOrderItemsByOrder, updateOrderItem, destroyOrderItems, canEditOrderItem } = require ('../db/order_items')
 const { requireAdmin, requireUser, requiredNotSent } = require ('./utils')
 
@@ -11,7 +11,6 @@ orderItemsRouter.get ('/orders/:orderId', requireUser, async (req,res,next) => {
     const orderItems = await getOrderItemsByOrder(orderId)
 
     if (!orderItems) {
-      console.log ('THIS IS ORDER ITEMS', orderItems)
       next ({
         name: 'NotFound',
         message: `No order items with order id ${orderId}`
@@ -45,7 +44,6 @@ orderItemsRouter.get ('/:orderItemId', async (req,res,next) => {
   }
 })
 
-//PATCH Endpoint for item quantity in cart
 orderItemsRouter.patch ('/:orderItemsId', requireUser, requiredNotSent({requiredParams: ['quantity'], atLeastOne: true}), async (req, res, next) => {
   try{
     console.log ('start patching orderItems ...')
@@ -84,12 +82,8 @@ orderItemsRouter.delete('/:orderItemsId', requireUser, async (req, res, next)=> 
   try {
     console.log ('deleting order...')
     const {orderItemsId} = req.params;
-    console.log('THIS IS ORDER ID ', orderItemsId)
     const orderItemsToUpdate = await getOrderItemsById(orderItemsId);
-    console.log ('THIS IS ORDER ITEMS TO UDPATE', orderItemsToUpdate)
-    console.log ('THIS IS ORDER ITEMS TO UPDATE', orderItemsToUpdate.order_id)
     const orderToUpdateId = orderItemsToUpdate.order_id
-    console.log ('THIS IS ORDER ITEMS TO UPDATE: ', orderItemsToUpdate)
     if (!orderItemsToUpdate) {
       next({
         name: 'NotFound',
