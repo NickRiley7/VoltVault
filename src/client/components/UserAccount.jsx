@@ -170,28 +170,37 @@ function UserAccount({ token, admin, user }) {
   } else {
     return (
       
-      <div id = "background">
-      <div id = "account-info">
-        <h1>Hi, {firstName}</h1>
-        <h2>Your Username: {username}</h2>
-        <h2>Your Email: {email}</h2>
-        <h2>Your First Name: {firstName}</h2>
-        <h2>Your Last Name: {lastName}</h2>
-        <h2>Your Address: {address}</h2>
-        <h2>Your Address 2: {address2}</h2>
-        <h2>Your City: {city}</h2>
-        <h2>Your State: {state}</h2>
-        <h2>Your Zipcode: {zip}</h2>
-      </div>
-      <div id = "order-history"> 
+        <div id = "background">
+          <div id = "account-info">
+            <h1>Hi, {firstName}</h1>
+            <h2>Your Username: {username}</h2>
+            <h2>Your Email: {email}</h2>
+            <h2>Your First Name: {firstName}</h2>
+            <h2>Your Last Name: {lastName}</h2>
+            <h2>Your Address: {address}</h2>
+            <h2>Your Address 2: {address2}</h2>
+            <h2>Your City: {city}</h2>
+            <h2>Your State: {state}</h2>
+            <h2>Your Zipcode: {zip}</h2>
+          </div>
+      
+        <div className="col-11 col-sm-11 col-md-11 col-lg-11 m-5 "> 
       {
           ordersHistory.length ? 
             ordersHistory.map (order => { 
               return (
-                <div>
-                  <div>Order ID: {order.id}</div>
-                  <div>Order Date: {order.order_date.slice(0, 10)}</div>
-                  <div>Order Total: {order.order_total}</div>
+              <div id ="order-history">
+                <div className="table-responsive">
+                <table className= "table-striped shadow table-hover table-light">
+                <thead>
+                  <tr>
+                    <th scope="col">Order ID: {order.id}</th>
+                    <th scope="col">Order Date: {order.order_date.slice(0, 10)}</th>
+                    <th scope="col">Order Total: {order.order_total}</th>
+                  </tr>
+                </thead>
+                </table>
+                </div>
                 </div>
               )
             })
