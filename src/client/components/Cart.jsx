@@ -103,7 +103,7 @@ function Cart({ token, setToken, cart, setCart, user, items, setItems, totalCart
             "Authorization": `Bearer ${token}`
           },
           body: JSON.stringify({
-            quantity: item.quantity - 1
+            quantity: item.quantity <= 1 ?  1 : item.quantity - 1
           })
         })
       let json = await response.json()
