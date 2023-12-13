@@ -28,16 +28,18 @@ function ItemDetails({ token, cart, setCart }) {
 
   async function handleAddToCart() {
     try {
-      if (!isInCart) {
-        if (cart.id) {
-          await addItemToCart(cart);
+      if (token) {
+        if (!isInCart) {
+          if (cart.id) {
+            await addItemToCart(cart);
+          } else {
+            await createNewCart();
+          }
+          setIsInCart(true);
         } else {
-          await createNewCart();
+          await removeItemFromCart();
+          setIsInCart(false);
         }
-        setIsInCart(true);
-      } else {
-        await removeItemFromCart();
-        setIsInCart(false);
       }
     } catch (error) {
       console.error('Error in handleAddToCart function', error);
@@ -82,7 +84,7 @@ function ItemDetails({ token, cart, setCart }) {
         }),
       });
       const json = await response.json();
-      
+      // You might want to perform additional actions after adding an item to the cart
     } catch (error) {
       console.error('ERROR ', error);
     }
@@ -100,7 +102,7 @@ function ItemDetails({ token, cart, setCart }) {
           },
         });
         const json = await response.json();
-        
+        // You might want to perform additional actions after removing an item from the cart
       }
     } catch (error) {
       console.error('ERROR ', error);
@@ -131,15 +133,19 @@ function ItemDetails({ token, cart, setCart }) {
                 type="button"
                 className={`btn ${isInCart ? 'btn-danger' : 'btn-outline-success'}`}
                 onClick={() => handleAddToCart()}
-                disabled={isInCart}
+                disabled={!token || isInCart}
               >
                 {isInCart ? 'Item already in Cart' : 'Add item to Cart'}
               </button>
             )}
             {!token && (
-              <p style={{ color: 'red', fontWeight: 'bold' }}>
+              <button
+                type="button"
+                className="btn btn-danger"
+                disabled
+              >
                 Please log in to add items to your cart.
-              </p>
+              </button>
             )}
           </div>
         </div>
