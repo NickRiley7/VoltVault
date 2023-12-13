@@ -102,3 +102,8 @@
 .uidTable:hover {
   cursor: pointer;
 }
+
+#itemEditPopUp {
+  display: flex;
+  flex-direction: column;
+}
