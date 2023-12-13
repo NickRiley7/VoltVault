@@ -87,7 +87,7 @@ function ItemDetails({ token, cart, setCart }) {
         }),
       });
       const json = await response.json();
-      // You might want to perform additional actions after adding an item to the cart
+     
     } catch (error) {
       console.error('ERROR ', error);
     }
@@ -105,7 +105,7 @@ function ItemDetails({ token, cart, setCart }) {
           },
         });
         const json = await response.json();
-        // You might want to perform additional actions after removing an item from the cart
+        
       }
     } catch (error) {
       console.error('ERROR ', error);
