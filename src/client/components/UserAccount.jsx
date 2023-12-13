@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 let API = "http://localhost:3000/api";
 import { Link } from "react-router-dom";
 
-function UserAccount({ token, admin }) {
+function UserAccount({ token, admin, user }) {
   const [firstName, setFirstName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -13,10 +13,12 @@ function UserAccount({ token, admin }) {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [zip, setZip] = useState("");
+  const [itemsHistory, setItemsHistory] = useState([])
+  const [ordersHistory, setOrdersHistory] = useState ([])
 
   useEffect(() => {
     fetchUser();
-    // fetchOrders();
+    fetchOrders();
   }, []);
 
   async function fetchUser() {
@@ -66,6 +68,31 @@ function UserAccount({ token, admin }) {
       } catch (err) {
         console.error(err.message);
       }
+    }
+  }
+
+  async function fetchOrders() {
+    try {
+      let response = await fetch (`${API}/orders/complete_orders/${user.id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          }
+      })
+      let orderHistory = await response.json()
+      console.log(orderHistory)
+      setOrdersHistory(orderHistory)
+      const itemsInOrder = json.map(order => order.items)
+      const itemArrays = itemsInOrder.map(itemArray => itemArray)
+      console.log (itemArrays)
+      console.log (itemsInOrder)
+      setItemsHistory(itemsInOrder)
+      console.log (itemsHistory)
+    }
+    catch (error) {
+      console.error ('error in fetching order history', error)
     }
   }
 
@@ -123,6 +150,20 @@ function UserAccount({ token, admin }) {
             <input type="radio" name="adminAccess" value="Admin" />
           </label>
         </form>
+        {
+          ordersHistory.length ? 
+            ordersHistory.map (order => { 
+              return (
+                <div>
+                  <div>Order ID: {order.id}</div>
+                  <div>Order Date: {order.order_date.slice(0, 10)}</div>
+                  <div>Order Total: {order.order_total}</div>
+                </div>
+              )
+            })
+            :
+            <h2>no order history</h2>
+        }
       </>
     );
   } else {
@@ -140,6 +181,20 @@ function UserAccount({ token, admin }) {
         <h2>Your State: {state}</h2>
         <h2>Your Zipcode: {zip}</h2>
       </div>
+      {
+          ordersHistory.length ? 
+            ordersHistory.map (order => { 
+              return (
+                <div>
+                  <div>Order ID: {order.id}</div>
+                  <div>Order Date: {order.order_date.slice(0, 10)}</div>
+                  <div>Order Total: {order.order_total}</div>
+                </div>
+              )
+            })
+            :
+            <h2>no order history</h2>
+        }
       </>
     );
   }

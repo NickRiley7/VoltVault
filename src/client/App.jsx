@@ -69,7 +69,7 @@ function App() {
           <Route path="/" element={<AllItems token={token} />} />
           <Route
             path="account"
-            element={<UserAccount token={token} admin={admin} />}
+            element={<UserAccount token={token} admin={admin} user={user} />}
           />
           <Route path="/computer" element={<FilterForComputer />} />
           <Route path="/phones" element={<FilterForPhone />} />
