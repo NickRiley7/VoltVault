@@ -1,5 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 let API = 'http://localhost:3000/api'
@@ -15,6 +16,8 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
       fetchCart()
     }
   }, [token])
+
+  const navigate = useNavigate()
 
   async function fetchCart() {
     try {
@@ -41,6 +44,7 @@ function Checkout({ token, setToken, cart, setCart, user, items, setItems, total
         const overallTotalAmount = totalItemAmount.reduce((acc, cur) => acc + cur, 0)
         console.log(overallTotalAmount)
         setTotalCart(overallTotalAmount)
+        navigate('/thankyou')
       }
       else {
         setItems([])

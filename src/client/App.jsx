@@ -8,13 +8,12 @@ import AllItems from "./components/Allitems";
 import UserAccount from "./components/UserAccount";
 import FilterForComputer from "./components/ComputerFilter";
 import FilterForPhone from "./components/PhoneFilter";
-
 import ItemDetails from "./components/SingleItemDetail";
-
 import AllUsers from "./components/AllUsers";
 import Cart from "./components/Cart";
 import InventoryTable from "./components/InventoryTable";
 import Checkout from "./components/Checkout";
+import ThankYou from "./components/ThankYou";
 
 // import Orders from './components/Orders';
 
@@ -124,6 +123,7 @@ function App() {
               />
             }
           />
+          <Route path="/thankyou" element={<ThankYou />}/>
         </Routes>
       </div>
     </>
