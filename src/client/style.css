@@ -46,7 +46,8 @@
 #loginPage,
 #RegisterPage,
 #userStyle,
-#checkoutStyle {
+#checkoutStyle,
+#noItemCart {
   height: 100vh;
   background-color: #bfbfbf;
 }
