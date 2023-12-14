@@ -7,7 +7,6 @@ function AddItemPopUp({ token, fetchAllInventory }) {
   const [newItemName, setNewItemName] = useState("");
   const [newItemDetails, setNewItemDetails] = useState("");
   const [newItemPrice, setNewItemPrice] = useState();
-  const [newItemImg, setNewItemImg] = useState("");
   const [newItemCat, setNewItemCat] = useState("");
   const [newItemStock, setNewItemStock] = useState();
 
@@ -19,7 +18,6 @@ function AddItemPopUp({ token, fetchAllInventory }) {
           name: newItemName,
           price: newItemPrice,
           details: newItemDetails,
-          img: newItemImg,
           category: newItemCat,
           stock: newItemStock,
         },
@@ -30,7 +28,6 @@ function AddItemPopUp({ token, fetchAllInventory }) {
           },
         }
       );
-      console.log(data.img);
       setNewItemName("");
       setNewItemDetails("");
       setNewItemPrice();
@@ -107,14 +104,6 @@ function AddItemPopUp({ token, fetchAllInventory }) {
                 step="1"
                 value={newItemStock}
                 onChange={(e) => setNewItemStock(e.target.value)}
-              />
-            </label>
-            <label>
-              Image
-              <input
-                type="file"
-                onChange={(e) => setNewItemImg(e.target.value)}
-                accept="image/png, image/jpeg"
               />
             </label>
             <button type="submit" className="btn btn-success">
