@@ -40,7 +40,6 @@ function AddUserPopUp({ token, fetchAllUsers }) {
           },
         }
       );
-      console.log("POST SENT: ", data);
       setUsername("");
       setFirstName("");
       setLastName("");
