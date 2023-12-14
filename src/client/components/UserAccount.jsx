@@ -165,17 +165,17 @@ function UserAccount({ token, admin, user }) {
               return (
               <div id ="order-history">
                 <div className="table-responsive">
-                <table className= "table-striped shadow table-hover table-light">
-                <thead>
-                  <tr>
-                    <th scope="col">Order ID: {order.id}</th>
-                    <th scope="col">Order Date: {order.order_date.slice(0, 10)}</th>
-                    <th scope="col">Order Total: {order.order_total}</th>
-                  </tr>
-                </thead>
-                </table>
+                  <table className= "table-striped shadow table-hover table-light">
+                    <thead>
+                      <tr>
+                        <th scope="col">Order ID: {order.id}</th>
+                        <th scope="col">Order Date: {order.order_date.slice(0, 10)}</th>
+                        <th scope="col">Order Total: {order.order_total}</th>
+                      </tr>
+                    </thead>
+                  </table>
                 </div>
-                </div>
+              </div>
               )
             })
             :

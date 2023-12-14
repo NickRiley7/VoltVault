@@ -59,13 +59,16 @@
 
 #admin-account-info,
 #account-info {
-  padding-left: 50%;
+  display: inline;
+  margin-right: 17in;
+  
 }
 
 #order-history {
-  display: flex;
-  margin-left: -6.5in;
-  margin-top: -1in;
+  
+  margin-left: 9in;
+  margin-top: -2cm;
+  padding: -20%;
 }
 
 #submitButton {
