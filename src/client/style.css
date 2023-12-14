@@ -41,6 +41,8 @@
 
 #searchBar {
   padding-top: 13px;
+  width: 30%;
+  padding-right: 3%;
 }
 
 #loginPage,
