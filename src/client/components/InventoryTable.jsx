@@ -41,6 +41,7 @@ function InventoryTable({ admin, token }) {
           },
         }
       );
+      console.log(data);
       fetchAllInventory();
       setName("");
       setDescription("");
