@@ -26,12 +26,13 @@ function AllUsers({ admin, token }) {
 
   async function destroyUser(id) {
     try {
-      await axios.delete(`${API}/users/${id}`, {
+      const { data } = await axios.delete(`${API}/users/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(data);
       fetchAllUsers();
     } catch (err) {
       console.error(err);
@@ -42,7 +43,9 @@ function AllUsers({ admin, token }) {
     return (
       <>
         <div id="userStyle" className="col-10 col-sm-10 col-md-10 col-lg-11">
-          <h1 id="userTitle" className="mt-5">Users</h1>
+          <h1 id="userTitle" className="mt-5">
+            Users
+          </h1>
           <div className="table-responsive">
             <table className="table table-striped table-hover shadow rounded table-light">
               <thead>
@@ -94,7 +97,9 @@ function AllUsers({ admin, token }) {
                       <td>
                         <Popup
                           trigger={
-                            <button className="btn btn-danger s-1">Delete</button>
+                            <button className="btn btn-danger s-1">
+                              Delete
+                            </button>
                           }
                           position="center"
                           modal
@@ -108,6 +113,7 @@ function AllUsers({ admin, token }) {
                               <div>
                                 <button
                                   onClick={() => {
+                                    console.log(user.id);
                                     destroyUser(user.id);
                                   }}
                                   className="btn btn-danger p-1"
