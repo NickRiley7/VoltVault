@@ -52,7 +52,9 @@
 #noItemCart,
 #cartPage,
 #background,
-#thankYouPage {
+#thankYouPage,
+#pleaseLogin,
+#adminAccount {
   height: 100vh;
   background-color: #bfbfbf;
 }
