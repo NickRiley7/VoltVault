@@ -61,9 +61,11 @@ function UserAccount({ token, admin, user }) {
         }
       );
       let orderHistory = await response.json();
-      setOrdersHistory(orderHistory);
-      const itemsInOrder = orderHistory.map((order) => order.items);
-      setItemsHistory(itemsInOrder);
+      if (orderHistory.length >= 0) {
+        setOrdersHistory(orderHistory);
+        const itemsInOrder = orderHistory.map((order) => order.items);
+        setItemsHistory(itemsInOrder);
+      }
     } catch (error) {
       console.error("error in fetching order history", error);
     }
