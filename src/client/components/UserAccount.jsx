@@ -71,97 +71,114 @@ function UserAccount({ token, admin, user }) {
 
   if (!token) {
     return (
-      <h2>
-        Please <Link to="/login">login</Link> or{" "}
-        <Link to="/register">create an account</Link>.
-      </h2>
+      <div className="container mt-5">
+        <h2 className="text-center">
+          Please <Link to="/login">login</Link> or{" "}
+          <Link to="/register">create an account</Link>.
+        </h2>
+      </div>
     );
   } else if (token && admin) {
     return (
-      <div className="container">
+      <div className="container mt-5">
         <div className="row">
           <div className="col-md-6">
-            <div id="admin-account-info">
-              <h1>Hi, {firstName}</h1>
-              <h2>Your Username: {username}</h2>
-              <h2>Your Email: {email}</h2>
-              <h2>Your First Name: {firstName}</h2>
-              <h2>Your Last Name: {lastName}</h2>
-              <h2>Your Address: {address}</h2>
-              <h2>Your Address 2: {address2}</h2>
-              <h2>Your City: {city}</h2>
-              <h2>Your State: {state}</h2>
-              <h2>Your Zipcode: {zip}</h2>
+            <div className="card bg-light p-3">
+              <h1 className="text-center">Hi, {firstName}</h1>
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item">Username: {username}</li>
+                <li className="list-group-item">Email: {email}</li>
+                <li className="list-group-item">First Name: {firstName}</li>
+                <li className="list-group-item">Last Name: {lastName}</li>
+                <li className="list-group-item">Address: {address}</li>
+                <li className="list-group-item">Address 2: {address2}</li>
+                <li className="list-group-item">City: {city}</li>
+                <li className="list-group-item">State: {state}</li>
+                <li className="list-group-item">Zipcode: {zip}</li>
+              </ul>
             </div>
           </div>
           <div className="col-md-6">
-            <form>
-              <label>
-                User
-                <input type="radio" name="adminAccess" value="user" />
-              </label>
-              <label>
-                Admin
-                <input type="radio" name="adminAccess" value="Admin" />
-              </label>
-            </form>
-            {ordersHistory.length ? (
-              ordersHistory.map((order) => (
-                <div key={order.id}>
-                  <div>Order ID: {order.id}</div>
-                  <div>Order Date: {order.order_date.slice(0, 10)}</div>
-                  <div>Order Total: {order.order_total}</div>
+            <div className="card bg-light p-3">
+              <form>
+                <div className="mb-3">
+                  <label className="form-label">Access Level</label>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="adminAccess"
+                      value="user"
+                    />
+                    <label className="form-check-label">User</label>
+                  </div>
+                  <div className="form-check">
+                    <input
+                      className="form-check-input"
+                      type="radio"
+                      name="adminAccess"
+                      value="Admin"
+                    />
+                    <label className="form-check-label">Admin</label>
+                  </div>
                 </div>
-              ))
-            ) : (
-              <h2>no order history</h2>
-            )}
+              </form>
+              {ordersHistory.length ? (
+                <div>
+                  <h3 className="text-center">Order History</h3>
+                  {ordersHistory.map((order) => (
+                    <div key={order.id} className="mb-3">
+                      <div>Order ID: {order.id}</div>
+                      <div>Order Date: {order.order_date.slice(0, 10)}</div>
+                      <div>Order Total: ${order.order_total}</div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <h3 className="text-center">No order history</h3>
+              )}
+            </div>
           </div>
         </div>
       </div>
     );
   } else {
     return (
-      <div className="container">
+      <div className="container mt-5">
         <div className="row">
           <div className="col-md-6">
             <div id="background">
               <div id="account-info">
-                <h1>Hi, {firstName}</h1>
-                <h2>Your Username: {username}</h2>
-                <h2>Your Email: {email}</h2>
-                <h2>Your First Name: {firstName}</h2>
-                <h2>Your Last Name: {lastName}</h2>
-                <h2>Your Address: {address}</h2>
-                <h2>Your Address 2: {address2}</h2>
-                <h2>Your City: {city}</h2>
-                <h2>Your State: {state}</h2>
-                <h2>Your Zipcode: {zip}</h2>
+                <h1 className="text-center">Hi, {firstName}</h1>
+                <ul className="list-group list-group-flush">
+                  <li className="list-group-item">Username: {username}</li>
+                  <li className="list-group-item">Email: {email}</li>
+                  <li className="list-group-item">First Name: {firstName}</li>
+                  <li className="list-group-item">Last Name: {lastName}</li>
+                  <li className="list-group-item">Address: {address}</li>
+                  <li className="list-group-item">Address 2: {address2}</li>
+                  <li className="list-group-item">City: {city}</li>
+                  <li className="list-group-item">State: {state}</li>
+                  <li className="list-group-item">Zipcode: {zip}</li>
+                </ul>
               </div>
             </div>
           </div>
           <div className="col-md-6">
             <div className="col-11 col-sm-11 col-md-11 col-lg-11 m-5">
               {ordersHistory.length ? (
-                ordersHistory.map((order) => (
-                  <div key={order.id} id="order-history">
-                    <div className="table-responsive">
-                      <table className="table-striped shadow table-hover table-light">
-                        <thead>
-                          <tr>
-                            <th scope="col">Order ID: {order.id}</th>
-                            <th scope="col">
-                              Order Date: {order.order_date.slice(0, 10)}
-                            </th>
-                            <th scope="col">Order Total: {order.order_total}</th>
-                          </tr>
-                        </thead>
-                      </table>
+                <div>
+                  <h3 className="text-center">Order History</h3>
+                  {ordersHistory.map((order) => (
+                    <div key={order.id} className="mb-3">
+                      <div>Order ID: {order.id}</div>
+                      <div>Order Date: {order.order_date.slice(0, 10)}</div>
+                      <div>Order Total: ${order.order_total}</div>
                     </div>
-                  </div>
-                ))
+                  ))}
+                </div>
               ) : (
-                <h2>no order history</h2>
+                <h3 className="text-center">No order history</h3>
               )}
             </div>
           </div>
