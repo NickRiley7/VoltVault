@@ -352,7 +352,12 @@ function AllUsers({ admin, token }) {
                                     <option value={true}>Yes</option>
                                   </select>
                                 </label>
-                                <button type="submit">Make Changes</button>
+                                <button
+                                  type="submit"
+                                  className="btn btn-success"
+                                >
+                                  Make Changes
+                                </button>
                                 <button
                                   type="button"
                                   onClick={() => close()}
