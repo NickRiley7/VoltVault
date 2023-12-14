@@ -87,7 +87,7 @@ export default function Navigations({ admin, token, setToken, setCart }) {
             )}
           </ul>
 
-          <div className="dropdown me-2">
+          <div className="dropdown">
             <button
               className="btn btn-outline-primary btn-sm dropdown-toggle"
               type="button"
@@ -167,7 +167,7 @@ export default function Navigations({ admin, token, setToken, setCart }) {
               </Link>
               <Link
                 to="/"
-                className="btn btn-outline-primary m-1"
+                className="btn btn-outline-primary"
                 tabIndex="-1"
                 role="button"
                 onClick={() => {
