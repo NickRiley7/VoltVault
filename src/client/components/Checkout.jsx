@@ -62,7 +62,6 @@ function Checkout({ token, cart, setCart, user, items, setItems, totalCart, setT
         })
       })
       let json = await response.json()
-      console.log(json)
       fetchCart()
     }
     catch (error) {
