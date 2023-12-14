@@ -31,7 +31,7 @@ function InventoryTable({ admin, token }) {
 
   async function editItem(id) {
     try {
-      const { data } = await axios.patch(
+      await axios.patch(
         `${API}/items/${id}`,
         { name, description, price, stock },
         {
@@ -41,7 +41,6 @@ function InventoryTable({ admin, token }) {
           },
         }
       );
-      console.log(data);
       fetchAllInventory();
       setName("");
       setDescription("");

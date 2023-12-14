@@ -60,7 +60,6 @@ function AllUsers({ admin, token }) {
           },
         }
       );
-      console.log(data);
       fetchAllUsers();
     } catch (err) {
       console.error(err);
@@ -75,7 +74,6 @@ function AllUsers({ admin, token }) {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(data);
       fetchAllUsers();
     } catch (err) {
       console.error(err);
@@ -154,7 +152,6 @@ function AllUsers({ admin, token }) {
                                   close();
                                 }}
                               >
-                                <h3>Add New User</h3>
                                 <label
                                   htmlFor="inputUser"
                                   className="form-label"

@@ -73,7 +73,7 @@ function UserAccount({ token, admin, user }) {
 
   if (!token) {
     return (
-      <div className="container mt-5">
+      <div id="pleaseLogin" className="container mt-5">
         <h2 className="text-center">
           Please <Link to="/login">login</Link> or{" "}
           <Link to="/register">create an account</Link>.
@@ -82,10 +82,10 @@ function UserAccount({ token, admin, user }) {
     );
   } else if (token && admin) {
     return (
-      <div className="container mt-5">
+      <div id="adminAccount" className="container mt-5">
         <div className="row">
           <div className="col-md-6">
-            <div className="card bg-light p-3">
+            <div className="card bg-light p-3 shadow">
               <h1 className="text-center">Hi, {firstName}</h1>
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">Username: {username}</li>
@@ -101,7 +101,7 @@ function UserAccount({ token, admin, user }) {
             </div>
           </div>
           <div className="col-md-6">
-            <div className="card bg-light p-3">
+            <div className="card bg-light p-3 shadow">
               <form>
                 <div className="mb-3">
                   <label className="form-label">Access Level</label>
