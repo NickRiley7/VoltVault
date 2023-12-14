@@ -50,16 +50,13 @@ function UserAccount({ token, admin, user }) {
 
   async function fetchOrders() {
     try {
-      let response = await fetch(
-        `${API}/orders/complete_orders/${user.id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      let response = await fetch(`${API}/orders/complete_orders/${user.id}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
       let orderHistory = await response.json();
       if (orderHistory.length >= 0) {
         setOrdersHistory(orderHistory);
@@ -102,29 +99,6 @@ function UserAccount({ token, admin, user }) {
           </div>
           <div className="col-md-6">
             <div className="card bg-light p-3 shadow">
-              <form>
-                <div className="mb-3">
-                  <label className="form-label">Access Level</label>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="adminAccess"
-                      value="user"
-                    />
-                    <label className="form-check-label">User</label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="radio"
-                      name="adminAccess"
-                      value="Admin"
-                    />
-                    <label className="form-check-label">Admin</label>
-                  </div>
-                </div>
-              </form>
               {ordersHistory.length ? (
                 <div>
                   <h3 className="text-center">Order History</h3>
