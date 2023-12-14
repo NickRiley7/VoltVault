@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 let API = "http://localhost:3000/api";
 import Popup from "reactjs-popup";
+import AddItemPopUp from "./AddItemPopUp";
 
 function InventoryTable({ admin, token }) {
   const [inventory, setInventory] = useState([]);
@@ -79,7 +80,12 @@ function InventoryTable({ admin, token }) {
                   <th scope="col">Price</th>
                   <th scope="col">Stock</th>
                   <th scope="col"></th>
-                  <th scope="col"></th>
+                  <th scope="col">
+                    <AddItemPopUp
+                      token={token}
+                      fetchAllInventory={fetchAllInventory}
+                    />
+                  </th>
                 </tr>
               </thead>
               <tbody>
