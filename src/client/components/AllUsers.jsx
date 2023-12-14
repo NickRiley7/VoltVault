@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Popup from "reactjs-popup";
+import AddUserPopUp from "./AddUserPopUp";
 
 let API = "http://localhost:3000/api";
 
@@ -62,7 +63,9 @@ function AllUsers({ admin, token }) {
                   <th scope="col">Zip</th>
                   <th scope="col">User Role</th>
                   <th scope="col"></th>
-                  <th scope="col"></th>
+                  <th scope="col">
+                    <AddUserPopUp token={token} fetchAllUsers={fetchAllUsers} />
+                  </th>
                 </tr>
               </thead>
               <tbody>

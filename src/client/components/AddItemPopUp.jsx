@@ -30,7 +30,6 @@ function AddItemPopUp({ token, fetchAllInventory }) {
           },
         }
       );
-      console.log("POST SENT: ", data);
       console.log(data.img);
       setNewItemName("");
       setNewItemDetails("");
